@@ -4,7 +4,18 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ============================================
+   EuroZiel Brand Theme Tokens (Tailwind v4)
+   ============================================ */
 @theme inline {
+  /* EuroZiel Custom Colors */
+  --color-euro-dark: #0A0E1A;
+  --color-euro-gold: #FFD700;
+  --color-euro-gray: #1A1F2E;
+  --color-euro-gold-muted: rgba(255, 215, 0, 0.15);
+  --color-euro-glass: rgba(255, 255, 255, 0.05);
+
+  /* Shadcn/Tailwind token mappings */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
@@ -48,6 +59,9 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* ============================================
+   Light mode (unused — app is dark-only)
+   ============================================ */
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -55,8 +69,8 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.84 0.19 90);
+  --primary-foreground: oklch(0.145 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
@@ -66,7 +80,7 @@
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --ring: oklch(0.84 0.19 90);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -75,56 +89,113 @@
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.84 0.19 90);
+  --sidebar-primary-foreground: oklch(0.145 0 0);
   --sidebar-accent: oklch(0.97 0 0);
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar-ring: oklch(0.84 0.19 90);
 }
 
+/* ============================================
+   EuroZiel Dark Theme — THE ACTIVE THEME
+   Forced via html.dark in layout.tsx
+   ============================================ */
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  /* EuroZiel deep navy background */
+  --background: #0A0E1A;
+  --foreground: oklch(0.96 0 0);
+
+  /* Cards = euroGray */
+  --card: #1A1F2E;
+  --card-foreground: oklch(0.96 0 0);
+  --popover: #1A1F2E;
+  --popover-foreground: oklch(0.96 0 0);
+
+  /* Primary = euroGold (#FFD700) */
+  --primary: #FFD700;
+  --primary-foreground: #0A0E1A;
+
+  /* Secondary & muted */
+  --secondary: #1A1F2E;
+  --secondary-foreground: oklch(0.96 0 0);
+  --muted: #1A1F2E;
+  --muted-foreground: oklch(0.6 0 0);
+
+  /* Accent = gold tint */
+  --accent: rgba(255, 215, 0, 0.1);
+  --accent-foreground: #FFD700;
+
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+
+  /* Borders = subtle white lines (glassmorphism) */
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.08);
+  --ring: #FFD700;
+
+  /* Charts */
+  --chart-1: #FFD700;
+  --chart-2: oklch(0.7 0.15 90);
+  --chart-3: oklch(0.5 0.1 90);
+  --chart-4: oklch(0.4 0.08 90);
+  --chart-5: oklch(0.3 0.05 90);
+
+  /* Sidebar = euroGray variant */
+  --sidebar: #0F1424;
+  --sidebar-foreground: oklch(0.96 0 0);
+  --sidebar-primary: #FFD700;
+  --sidebar-primary-foreground: #0A0E1A;
+  --sidebar-accent: rgba(255, 215, 0, 0.08);
+  --sidebar-accent-foreground: #FFD700;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-ring: #FFD700;
 }
 
+/* ============================================
+   Base Styles
+   ============================================ */
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+    background-color: #0A0E1A;
   }
   html {
     @apply font-sans;
+  }
+}
+
+/* ============================================
+   EuroZiel Utility Classes
+   ============================================ */
+@layer utilities {
+  /* Glassmorphism card */
+  .euro-card {
+    background: rgba(26, 31, 46, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  /* Gold glow on progress bars / accents */
+  .euro-glow {
+    box-shadow: 0 0 15px #FFD700, 0 0 30px rgba(255, 215, 0, 0.3);
+  }
+
+  /* Gold section heading border */
+  .euro-heading {
+    border-left: 4px solid #FFD700;
+    padding-left: 0.75rem;
+  }
+
+  /* Glass gradient background */
+  .glass-gradient {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
   }
 }
