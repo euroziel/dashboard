@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import {
   collection,
   onSnapshot,
@@ -13,32 +12,9 @@ import { db } from "@/lib/firebase";
 import AdminTopbar from "@/components/admin/Topbar";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
-interface Student {
-  id: string;
-  name: string;
-  email?: string;
-  username: string;
-  phone?: string;
-  currentMilestone: number;
-  status: string;
-  totalFees: number;
-  feesPaid: number;
-  createdAt?: string;
-}
-
-const MILESTONES = [
-  "Profile Verification",
-  "APS Support",
-  "University Match",
-  "SOP / LOR",
-  "Application",
-  "Offer Letter",
-  "Visa",
-  "Flight to Germany",
-];
-
-const STATUSES = ["In Progress", "Action Required", "Completed", "On Hold"];
+import { useEffect, useState } from "react";
+import { MILESTONES, APPLICATION_STATUSES } from "@/types";
+import type { Student, ApplicationStatus } from "@/types";
 
 const statusColors: Record<string, { bg: string; text: string }> = {
   "In Progress": { bg: "rgba(59,130,246,0.15)", text: "#93c5fd" },
@@ -273,7 +249,7 @@ export default function StudentsPage() {
                               border: "none",
                             }}
                           >
-                            {STATUSES.map((s) => (
+                            {APPLICATION_STATUSES.map((s) => (
                               <option key={s} value={s}>
                                 {s}
                               </option>
