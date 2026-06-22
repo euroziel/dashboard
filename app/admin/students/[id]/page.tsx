@@ -2,23 +2,31 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { getStudent, getFinances, setFinances, updateStudent } from "@/lib/collections";
-import type { Student, Finances, PaymentRecord } from "@/types";
+import { getStudent, getFinances, setFinances, updateStudent, createAnnouncement, subscribeToAnnouncements } from "@/lib/collections";
+import type { Student, Finances, PaymentRecord, Announcement } from "@/types";
 import { MILESTONES, APPLICATION_STATUSES } from "@/types";
 import AdminTopbar from "@/components/admin/Topbar";
+import { useAuth } from "@/context/AuthContext";
 
 export default function StudentProfilePage() {
   const { id } = useParams() as { id: string };
   const router = useRouter();
+  const { user } = useAuth();
 
   const [student, setStudent] = useState<Student | null>(null);
   const [finances, setFinancesData] = useState<Finances | null>(null);
+  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Fee Modal State
   const [isFeeModalOpen, setIsFeeModalOpen] = useState(false);
   const [feeForm, setFeeForm] = useState({ totalFees: 0, paidAmount: 0 });
   const [isSavingFee, setIsSavingFee] = useState(false);
+
+  // Announcement State
+  const [noteTitle, setNoteTitle] = useState("");
+  const [noteMessage, setNoteMessage] = useState("");
+  const [isPostingNote, setIsPostingNote] = useState(false);
 
   useEffect(() => {
     async function load() {
@@ -42,6 +50,13 @@ export default function StudentProfilePage() {
       }
     }
     load();
+
+    const unsubAnnouncements = subscribeToAnnouncements(id, (data) => {
+      // Only show individual notes in this specific view, global notes are in the main page
+      setAnnouncements(data.filter((a) => a.type === "individual" && a.targetId === id));
+    });
+
+    return () => unsubAnnouncements();
   }, [id]);
 
   const handleUpdateFees = async (e: React.FormEvent) => {
@@ -74,6 +89,29 @@ export default function StudentProfilePage() {
     } catch (e) {
       console.error(e);
       alert("Failed to update status/milestone.");
+    }
+  };
+
+  const handlePostNote = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!noteTitle.trim() || !noteMessage.trim()) return;
+
+    setIsPostingNote(true);
+    try {
+      await createAnnouncement({
+        type: "individual",
+        targetId: id,
+        title: noteTitle.trim(),
+        message: noteMessage.trim(),
+        createdBy: user?.username ?? "Admin",
+      });
+      setNoteTitle("");
+      setNoteMessage("");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to post note.");
+    } finally {
+      setIsPostingNote(false);
     }
   };
 
@@ -266,14 +304,69 @@ export default function StudentProfilePage() {
                )}
             </div>
 
-            {/* Individual Notes (Phase 5 placeholder) */}
+            {/* Individual Notes */}
             <div className="rounded-xl p-6" style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.08)" }}>
                <div className="flex items-center justify-between mb-4">
                  <h3 className="font-bold text-lg text-white" style={{ borderLeft: "3px solid #3b82f6", paddingLeft: "10px" }}>Direct Notes</h3>
                </div>
-               <div className="py-8 text-center rounded-lg" style={{ background: "rgba(255,255,255,0.02)", border: "1px dashed rgba(255,255,255,0.1)" }}>
-                  <p className="text-sm mb-2" style={{ color: "rgba(255,255,255,0.4)" }}>Targeted communication will go here.</p>
-                  <p className="text-xs" style={{ color: "rgba(59,130,246,0.8)" }}>Phase 5 Implementation</p>
+               
+               {/* Post Note Form */}
+               <form onSubmit={handlePostNote} className="mb-6 space-y-3">
+                  <input
+                    type="text"
+                    required
+                    placeholder="Subject (e.g. Needs updated passport)"
+                    value={noteTitle}
+                    onChange={(e) => setNoteTitle(e.target.value)}
+                    className="w-full px-3 py-2 rounded-lg text-sm text-white outline-none"
+                    style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
+                    onFocus={(e) => (e.target.style.borderColor = "#FFD700")}
+                    onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
+                  />
+                  <textarea
+                    required
+                    rows={2}
+                    placeholder="Write a message directly to this student..."
+                    value={noteMessage}
+                    onChange={(e) => setNoteMessage(e.target.value)}
+                    className="w-full px-3 py-2 rounded-lg text-sm text-white outline-none resize-none"
+                    style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
+                    onFocus={(e) => (e.target.style.borderColor = "#FFD700")}
+                    onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
+                  />
+                  <button
+                    type="submit"
+                    disabled={isPostingNote || !noteTitle.trim() || !noteMessage.trim()}
+                    className="w-full py-2 rounded-lg text-sm font-bold transition-all disabled:opacity-50"
+                    style={{ background: "rgba(59,130,246,0.15)", color: "#93c5fd" }}
+                  >
+                    {isPostingNote ? "Posting..." : "Send Direct Note"}
+                  </button>
+               </form>
+
+               {/* Notes History */}
+               <div className="space-y-3 max-h-60 overflow-y-auto pr-2">
+                 {announcements.length === 0 ? (
+                   <p className="text-sm text-center py-4" style={{ color: "rgba(255,255,255,0.4)" }}>No direct notes sent yet.</p>
+                 ) : (
+                   announcements.map(ann => (
+                     <div key={ann.id} className="p-3 rounded-lg" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)" }}>
+                       <div className="flex justify-between items-start mb-1">
+                         <h4 className="font-bold text-sm text-white">{ann.title}</h4>
+                         {ann.readBy?.includes(id) && (
+                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2">
+                             <polyline points="20 6 9 17 4 12"></polyline>
+                           </svg>
+                         )}
+                       </div>
+                       <p className="text-xs mb-2 leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>{ann.message}</p>
+                       <div className="flex justify-between items-center text-[10px]" style={{ color: "rgba(255,255,255,0.3)" }}>
+                         <span>By {ann.createdBy}</span>
+                         <span>{new Date(ann.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>
+                       </div>
+                     </div>
+                   ))
+                 )}
                </div>
             </div>
 

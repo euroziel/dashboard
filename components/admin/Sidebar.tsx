@@ -50,6 +50,7 @@ const navItems = [
       </svg>
     ),
   },
+
 ];
 
 export default function AdminSidebar() {
