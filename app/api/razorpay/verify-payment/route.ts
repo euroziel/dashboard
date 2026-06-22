@@ -52,7 +52,8 @@ export async function POST(request: NextRequest) {
         paidAt: new Date().toISOString(),
         method: "Razorpay",
         razorpayPaymentId: razorpay_payment_id,
-        orderId: razorpay_order_id
+        orderId: razorpay_order_id,
+        status: "Successful"
       };
 
       transaction.update(financesRef, {

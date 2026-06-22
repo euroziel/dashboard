@@ -23,6 +23,17 @@ export default function StudentProfilePage() {
   const [feeForm, setFeeForm] = useState({ totalFees: 0, paidAmount: 0 });
   const [isSavingFee, setIsSavingFee] = useState(false);
 
+  // Profile Edit Modal State
+  const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
+  const [profileForm, setProfileForm] = useState({
+    name: "",
+    phone: "",
+    address: "",
+    educationalBackground: "",
+    dateOfBirth: "",
+  });
+  const [isSavingProfile, setIsSavingProfile] = useState(false);
+
   // Announcement State
   const [noteTitle, setNoteTitle] = useState("");
   const [noteMessage, setNoteMessage] = useState("");
@@ -89,6 +100,21 @@ export default function StudentProfilePage() {
     } catch (e) {
       console.error(e);
       alert("Failed to update status/milestone.");
+    }
+  };
+
+  const handleUpdateProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSavingProfile(true);
+    try {
+      await updateStudent(id, profileForm);
+      setStudent(prev => prev ? { ...prev, ...profileForm } : null);
+      setIsEditProfileModalOpen(false);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to update profile.");
+    } finally {
+      setIsSavingProfile(false);
     }
   };
 
@@ -160,7 +186,26 @@ export default function StudentProfilePage() {
           <div className="xl:col-span-1 space-y-6">
             
             {/* Identity Card */}
-            <div className="rounded-xl p-6" style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.08)" }}>
+            <div className="rounded-xl p-6 relative" style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.08)" }}>
+              <button 
+                onClick={() => {
+                  setProfileForm({
+                    name: student.name || "",
+                    phone: student.phone || "",
+                    address: student.address || "",
+                    educationalBackground: student.educationalBackground || "",
+                    dateOfBirth: student.dateOfBirth || "",
+                  });
+                  setIsEditProfileModalOpen(true);
+                }}
+                className="absolute top-6 right-6 text-xs px-3 py-1.5 rounded-md font-semibold transition-all"
+                style={{ background: "rgba(255,255,255,0.05)", color: "white", border: "1px solid rgba(255,255,255,0.1)" }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.1)")}
+                onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}
+              >
+                Edit
+              </button>
+              
               <div className="flex items-center gap-4 mb-6">
                 <div 
                   className="w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold shrink-0"
@@ -431,6 +476,101 @@ export default function StudentProfilePage() {
                      style={{ background: "#FFD700", color: "#0A0E1A" }}
                    >
                      {isSavingFee ? "Saving..." : "Save Fees"}
+                   </button>
+                </div>
+              </form>
+           </div>
+        </div>
+      )}
+
+      {/* Edit Profile Modal */}
+      {isEditProfileModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4" style={{ background: "rgba(10,14,26,0.8)", backdropFilter: "blur(4px)" }}>
+           <div className="w-full max-w-md rounded-xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto" style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.1)" }}>
+              <h3 className="text-lg font-bold text-white mb-6">Edit Student Profile</h3>
+              
+              <form onSubmit={handleUpdateProfile} className="space-y-4">
+                <div>
+                  <label className="block text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>Full Name</label>
+                  <input 
+                    type="text" 
+                    value={profileForm.name} 
+                    onChange={(e) => setProfileForm(p => ({ ...p, name: e.target.value }))}
+                    className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none"
+                    style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
+                    onFocus={(e) => e.target.style.borderColor = "#FFD700"}
+                    onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>Phone Number</label>
+                  <input 
+                    type="tel" 
+                    value={profileForm.phone} 
+                    onChange={(e) => setProfileForm(p => ({ ...p, phone: e.target.value }))}
+                    className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none"
+                    style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
+                    onFocus={(e) => e.target.style.borderColor = "#FFD700"}
+                    onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>Date of Birth</label>
+                  <input 
+                    type="date" 
+                    value={profileForm.dateOfBirth} 
+                    onChange={(e) => setProfileForm(p => ({ ...p, dateOfBirth: e.target.value }))}
+                    className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none"
+                    style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
+                    onFocus={(e) => e.target.style.borderColor = "#FFD700"}
+                    onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>Address</label>
+                  <textarea 
+                    rows={2}
+                    value={profileForm.address} 
+                    onChange={(e) => setProfileForm(p => ({ ...p, address: e.target.value }))}
+                    className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none resize-none"
+                    style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
+                    onFocus={(e) => e.target.style.borderColor = "#FFD700"}
+                    onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>Educational Background</label>
+                  <textarea 
+                    rows={2}
+                    value={profileForm.educationalBackground} 
+                    onChange={(e) => setProfileForm(p => ({ ...p, educationalBackground: e.target.value }))}
+                    className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none resize-none"
+                    style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
+                    onFocus={(e) => e.target.style.borderColor = "#FFD700"}
+                    onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
+                  />
+                </div>
+
+                <div className="flex gap-3 pt-4 mt-6 border-t" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+                   <button 
+                     type="button" 
+                     onClick={() => setIsEditProfileModalOpen(false)}
+                     className="flex-1 py-2.5 rounded-lg text-sm font-semibold"
+                     style={{ background: "rgba(255,255,255,0.05)", color: "white" }}
+                   >
+                     Cancel
+                   </button>
+                   <button 
+                     type="submit" 
+                     disabled={isSavingProfile}
+                     className="flex-1 py-2.5 rounded-lg text-sm font-bold disabled:opacity-50"
+                     style={{ background: "#FFD700", color: "#0A0E1A" }}
+                   >
+                     {isSavingProfile ? "Saving..." : "Save Profile"}
                    </button>
                 </div>
               </form>

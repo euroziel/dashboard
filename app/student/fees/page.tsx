@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import StudentTopbar from "@/components/student/Topbar";
-import { subscribeToFinances } from "@/lib/collections";
+import { subscribeToFinances, recordPayment } from "@/lib/collections";
 import type { Finances, PaymentRecord } from "@/types";
 import Script from "next/script";
 
@@ -15,6 +15,7 @@ export default function StudentFeesPage() {
   // Payment State
   const [paymentAmount, setPaymentAmount] = useState<number | "">("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [selectedPayment, setSelectedPayment] = useState<PaymentRecord | null>(null);
 
   useEffect(() => {
     if (!user?.uid) return;
@@ -66,6 +67,9 @@ export default function StudentFeesPage() {
         throw new Error(data.error || "Failed to create order");
       }
 
+      let paymentHandled = false;
+      let lastProcessedPaymentId: string | null = null;
+
       // 2. Open Razorpay Checkout
       const options = {
         key: data.key,
@@ -76,6 +80,7 @@ export default function StudentFeesPage() {
         image: "https://euroziel.com/wp-content/uploads/2023/10/euroziel-logo.png", // replace with actual logo url later
         order_id: data.orderId,
         handler: async function (response: any) {
+          paymentHandled = true;
           // 3. Verify Payment Signature on server
           try {
             const verifyRes = await fetch("/api/razorpay/verify-payment", {
@@ -100,6 +105,21 @@ export default function StudentFeesPage() {
           } catch (err) {
             console.error(err);
             alert("Error verifying payment.");
+          } finally {
+            setIsProcessing(false);
+          }
+        },
+        modal: {
+          ondismiss: async function () {
+            if (!paymentHandled) {
+              await recordPayment(user.uid, {
+                amount: Number(paymentAmount),
+                method: "Razorpay",
+                note: "User closed the payment window",
+                status: "Abandoned"
+              });
+              setIsProcessing(false);
+            }
           }
         },
         prefill: {
@@ -112,16 +132,31 @@ export default function StudentFeesPage() {
       };
 
       const rzp = new (window as any).Razorpay(options);
-      rzp.on("payment.failed", function (response: any) {
+      rzp.on("payment.failed", async function (response: any) {
+        const paymentId = response.error.metadata?.payment_id;
+        
+        // Prevent duplicate firing for the exact same payment_id
+        if (paymentId && lastProcessedPaymentId === paymentId) return;
+        lastProcessedPaymentId = paymentId || "unknown";
+        
+        paymentHandled = true;
         console.error(response.error);
-        alert("Payment failed! " + response.error.description);
+        alert(response.error.description);
+        
+        await recordPayment(user.uid, {
+          amount: Number(paymentAmount),
+          method: "Razorpay",
+          razorpayPaymentId: paymentId || `failed-${Date.now()}`,
+          note: response.error.description,
+          status: "Failed"
+        });
+        setIsProcessing(false);
       });
       rzp.open();
 
     } catch (error: any) {
       console.error(error);
       alert(error.message || "An error occurred during checkout.");
-    } finally {
       setIsProcessing(false);
     }
   };
@@ -236,7 +271,12 @@ export default function StudentFeesPage() {
               ) : (
                 <div className="space-y-4">
                   {history.map((record, idx) => (
-                    <div key={record.razorpayPaymentId || idx} className="p-4 rounded-lg flex items-center justify-between" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)" }}>
+                    <div 
+                      key={record.razorpayPaymentId || idx} 
+                      onClick={() => setSelectedPayment(record)}
+                      className="p-4 rounded-lg flex items-center justify-between cursor-pointer hover:bg-white/5 transition-colors" 
+                      style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)" }}
+                    >
                       <div>
                         <p className="text-white font-bold text-lg mb-1">₹{record.amount.toLocaleString('en-IN')}</p>
                         <p className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>
@@ -244,8 +284,11 @@ export default function StudentFeesPage() {
                         </p>
                       </div>
                       <div className="text-right">
-                        <span className="text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider font-bold" style={{ background: "rgba(34,197,94,0.15)", color: "#86efac" }}>
-                          Successful
+                        <span className="text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider font-bold" style={{ 
+                          background: record.status === "Failed" ? "rgba(239,68,68,0.15)" : record.status === "Abandoned" ? "rgba(255,255,255,0.1)" : "rgba(34,197,94,0.15)", 
+                          color: record.status === "Failed" ? "#fca5a5" : record.status === "Abandoned" ? "rgba(255,255,255,0.5)" : "#86efac" 
+                        }}>
+                          {record.status || "Successful"}
                         </span>
                         <p className="text-[10px] mt-2 font-mono" style={{ color: "rgba(255,255,255,0.3)" }}>
                           ID: {record.razorpayPaymentId?.slice(-6) || "Manual"}
@@ -260,6 +303,70 @@ export default function StudentFeesPage() {
         </div>
 
       </main>
+
+      {/* Payment Details Modal */}
+      {selectedPayment && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center px-4" style={{ background: "rgba(10,14,26,0.8)", backdropFilter: "blur(4px)" }}>
+          <div className="w-full max-w-md rounded-xl p-8 shadow-2xl relative" style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.1)" }}>
+            <button 
+              onClick={() => setSelectedPayment(null)}
+              className="absolute top-4 right-4 p-2 rounded-full hover:bg-white/5 transition-colors"
+              style={{ color: "rgba(255,255,255,0.5)" }}
+            >
+              <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+            
+            <div className="text-center mb-6">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: "rgba(34,197,94,0.15)", color: "#86efac" }}>
+                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold text-white">Payment Receipt</h2>
+              <p className="text-xs mt-1" style={{ color: "rgba(255,255,255,0.4)" }}>
+                {new Date(selectedPayment.paidAt).toLocaleString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+              </p>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="p-4 rounded-lg flex justify-between items-center" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)" }}>
+                <span className="text-sm font-semibold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.5)" }}>Amount Paid</span>
+                <span className="text-xl font-bold text-white">₹{selectedPayment.amount.toLocaleString('en-IN')}</span>
+              </div>
+              
+              <div className="p-4 rounded-lg flex flex-col gap-1" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)" }}>
+                <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.5)" }}>Transaction ID</span>
+                <span className="text-sm font-mono text-white">{selectedPayment.razorpayPaymentId || "N/A (Manual)"}</span>
+              </div>
+              
+              <div className="p-4 rounded-lg flex justify-between items-center" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)" }}>
+                <span className="text-sm font-semibold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.5)" }}>Status</span>
+                <span className="text-[11px] px-3 py-1 rounded-full uppercase tracking-wider font-bold" style={{ 
+                  background: selectedPayment.status === "Failed" ? "rgba(239,68,68,0.15)" : selectedPayment.status === "Abandoned" ? "rgba(255,255,255,0.1)" : "rgba(34,197,94,0.15)", 
+                  color: selectedPayment.status === "Failed" ? "#fca5a5" : selectedPayment.status === "Abandoned" ? "rgba(255,255,255,0.5)" : "#86efac" 
+                }}>
+                  {selectedPayment.status || "Successful"}
+                </span>
+              </div>
+            </div>
+            
+            <div className="mt-8">
+              <button 
+                onClick={() => setSelectedPayment(null)}
+                className="w-full py-3 rounded-lg text-sm font-bold transition-colors"
+                style={{ background: "#FFD700", color: "#0A0E1A" }}
+              >
+                Close Details
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

@@ -161,7 +161,9 @@ export async function recordPayment(
     ...finances.history,
     { ...payment, paidAt: new Date().toISOString() },
   ];
-  const newPaidAmount = finances.paidAmount + payment.amount;
+  const newPaidAmount = (payment.status === "Failed" || payment.status === "Abandoned") 
+    ? finances.paidAmount 
+    : finances.paidAmount + payment.amount;
 
   await updateDoc(ref, {
     history: newHistory,

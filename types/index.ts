@@ -64,6 +64,7 @@ export interface PaymentRecord {
   method?: string; // "Razorpay" | "Cash" | "Bank Transfer"
   razorpayPaymentId?: string;
   note?: string;
+  status?: "Successful" | "Failed" | "Abandoned";
 }
 
 // ─────────────────────────────────────────
