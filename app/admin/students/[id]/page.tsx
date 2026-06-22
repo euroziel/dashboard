@@ -208,7 +208,9 @@ export default function StudentProfilePage() {
                     style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#FFD700" }}
                   >
                     {MILESTONES.map((m, i) => (
-                      <option key={i + 1} value={i + 1}>Step {i + 1}: {m}</option>
+                      <option key={i + 1} value={i + 1} style={{ background: "#1A1F2E", color: "white" }}>
+                        Step {i + 1}: {m}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -224,7 +226,9 @@ export default function StudentProfilePage() {
                     style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "white" }}
                   >
                     {APPLICATION_STATUSES.map((s) => (
-                      <option key={s} value={s}>{s}</option>
+                      <option key={s} value={s} style={{ background: "#1A1F2E", color: "white" }}>
+                        {s}
+                      </option>
                     ))}
                   </select>
                 </div>

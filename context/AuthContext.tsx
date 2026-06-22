@@ -3,8 +3,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
 interface UserData {
+  uid: string;
   username: string;
   role: string;
+  name?: string;
+  email?: string;
 }
 
 interface AuthContextType {

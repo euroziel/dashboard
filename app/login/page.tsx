@@ -35,7 +35,13 @@ export default function Login() {
 
       if (!adminSnapshot.empty) {
         const admin = adminSnapshot.docs[0].data();
-        login({ username: admin.username, role: "admin" });
+        login({ 
+          uid: admin.uid,
+          username: admin.username, 
+          role: "admin",
+          name: admin.name,
+          email: admin.email
+        });
         router.push("/redirect");
         return;
       }
@@ -50,7 +56,13 @@ export default function Login() {
 
       if (!studentSnapshot.empty) {
         const student = studentSnapshot.docs[0].data();
-        login({ username: student.username, role: "student" });
+        login({ 
+          uid: student.uid,
+          username: student.username, 
+          role: "student",
+          name: student.name,
+          email: student.email
+        });
         router.push("/redirect");
         return;
       }
