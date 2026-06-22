@@ -79,8 +79,7 @@ export default function AddStudentPage() {
       <main className="flex-1 p-8">
         <div className="max-w-xl mx-auto">
           <div
-            className="rounded-xl p-8"
-            style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.08)" }}
+            className="euro-card rounded-xl p-8"
           >
             <h2
               className="font-bold text-lg mb-6"

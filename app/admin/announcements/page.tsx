@@ -53,7 +53,7 @@ export default function GlobalAnnouncementsPage() {
         
         {/* Creator Form */}
         <div>
-          <div className="rounded-xl p-6" style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.08)" }}>
+          <div className="euro-card rounded-xl p-6">
             <h2 className="text-xl font-bold text-white mb-6">Post New Announcement</h2>
             
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -110,8 +110,8 @@ export default function GlobalAnnouncementsPage() {
         </div>
 
         {/* History List */}
-        <div>
-           <div className="rounded-xl flex flex-col h-full" style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.08)" }}>
+        <div className="lg:col-span-1">
+           <div className="euro-card rounded-xl flex flex-col h-full">
               <div className="px-6 py-5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
                 <h3 className="font-semibold text-sm uppercase tracking-widest" style={{ color: "#FFD700" }}>Past Announcements</h3>
               </div>

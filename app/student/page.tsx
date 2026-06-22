@@ -7,6 +7,7 @@ import { subscribeToStudents, subscribeToAnnouncements, subscribeToFinances } fr
 import type { Student, Announcement, Finances } from "@/types";
 import { MILESTONES } from "@/types";
 import Link from "next/link";
+import { SkeletonStudentDashboard } from "@/components/Skeletons";
 
 export default function StudentDashboard() {
   const { user } = useAuth();
@@ -49,8 +50,9 @@ export default function StudentDashboard() {
 
   if (loading || !student) {
     return (
-      <div className="flex-1 flex items-center justify-center min-h-screen" style={{ background: "#0A0E1A" }}>
-        <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: "#FFD700" }} />
+      <div className="flex flex-col min-h-screen">
+        <StudentTopbar title="My Journey" subtitle="Track your progress to Germany" />
+        <SkeletonStudentDashboard />
       </div>
     );
   }
@@ -79,7 +81,7 @@ export default function StudentDashboard() {
         </div>
 
         {/* Milestone Tracker (Roadmap) */}
-        <div className="rounded-xl p-6 relative" style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.08)" }}>
+        <div className="euro-card rounded-xl p-6 relative">
           <div className="absolute top-0 left-0 w-full h-1 overflow-hidden rounded-t-xl" style={{ background: "rgba(255,255,255,0.05)" }}>
              <div 
                className="h-full transition-all duration-1000 ease-in-out" 
@@ -153,7 +155,7 @@ export default function StudentDashboard() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               
               {/* Upload Center Card */}
-              <div className="rounded-xl p-6 flex flex-col" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", backdropFilter: "blur(10px)" }}>
+              <div className="euro-card rounded-xl p-6 flex flex-col">
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style={{ background: "rgba(255,215,0,0.1)", color: "#FFD700" }}>
                   <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
@@ -172,7 +174,7 @@ export default function StudentDashboard() {
               </div>
 
               {/* Fee Status Card */}
-              <div className="rounded-xl p-6 flex flex-col" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", backdropFilter: "blur(10px)" }}>
+              <div className="euro-card rounded-xl p-6 flex flex-col">
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style={{ background: "rgba(34,197,94,0.1)", color: "#86efac" }}>
                   <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <line x1="12" y1="1" x2="12" y2="23" />
@@ -189,7 +191,7 @@ export default function StudentDashboard() {
                          <span className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>of ₹{totalFees.toLocaleString('en-IN')}</span>
                       </div>
                       <div className="h-1.5 rounded-full overflow-hidden bg-white/10">
-                        <div className="h-full rounded-full" style={{ width: `${feePercent}%`, background: feePercent === 100 ? "#86efac" : "#FFD700" }} />
+                        <div className="h-full rounded-full transition-all duration-500 ease-in-out" style={{ width: `${feePercent}%`, background: feePercent === 100 ? "#86efac" : "#FFD700" }} />
                       </div>
                     </div>
                   ) : (
@@ -207,7 +209,7 @@ export default function StudentDashboard() {
 
           {/* Announcements Feed (Right Column) */}
           <div className="lg:col-span-1">
-             <div className="rounded-xl flex flex-col h-full" style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.08)" }}>
+             <div className="euro-card rounded-xl flex flex-col h-full">
                 <div className="px-5 py-4 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
                   <h3 className="font-semibold text-sm uppercase tracking-widest" style={{ color: "#FFD700" }}>Announcements</h3>
                 </div>

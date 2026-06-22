@@ -88,7 +88,7 @@ export default function StudentProfilePage() {
         </div>
 
         {/* Editable Profile Form */}
-        <div className="rounded-xl p-8" style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.08)" }}>
+        <div className="euro-card rounded-xl p-8">
            <h3 className="text-lg font-bold text-white mb-6" style={{ borderLeft: "3px solid #FFD700", paddingLeft: "10px" }}>
              Contact & Background Details
            </h3>

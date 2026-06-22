@@ -61,22 +61,22 @@ export default function AdminFeesPage() {
       <main className="flex-1 p-8">
         {/* Top Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="rounded-xl p-6" style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.08)" }}>
+          <div className="euro-card rounded-xl p-6">
             <p className="text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: "rgba(255,255,255,0.4)" }}>Total Expected Fees</p>
             <h3 className="text-2xl font-bold text-white">₹{totalExpected.toLocaleString('en-IN')}</h3>
           </div>
-          <div className="rounded-xl p-6" style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.08)" }}>
+          <div className="euro-card rounded-xl p-6">
             <p className="text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: "rgba(34,197,94,0.7)" }}>Total Collected</p>
             <h3 className="text-2xl font-bold" style={{ color: "#86efac" }}>₹{totalCollected.toLocaleString('en-IN')}</h3>
           </div>
-          <div className="rounded-xl p-6" style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.08)" }}>
+          <div className="euro-card rounded-xl p-6">
             <p className="text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: "rgba(255,215,0,0.7)" }}>Total Outstanding</p>
             <h3 className="text-2xl font-bold" style={{ color: "#FFD700" }}>₹{totalOutstanding.toLocaleString('en-IN')}</h3>
           </div>
         </div>
 
         {/* Master Table */}
-        <div className="rounded-xl overflow-hidden" style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.08)" }}>
+        <div className="euro-card rounded-xl overflow-hidden">
            <div className="overflow-x-auto">
              <table className="w-full text-left text-sm">
                <thead>

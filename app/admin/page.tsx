@@ -6,6 +6,7 @@ import { db } from "@/lib/firebase";
 import AdminTopbar from "@/components/admin/Topbar";
 import Link from "next/link";
 import { MILESTONES } from "@/types";
+import { SkeletonTable, SkeletonCard } from "@/components/Skeletons";
 import type { Student } from "@/types";
 
 const statusColors: Record<string, { bg: string; text: string }> = {
@@ -63,6 +64,23 @@ export default function AdminDashboard() {
     }, () => setLoading(false));
     return () => unsub();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col min-h-screen">
+        <AdminTopbar title="Dashboard" subtitle="Loading metrics..." />
+        <main className="flex-1 p-8 space-y-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+          </div>
+          <SkeletonTable rows={5} />
+        </main>
+      </div>
+    );
+  }
 
   const totalStudents = students.length;
   const actionRequired = students.filter((s) => s.status === "Action Required").length;
@@ -124,13 +142,13 @@ export default function AdminDashboard() {
 
         {/* Recent Students */}
         <div
-          className="rounded-xl overflow-hidden"
+          className="euro-card rounded-xl overflow-hidden"
           style={{ border: "1px solid rgba(255,255,255,0.08)" }}
         >
           {/* Table Header */}
           <div
             className="flex items-center justify-between px-6 py-4"
-            style={{ background: "#1A1F2E", borderBottom: "1px solid rgba(255,255,255,0.06)" }}
+            style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
           >
             <div>
               <h2
@@ -154,15 +172,7 @@ export default function AdminDashboard() {
           </div>
 
           {loading ? (
-            <div
-              className="flex items-center justify-center py-16"
-              style={{ background: "#1A1F2E" }}
-            >
-              <div
-                className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin"
-                style={{ borderColor: "#FFD700", borderTopColor: "transparent" }}
-              />
-            </div>
+            <SkeletonTable rows={5} />
           ) : students.length === 0 ? (
             <div
               className="flex flex-col items-center justify-center py-16 text-center"
@@ -183,7 +193,7 @@ export default function AdminDashboard() {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-sm" style={{ background: "#1A1F2E" }}>
+              <table className="w-full text-sm">
                 <thead>
                   <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
                     {["Name", "Current Step", "Progress", "Status", "Fees"].map((h) => (
@@ -257,9 +267,9 @@ export default function AdminDashboard() {
                               style={{ background: "rgba(255,255,255,0.08)", minWidth: "80px" }}
                             >
                               <div
-                                className="h-full rounded-full transition-all duration-500"
-                                style={{
-                                  width: `${progress}%`,
+                                  className="h-full rounded-full transition-all duration-500 ease-in-out"
+                                  style={{
+                                    width: `${progress}%`,
                                   background: "#FFD700",
                                   boxShadow: progress > 0 ? "0 0 8px rgba(255,215,0,0.5)" : "none",
                                 }}
@@ -296,7 +306,7 @@ export default function AdminDashboard() {
                                 style={{ background: "rgba(255,255,255,0.08)" }}
                               >
                                 <div
-                                  className="h-full rounded-full"
+                                  className="h-full rounded-full transition-all duration-500 ease-in-out"
                                   style={{
                                     width: `${feePercent}%`,
                                     background: feePercent === 100 ? "#86efac" : "#FFD700",

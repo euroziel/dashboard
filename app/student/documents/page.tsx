@@ -130,8 +130,8 @@ export default function StudentDocumentsPage() {
       <main className="flex-1 p-8 grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto w-full">
         
         {/* LEFT: Upload Form */}
-        <div className="lg:col-span-1">
-          <div className="rounded-xl p-6 sticky top-8" style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.08)" }}>
+        <div className="lg:col-span-1 space-y-6">
+          <div className="euro-card rounded-xl p-6 sticky top-8">
             <h2 className="text-xl font-bold text-white mb-6">Upload Document</h2>
             
             <form onSubmit={handleUpload} className="space-y-6">
@@ -219,7 +219,7 @@ export default function StudentDocumentsPage() {
 
         {/* RIGHT: Uploaded Documents List */}
         <div className="lg:col-span-2">
-          <div className="rounded-xl flex flex-col h-full" style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.08)" }}>
+          <div className="euro-card rounded-xl flex flex-col h-full">
             <div className="px-6 py-5 border-b flex justify-between items-center" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
               <h3 className="font-semibold text-sm uppercase tracking-widest" style={{ color: "#FFD700" }}>My Documents</h3>
               <span className="text-xs px-2.5 py-1 rounded-full font-bold" style={{ background: "rgba(255,255,255,0.05)", color: "white" }}>

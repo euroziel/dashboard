@@ -36,8 +36,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#0A0E1A" }}>
       <AdminSidebar />
-      {/* Main content — offset by sidebar width */}
-      <div className="ml-64 min-h-screen flex flex-col">
+      {/* Main content — offset by sidebar width on desktop */}
+      <div className="md:ml-64 min-h-screen flex flex-col">
         {children}
       </div>
     </div>

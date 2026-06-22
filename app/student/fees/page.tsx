@@ -211,7 +211,7 @@ export default function StudentFeesPage() {
 
           {/* Payment Form */}
           {remainingAmount > 0 && (
-            <div className="rounded-xl p-8" style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.08)" }}>
+            <div className="euro-card rounded-xl p-8">
               <h3 className="text-lg font-bold text-white mb-6" style={{ borderLeft: "3px solid #FFD700", paddingLeft: "10px" }}>Make a Payment</h3>
               
               <div className="space-y-4">
@@ -256,7 +256,7 @@ export default function StudentFeesPage() {
 
         {/* Right: Transaction History */}
         <div className="lg:col-span-1">
-          <div className="rounded-xl flex flex-col h-full max-h-[600px]" style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.08)" }}>
+          <div className="euro-card rounded-xl flex flex-col h-full max-h-[600px]">
             <div className="px-6 py-5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
               <h3 className="font-semibold text-sm uppercase tracking-widest" style={{ color: "#FFD700" }}>Transaction History</h3>
             </div>
@@ -307,7 +307,7 @@ export default function StudentFeesPage() {
       {/* Payment Details Modal */}
       {selectedPayment && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center px-4" style={{ background: "rgba(10,14,26,0.8)", backdropFilter: "blur(4px)" }}>
-          <div className="w-full max-w-md rounded-xl p-8 shadow-2xl relative" style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.1)" }}>
+          <div className="euro-card w-full max-w-md rounded-xl p-8 shadow-2xl relative">
             <button 
               onClick={() => setSelectedPayment(null)}
               className="absolute top-4 right-4 p-2 rounded-full hover:bg-white/5 transition-colors"

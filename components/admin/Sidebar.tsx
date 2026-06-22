@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const navItems = [
   {
@@ -57,6 +58,13 @@ export default function AdminSidebar() {
   const pathname = usePathname();
   const { user, logout } = useAuth();
   const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const toggle = () => setIsOpen((prev) => !prev);
+    window.addEventListener("toggle-sidebar", toggle);
+    return () => window.removeEventListener("toggle-sidebar", toggle);
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -64,8 +72,18 @@ export default function AdminSidebar() {
   };
 
   return (
-    <aside
-      className="fixed left-0 top-0 h-full w-64 flex flex-col z-40"
+    <>
+      {/* Backdrop for mobile */}
+      {isOpen && (
+        <div 
+          className="md:hidden fixed inset-0 bg-black/60 z-30" 
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+      <aside
+        className={`fixed left-0 top-0 h-full w-64 flex flex-col z-40 transition-transform duration-300 ease-in-out ${
+          isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+        }`}
       style={{
         background: "#0F1424",
         borderRight: "1px solid rgba(255,255,255,0.06)",
@@ -167,5 +185,6 @@ export default function AdminSidebar() {
         </button>
       </div>
     </aside>
+    </>
   );
 }

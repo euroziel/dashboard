@@ -186,7 +186,7 @@ export default function StudentProfilePage() {
           <div className="xl:col-span-1 space-y-6">
             
             {/* Identity Card */}
-            <div className="rounded-xl p-6 relative" style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.08)" }}>
+            <div className="euro-card rounded-xl p-6 relative">
               <button 
                 onClick={() => {
                   setProfileForm({
@@ -238,7 +238,7 @@ export default function StudentProfilePage() {
             </div>
 
             {/* Controls Card */}
-            <div className="rounded-xl p-6" style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.08)" }}>
+            <div className="euro-card rounded-xl p-6">
               <h3 className="font-bold text-lg text-white mb-5" style={{ borderLeft: "3px solid #FFD700", paddingLeft: "10px" }}>Journey Controls</h3>
               
               <div className="space-y-5">
@@ -286,7 +286,7 @@ export default function StudentProfilePage() {
           <div className="xl:col-span-2 space-y-6">
             
             {/* Journey Progress */}
-            <div className="rounded-xl p-6" style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.08)" }}>
+            <div className="euro-card rounded-xl p-6">
                <h3 className="font-bold text-lg text-white mb-6" style={{ borderLeft: "3px solid #FFD700", paddingLeft: "10px" }}>Journey Progress</h3>
                
                <div className="flex items-center justify-between mb-2">
@@ -322,7 +322,7 @@ export default function StudentProfilePage() {
             </div>
 
             {/* Fee Control Section */}
-            <div className="rounded-xl p-6" style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.08)" }}>
+            <div className="euro-card rounded-xl p-6">
                <div className="flex items-center justify-between mb-6">
                  <h3 className="font-bold text-lg text-white" style={{ borderLeft: "3px solid #86efac", paddingLeft: "10px" }}>Fee Status</h3>
                  <button 
@@ -342,8 +342,8 @@ export default function StudentProfilePage() {
                        <span className="text-2xl font-bold text-white">₹{actualPaidFees.toLocaleString('en-IN')}</span>
                        <span className="text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>of ₹{actualTotalFees.toLocaleString('en-IN')} ({feePercent}%)</span>
                     </div>
-                    <div className="h-2 rounded-full overflow-hidden mb-6" style={{ background: "rgba(255,255,255,0.05)" }}>
-                      <div className="h-full rounded-full" style={{ width: `${feePercent}%`, background: feePercent === 100 ? "#86efac" : "#FFD700" }} />
+                    <div className="h-1.5 rounded-full overflow-hidden bg-white/10">
+                      <div className="h-full rounded-full transition-all duration-500 ease-in-out" style={{ width: `${feePercent}%`, background: feePercent === 100 ? "#86efac" : "#FFD700" }} />
                     </div>
                  </div>
                ) : (
@@ -354,7 +354,7 @@ export default function StudentProfilePage() {
             </div>
 
             {/* Individual Notes */}
-            <div className="rounded-xl p-6" style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.08)" }}>
+            <div className="euro-card rounded-xl p-6">
                <div className="flex items-center justify-between mb-4">
                  <h3 className="font-bold text-lg text-white" style={{ borderLeft: "3px solid #3b82f6", paddingLeft: "10px" }}>Direct Notes</h3>
                </div>
@@ -426,7 +426,7 @@ export default function StudentProfilePage() {
       {/* Fee Update Modal */}
       {isFeeModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4" style={{ background: "rgba(10,14,26,0.8)", backdropFilter: "blur(4px)" }}>
-           <div className="w-full max-w-md rounded-xl p-6 shadow-2xl" style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.1)" }}>
+           <div className="euro-card w-full max-w-md rounded-xl p-6 shadow-2xl">
               <h3 className="text-lg font-bold text-white mb-4">Update Fee Structure</h3>
               
               <form onSubmit={handleUpdateFees} className="space-y-4">
@@ -486,7 +486,7 @@ export default function StudentProfilePage() {
       {/* Edit Profile Modal */}
       {isEditProfileModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4" style={{ background: "rgba(10,14,26,0.8)", backdropFilter: "blur(4px)" }}>
-           <div className="w-full max-w-md rounded-xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto" style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.1)" }}>
+           <div className="euro-card w-full max-w-md rounded-xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
               <h3 className="text-lg font-bold text-white mb-6">Edit Student Profile</h3>
               
               <form onSubmit={handleUpdateProfile} className="space-y-4">

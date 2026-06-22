@@ -14,6 +14,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MILESTONES, APPLICATION_STATUSES } from "@/types";
+import { updateStudentMilestone, updateStudentStatus } from "@/lib/collections";
+import { SkeletonTable } from "@/components/Skeletons";
 import type { Student, ApplicationStatus } from "@/types";
 
 const statusColors: Record<string, { bg: string; text: string }> = {
@@ -109,20 +111,12 @@ export default function StudentsPage() {
         </div>
 
         {/* Table */}
-        <div
-          className="rounded-xl overflow-hidden"
+        <div 
+          className="euro-card rounded-xl overflow-hidden" 
           style={{ border: "1px solid rgba(255,255,255,0.08)" }}
         >
           {loading ? (
-            <div
-              className="flex items-center justify-center py-20"
-              style={{ background: "#1A1F2E" }}
-            >
-              <div
-                className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin"
-                style={{ borderColor: "#FFD700", borderTopColor: "transparent" }}
-              />
-            </div>
+            <SkeletonTable rows={10} />
           ) : filtered.length === 0 ? (
             <div
               className="flex flex-col items-center justify-center py-20 text-center"
@@ -147,7 +141,7 @@ export default function StudentsPage() {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-sm" style={{ background: "#1A1F2E" }}>
+              <table className="w-full text-sm">
                 <thead>
                   <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
                     {["Student", "Phone", "Milestone", "Status", "Fees", "Actions"].map((h) => (
@@ -274,7 +268,7 @@ export default function StudentsPage() {
                                 style={{ background: "rgba(255,255,255,0.08)" }}
                               >
                                 <div
-                                  className="h-full rounded-full"
+                                  className="h-full rounded-full transition-all duration-500 ease-in-out"
                                   style={{
                                     width: `${feePercent}%`,
                                     background: feePercent === 100 ? "#86efac" : "#FFD700",
