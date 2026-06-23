@@ -83,7 +83,7 @@ export default function AddStudentPage() {
           >
             <h2
               className="font-bold text-lg mb-6"
-              style={{ color: "#FFD700", borderLeft: "3px solid #FFD700", paddingLeft: "12px" }}
+              style={{ color: "#E5A800", borderLeft: "3px solid #E5A800", paddingLeft: "12px" }}
             >
               New Account Details
             </h2>
@@ -109,7 +109,7 @@ export default function AddStudentPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Role selector */}
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: "rgba(255,215,0,0.7)" }}>
+                <label className="block text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: "rgba(229, 168, 0,0.7)" }}>
                   Role
                 </label>
                 <div className="flex gap-3">
@@ -120,8 +120,8 @@ export default function AddStudentPage() {
                       onClick={() => setForm((p) => ({ ...p, role: r }))}
                       className="flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all capitalize"
                       style={{
-                        background: form.role === r ? "#FFD700" : "rgba(255,255,255,0.05)",
-                        color: form.role === r ? "#0A0E1A" : "rgba(255,255,255,0.5)",
+                        background: form.role === r ? "#E5A800" : "rgba(255,255,255,0.05)",
+                        color: form.role === r ? "#030617" : "rgba(255,255,255,0.5)",
                         border: form.role === r ? "none" : "1px solid rgba(255,255,255,0.1)",
                       }}
                     >
@@ -136,7 +136,7 @@ export default function AddStudentPage() {
                 <div key={f.name}>
                   <label
                     className="block text-xs font-semibold uppercase tracking-widest mb-2"
-                    style={{ color: "rgba(255,215,0,0.7)" }}
+                    style={{ color: "rgba(229, 168, 0,0.7)" }}
                   >
                     {f.label} {f.required && <span style={{ color: "#fca5a5" }}>*</span>}
                   </label>
@@ -149,8 +149,8 @@ export default function AddStudentPage() {
                     className="w-full px-4 py-3 rounded-lg text-sm outline-none transition-all placeholder-white/25"
                     style={inputStyle}
                     onFocus={(e) => {
-                      e.target.style.borderColor = "rgba(255,215,0,0.5)";
-                      e.target.style.boxShadow = "0 0 0 3px rgba(255,215,0,0.05)";
+                      e.target.style.borderColor = "rgba(229, 168, 0,0.5)";
+                      e.target.style.boxShadow = "0 0 0 3px rgba(229, 168, 0,0.05)";
                     }}
                     onBlur={(e) => {
                       e.target.style.borderColor = "rgba(255,255,255,0.1)";
@@ -178,7 +178,7 @@ export default function AddStudentPage() {
                   type="submit"
                   disabled={loading}
                   className="flex-1 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50"
-                  style={{ background: "#FFD700", color: "#0A0E1A" }}
+                  style={{ background: "#1B73BA", color: "white" }}
                 >
                   {loading ? "Creating..." : `Create ${form.role === "admin" ? "Admin" : "Student"}`}
                 </button>

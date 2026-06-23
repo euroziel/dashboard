@@ -81,7 +81,7 @@ export default function GlobalAnnouncementsPage() {
                   onChange={(e) => setTitle(e.target.value)}
                   className="w-full px-4 py-2.5 rounded-lg text-sm text-white outline-none transition-colors"
                   style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                  onFocus={(e) => (e.target.style.borderColor = "#FFD700")}
+                  onFocus={(e) => (e.target.style.borderColor = "#E5A800")}
                   onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
                 />
               </div>
@@ -98,7 +98,7 @@ export default function GlobalAnnouncementsPage() {
                   onChange={(e) => setMessage(e.target.value)}
                   className="w-full px-4 py-3 rounded-lg text-sm text-white outline-none transition-colors resize-none"
                   style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                  onFocus={(e) => (e.target.style.borderColor = "#FFD700")}
+                  onFocus={(e) => (e.target.style.borderColor = "#E5A800")}
                   onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
                 />
               </div>
@@ -119,7 +119,7 @@ export default function GlobalAnnouncementsPage() {
                 type="submit"
                 disabled={isSubmitting || !title.trim() || !message.trim()}
                 className="w-full flex items-center justify-center gap-2 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50"
-                style={{ background: "#FFD700", color: "#0A0E1A" }}
+                style={{ background: "#1B73BA", color: "white" }}
               >
                 {isSubmitting ? "Posting..." : "Post to All Students"}
                 {!isSubmitting && (
@@ -137,7 +137,7 @@ export default function GlobalAnnouncementsPage() {
         <div className="lg:col-span-1">
            <div className="euro-card rounded-xl flex flex-col h-full">
               <div className="px-6 py-5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
-                <h3 className="font-semibold text-sm uppercase tracking-widest" style={{ color: "#FFD700" }}>Past Announcements</h3>
+                <h3 className="font-semibold text-sm uppercase tracking-widest" style={{ color: "#E5A800" }}>Past Announcements</h3>
               </div>
               
               <div className="flex-1 p-6 overflow-y-auto" style={{ maxHeight: "calc(100vh - 250px)" }}>

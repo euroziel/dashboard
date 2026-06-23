@@ -34,12 +34,12 @@ export default function RedirectPage() {
   return (
     <div
       className="min-h-screen flex items-center justify-center"
-      style={{ backgroundColor: "#0A0E1A" }}
+      style={{ backgroundColor: "#030617" }}
     >
       <div className="text-center">
         <div
           className="inline-block w-10 h-10 rounded-full border-2 border-t-transparent animate-spin mb-4"
-          style={{ borderColor: "#FFD700", borderTopColor: "transparent" }}
+          style={{ borderColor: "#E5A800", borderTopColor: "transparent" }}
         />
         <p className="text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>
           Redirecting...

@@ -37,7 +37,7 @@ function StatCard({
     >
       <div
         className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-        style={{ background: accent ?? "rgba(255,215,0,0.1)", color: "#FFD700" }}
+        style={{ background: accent ?? "rgba(229, 168, 0,0.1)", color: "#E5A800" }}
       >
         {icon}
       </div>
@@ -153,7 +153,7 @@ export default function AdminDashboard() {
             <div>
               <h2
                 className="font-semibold text-sm uppercase tracking-widest"
-                style={{ color: "#FFD700", borderLeft: "3px solid #FFD700", paddingLeft: "10px" }}
+                style={{ color: "#E5A800", borderLeft: "3px solid #E5A800", paddingLeft: "10px" }}
               >
                 Recent Students
               </h2>
@@ -162,9 +162,9 @@ export default function AdminDashboard() {
               href="/admin/students"
               className="text-xs font-medium px-3 py-1.5 rounded-lg transition-all"
               style={{
-                background: "rgba(255,215,0,0.1)",
-                color: "#FFD700",
-                border: "1px solid rgba(255,215,0,0.25)",
+                background: "rgba(229, 168, 0,0.1)",
+                color: "#E5A800",
+                border: "1px solid rgba(229, 168, 0,0.25)",
               }}
             >
               View All →
@@ -186,7 +186,7 @@ export default function AdminDashboard() {
               <Link
                 href="/admin/students"
                 className="mt-4 px-4 py-2 rounded-lg text-sm font-medium transition-all"
-                style={{ background: "#FFD700", color: "#0A0E1A" }}
+                style={{ background: "#1B73BA", color: "white" }}
               >
                 + Add Student
               </Link>
@@ -200,7 +200,7 @@ export default function AdminDashboard() {
                       <th
                         key={h}
                         className="text-left px-6 py-3 text-xs font-semibold uppercase tracking-widest"
-                        style={{ color: "#FFD700" }}
+                        style={{ color: "#E5A800" }}
                       >
                         {h}
                       </th>
@@ -234,7 +234,7 @@ export default function AdminDashboard() {
                           <div className="flex items-center gap-3">
                             <div
                               className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0"
-                              style={{ background: "rgba(255,215,0,0.15)", color: "#FFD700" }}
+                              style={{ background: "rgba(229, 168, 0,0.15)", color: "#E5A800" }}
                             >
                               {(student.name ?? student.username)?.charAt(0).toUpperCase()}
                             </div>
@@ -270,8 +270,8 @@ export default function AdminDashboard() {
                                   className="h-full rounded-full transition-all duration-500 ease-in-out"
                                   style={{
                                     width: `${progress}%`,
-                                  background: "#FFD700",
-                                  boxShadow: progress > 0 ? "0 0 8px rgba(255,215,0,0.5)" : "none",
+                                  background: "#E5A800",
+                                  boxShadow: progress > 0 ? "0 0 8px rgba(229, 168, 0,0.5)" : "none",
                                 }}
                               />
                             </div>
@@ -309,7 +309,7 @@ export default function AdminDashboard() {
                                   className="h-full rounded-full transition-all duration-500 ease-in-out"
                                   style={{
                                     width: `${feePercent}%`,
-                                    background: feePercent === 100 ? "#86efac" : "#FFD700",
+                                    background: feePercent === 100 ? "#86efac" : "#E5A800",
                                   }}
                                 />
                               </div>

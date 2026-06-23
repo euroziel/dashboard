@@ -127,7 +127,7 @@ export default function StudentFeesPage() {
           email: user.email,
         },
         theme: {
-          color: "#0A0E1A"
+          color: "#030617"
         }
       };
 
@@ -163,8 +163,8 @@ export default function StudentFeesPage() {
 
   if (loading) {
     return (
-      <div className="flex-1 flex items-center justify-center min-h-screen" style={{ background: "#0A0E1A" }}>
-        <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: "#FFD700" }} />
+      <div className="flex-1 flex items-center justify-center min-h-screen" style={{ background: "#030617" }}>
+        <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: "#E5A800" }} />
       </div>
     );
   }
@@ -201,7 +201,7 @@ export default function StudentFeesPage() {
                  
                  <div className="pt-6 flex justify-between items-center border-t" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
                    <span className="text-sm uppercase tracking-widest font-semibold" style={{ color: "rgba(255,255,255,0.6)" }}>Remaining Balance</span>
-                   <span className="text-2xl font-bold" style={{ color: remainingAmount > 0 ? "#FFD700" : "#86efac" }}>
+                   <span className="text-2xl font-bold" style={{ color: remainingAmount > 0 ? "#E5A800" : "#86efac" }}>
                      ₹{remainingAmount.toLocaleString('en-IN')}
                    </span>
                  </div>
@@ -212,7 +212,7 @@ export default function StudentFeesPage() {
           {/* Payment Form */}
           {remainingAmount > 0 && (
             <div className="euro-card rounded-xl p-8">
-              <h3 className="text-lg font-bold text-white mb-6" style={{ borderLeft: "3px solid #FFD700", paddingLeft: "10px" }}>Make a Payment</h3>
+              <h3 className="text-lg font-bold text-white mb-6" style={{ borderLeft: "3px solid #E5A800", paddingLeft: "10px" }}>Make a Payment</h3>
               
               <div className="space-y-4">
                 <div>
@@ -227,7 +227,7 @@ export default function StudentFeesPage() {
                     onChange={(e) => setPaymentAmount(e.target.value === "" ? "" : Number(e.target.value))}
                     className="w-full px-4 py-3 rounded-lg text-lg text-white font-bold outline-none transition-colors"
                     style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                    onFocus={(e) => (e.target.style.borderColor = "#FFD700")}
+                    onFocus={(e) => (e.target.style.borderColor = "#E5A800")}
                     onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
                   />
                   <p className="text-xs mt-2" style={{ color: "rgba(255,255,255,0.4)" }}>
@@ -239,7 +239,7 @@ export default function StudentFeesPage() {
                   onClick={handlePayment}
                   disabled={isProcessing || !paymentAmount || Number(paymentAmount) <= 0 || Number(paymentAmount) > remainingAmount}
                   className="w-full py-4 rounded-lg text-sm font-bold transition-all disabled:opacity-50 mt-4 flex justify-center items-center gap-2"
-                  style={{ background: "#FFD700", color: "#0A0E1A", boxShadow: "0 4px 14px rgba(255,215,0,0.2)" }}
+                  style={{ background: "#1B73BA", color: "white", boxShadow: "0 4px 14px rgba(229, 168, 0,0.2)" }}
                 >
                   {isProcessing ? "Processing..." : `Pay ₹${Number(paymentAmount || 0).toLocaleString('en-IN')} Now`}
                   {!isProcessing && (
@@ -258,7 +258,7 @@ export default function StudentFeesPage() {
         <div className="lg:col-span-1">
           <div className="euro-card rounded-xl flex flex-col h-full max-h-[600px]">
             <div className="px-6 py-5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
-              <h3 className="font-semibold text-sm uppercase tracking-widest" style={{ color: "#FFD700" }}>Transaction History</h3>
+              <h3 className="font-semibold text-sm uppercase tracking-widest" style={{ color: "#E5A800" }}>Transaction History</h3>
             </div>
             
             <div className="flex-1 p-6 overflow-y-auto">
@@ -358,7 +358,7 @@ export default function StudentFeesPage() {
               <button 
                 onClick={() => setSelectedPayment(null)}
                 className="w-full py-3 rounded-lg text-sm font-bold transition-colors"
-                style={{ background: "#FFD700", color: "#0A0E1A" }}
+                style={{ background: "#1B73BA", color: "white" }}
               >
                 Close Details
               </button>

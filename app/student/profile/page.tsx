@@ -58,8 +58,8 @@ export default function StudentProfilePage() {
 
   if (loading || !student) {
     return (
-      <div className="flex-1 flex items-center justify-center min-h-screen" style={{ background: "#0A0E1A" }}>
-        <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: "#FFD700" }} />
+      <div className="flex-1 flex items-center justify-center min-h-screen" style={{ background: "#030617" }}>
+        <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: "#E5A800" }} />
       </div>
     );
   }
@@ -74,7 +74,7 @@ export default function StudentProfilePage() {
         <div className="rounded-xl p-8 flex items-center gap-6" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.08)" }}>
           <div 
             className="w-20 h-20 rounded-full flex items-center justify-center text-3xl font-bold shrink-0"
-            style={{ background: "rgba(255,215,0,0.15)", color: "#FFD700", border: "1px solid rgba(255,215,0,0.3)" }}
+            style={{ background: "rgba(229, 168, 0,0.15)", color: "#E5A800", border: "1px solid rgba(229, 168, 0,0.3)" }}
           >
             {(student.name ?? student.username)?.charAt(0).toUpperCase()}
           </div>
@@ -89,7 +89,7 @@ export default function StudentProfilePage() {
 
         {/* Editable Profile Form */}
         <div className="euro-card rounded-xl p-8">
-           <h3 className="text-lg font-bold text-white mb-6" style={{ borderLeft: "3px solid #FFD700", paddingLeft: "10px" }}>
+           <h3 className="text-lg font-bold text-white mb-6" style={{ borderLeft: "3px solid #E5A800", paddingLeft: "10px" }}>
              Contact & Background Details
            </h3>
 
@@ -106,7 +106,7 @@ export default function StudentProfilePage() {
                     onChange={(e) => setFormData(p => ({ ...p, phone: e.target.value }))}
                     className="w-full px-4 py-3 rounded-lg text-sm text-white outline-none transition-colors"
                     style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                    onFocus={(e) => (e.target.style.borderColor = "#FFD700")}
+                    onFocus={(e) => (e.target.style.borderColor = "#E5A800")}
                     onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
                   />
                 </div>
@@ -122,7 +122,7 @@ export default function StudentProfilePage() {
                     onChange={(e) => setFormData(p => ({ ...p, educationalBackground: e.target.value }))}
                     className="w-full px-4 py-3 rounded-lg text-sm text-white outline-none transition-colors"
                     style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                    onFocus={(e) => (e.target.style.borderColor = "#FFD700")}
+                    onFocus={(e) => (e.target.style.borderColor = "#E5A800")}
                     onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
                   />
                 </div>
@@ -139,7 +139,7 @@ export default function StudentProfilePage() {
                  onChange={(e) => setFormData(p => ({ ...p, address: e.target.value }))}
                  className="w-full px-4 py-3 rounded-lg text-sm text-white outline-none transition-colors resize-none"
                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                 onFocus={(e) => (e.target.style.borderColor = "#FFD700")}
+                 onFocus={(e) => (e.target.style.borderColor = "#E5A800")}
                  onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
                />
              </div>
@@ -149,7 +149,7 @@ export default function StudentProfilePage() {
                   type="submit"
                   disabled={isSaving}
                   className="px-8 py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50 flex items-center gap-2"
-                  style={{ background: "#FFD700", color: "#0A0E1A", boxShadow: "0 4px 14px rgba(255,215,0,0.2)" }}
+                  style={{ background: "#1B73BA", color: "white", boxShadow: "0 4px 14px rgba(229, 168, 0,0.2)" }}
                 >
                   {isSaving ? "Saving..." : "Save Changes"}
                   {!isSaving && (

@@ -222,17 +222,17 @@ export default function StudentProfilePage() {
 
   if (loading) {
     return (
-      <div className="flex-1 flex items-center justify-center min-h-screen" style={{ background: "#0A0E1A" }}>
-        <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: "#FFD700" }} />
+      <div className="flex-1 flex items-center justify-center min-h-screen" style={{ background: "#030617" }}>
+        <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: "#E5A800" }} />
       </div>
     );
   }
 
   if (!student) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center min-h-screen text-center p-8" style={{ background: "#0A0E1A" }}>
+      <div className="flex-1 flex flex-col items-center justify-center min-h-screen text-center p-8" style={{ background: "#030617" }}>
         <p className="text-white text-xl font-bold mb-4">Student not found.</p>
-        <button onClick={() => router.push("/admin/students")} className="text-sm px-4 py-2 rounded-lg" style={{ background: "#FFD700", color: "#0A0E1A" }}>
+        <button onClick={() => router.push("/admin/students")} className="text-sm px-4 py-2 rounded-lg" style={{ background: "#1B73BA", color: "white" }}>
           ← Back to Students
         </button>
       </div>
@@ -254,7 +254,7 @@ export default function StudentProfilePage() {
           onClick={() => router.push("/admin/students")}
           className="mb-6 flex items-center gap-2 text-sm font-medium transition-colors"
           style={{ color: "rgba(255,255,255,0.4)" }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "#FFD700")}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "#E5A800")}
           onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.4)")}
         >
           ← Back to directory
@@ -288,7 +288,7 @@ export default function StudentProfilePage() {
               <div className="flex items-center gap-4 mb-6">
                 <div 
                   className="w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold shrink-0"
-                  style={{ background: "rgba(255,215,0,0.15)", color: "#FFD700", border: "1px solid rgba(255,215,0,0.3)" }}
+                  style={{ background: "rgba(229, 168, 0,0.15)", color: "#E5A800", border: "1px solid rgba(229, 168, 0,0.3)" }}
                 >
                   {(student.name ?? student.username)?.charAt(0).toUpperCase()}
                 </div>
@@ -318,7 +318,7 @@ export default function StudentProfilePage() {
 
             {/* Controls Card */}
             <div className="euro-card rounded-xl p-6">
-              <h3 className="font-bold text-lg text-white mb-5" style={{ borderLeft: "3px solid #FFD700", paddingLeft: "10px" }}>Journey Controls</h3>
+              <h3 className="font-bold text-lg text-white mb-5" style={{ borderLeft: "3px solid #E5A800", paddingLeft: "10px" }}>Journey Controls</h3>
               
               <div className="space-y-5">
                 <div>
@@ -329,7 +329,7 @@ export default function StudentProfilePage() {
                     value={currentStep}
                     onChange={(e) => updateStudentField("currentMilestone", Number(e.target.value))}
                     className="w-full px-3 py-2.5 rounded-lg text-sm outline-none transition-all cursor-pointer"
-                    style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#FFD700" }}
+                    style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#E5A800" }}
                   >
                     {MILESTONES.map((m, i) => (
                       <option key={i + 1} value={i + 1} style={{ background: "#1A1F2E", color: "white" }}>
@@ -366,14 +366,14 @@ export default function StudentProfilePage() {
             
             {/* Journey Progress */}
             <div className="euro-card rounded-xl p-6">
-               <h3 className="font-bold text-lg text-white mb-6" style={{ borderLeft: "3px solid #FFD700", paddingLeft: "10px" }}>Journey Progress</h3>
+               <h3 className="font-bold text-lg text-white mb-6" style={{ borderLeft: "3px solid #E5A800", paddingLeft: "10px" }}>Journey Progress</h3>
                
                <div className="flex items-center justify-between mb-2">
                  <p className="text-sm font-medium text-white">Step {currentStep}: {MILESTONES[currentStep - 1]}</p>
-                 <p className="text-sm font-bold" style={{ color: "#FFD700" }}>{progressPercent}%</p>
+                 <p className="text-sm font-bold" style={{ color: "#E5A800" }}>{progressPercent}%</p>
                </div>
                <div className="w-full h-2 rounded-full overflow-hidden mb-8" style={{ background: "rgba(255,255,255,0.05)" }}>
-                 <div className="h-full rounded-full transition-all duration-500" style={{ width: `${progressPercent}%`, background: "#FFD700", boxShadow: "0 0 10px #FFD700" }} />
+                 <div className="h-full rounded-full transition-all duration-500" style={{ width: `${progressPercent}%`, background: "#E5A800", boxShadow: "0 0 10px #E5A800" }} />
                </div>
 
                {/* Quick Stepper */}
@@ -388,9 +388,9 @@ export default function StudentProfilePage() {
                        key={sNum} 
                        className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold z-10"
                        style={{
-                         background: isPast ? "#FFD700" : isCurr ? "#0A0E1A" : "#1A1F2E",
-                         color: isPast ? "#0A0E1A" : isCurr ? "#FFD700" : "rgba(255,255,255,0.3)",
-                         border: isCurr ? "2px solid #FFD700" : `1px solid ${isPast ? "#FFD700" : "rgba(255,255,255,0.2)"}`
+                         background: isPast ? "#E5A800" : isCurr ? "#030617" : "#1A1F2E",
+                         color: isPast ? "#030617" : isCurr ? "#E5A800" : "rgba(255,255,255,0.3)",
+                         border: isCurr ? "2px solid #E5A800" : `1px solid ${isPast ? "#E5A800" : "rgba(255,255,255,0.2)"}`
                        }}
                      >
                        {isPast ? "✓" : sNum}
@@ -422,7 +422,7 @@ export default function StudentProfilePage() {
                        <span className="text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>of ₹{actualTotalFees.toLocaleString('en-IN')} ({feePercent}%)</span>
                     </div>
                     <div className="h-1.5 rounded-full overflow-hidden bg-white/10">
-                      <div className="h-full rounded-full transition-all duration-500 ease-in-out" style={{ width: `${feePercent}%`, background: feePercent === 100 ? "#86efac" : "#FFD700" }} />
+                      <div className="h-full rounded-full transition-all duration-500 ease-in-out" style={{ width: `${feePercent}%`, background: feePercent === 100 ? "#86efac" : "#E5A800" }} />
                     </div>
                  </div>
                ) : (
@@ -435,7 +435,7 @@ export default function StudentProfilePage() {
             {/* Individual Notes */}
             <div className="euro-card rounded-xl p-6">
                <div className="flex items-center justify-between mb-4">
-                 <h3 className="font-bold text-lg text-white" style={{ borderLeft: "3px solid #3b82f6", paddingLeft: "10px" }}>Direct Notes</h3>
+                 <h3 className="font-bold text-lg text-white" style={{ borderLeft: "3px solid #1B73BA", paddingLeft: "10px" }}>Direct Notes</h3>
                </div>
                
                {/* Post Note Form */}
@@ -448,7 +448,7 @@ export default function StudentProfilePage() {
                     onChange={(e) => setNoteTitle(e.target.value)}
                     className="w-full px-3 py-2 rounded-lg text-sm text-white outline-none"
                     style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                    onFocus={(e) => (e.target.style.borderColor = "#FFD700")}
+                    onFocus={(e) => (e.target.style.borderColor = "#E5A800")}
                     onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
                   />
                   <textarea
@@ -459,7 +459,7 @@ export default function StudentProfilePage() {
                     onChange={(e) => setNoteMessage(e.target.value)}
                     className="w-full px-3 py-2 rounded-lg text-sm text-white outline-none resize-none"
                     style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                    onFocus={(e) => (e.target.style.borderColor = "#FFD700")}
+                    onFocus={(e) => (e.target.style.borderColor = "#E5A800")}
                     onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
                   />
                   <input
@@ -488,7 +488,7 @@ export default function StudentProfilePage() {
                        <div className="flex justify-between items-start mb-1">
                          <h4 className="font-bold text-sm text-white">{ann.title}</h4>
                          {ann.readBy?.includes(id) && (
-                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2">
+                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1B73BA" strokeWidth="2">
                              <polyline points="20 6 9 17 4 12"></polyline>
                            </svg>
                          )}
@@ -525,7 +525,7 @@ export default function StudentProfilePage() {
             {/* Uploaded Documents Section */}
             <div className="euro-card rounded-xl p-6">
                <div className="flex items-center justify-between mb-4">
-                 <h3 className="font-bold text-lg text-white" style={{ borderLeft: "3px solid #FFD700", paddingLeft: "10px" }}>Document Center</h3>
+                 <h3 className="font-bold text-lg text-white" style={{ borderLeft: "3px solid #E5A800", paddingLeft: "10px" }}>Document Center</h3>
                </div>
 
                {/* Mandatory Checklist */}
@@ -590,8 +590,8 @@ export default function StudentProfilePage() {
                          </p>
                          
                          <span className="text-[10px] px-2 py-0.5 rounded uppercase tracking-wider font-bold" style={{ 
-                           background: doc.status === "approved" ? "rgba(34,197,94,0.15)" : doc.status === "rejected" ? "rgba(239,68,68,0.15)" : "rgba(255,215,0,0.15)", 
-                           color: doc.status === "approved" ? "#86efac" : doc.status === "rejected" ? "#fca5a5" : "#FFD700" 
+                           background: doc.status === "approved" ? "rgba(34,197,94,0.15)" : doc.status === "rejected" ? "rgba(239,68,68,0.15)" : "rgba(229, 168, 0,0.15)", 
+                           color: doc.status === "approved" ? "#86efac" : doc.status === "rejected" ? "#fca5a5" : "#E5A800" 
                          }}>
                            {doc.status}
                          </span>
@@ -659,7 +659,7 @@ export default function StudentProfilePage() {
                     onChange={(e) => setFeeForm(p => ({ ...p, totalFees: Number(e.target.value) }))}
                     className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none"
                     style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                    onFocus={(e) => e.target.style.borderColor = "#FFD700"}
+                    onFocus={(e) => e.target.style.borderColor = "#E5A800"}
                     onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
                   />
                 </div>
@@ -674,7 +674,7 @@ export default function StudentProfilePage() {
                     onChange={(e) => setFeeForm(p => ({ ...p, paidAmount: Number(e.target.value) }))}
                     className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none"
                     style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                    onFocus={(e) => e.target.style.borderColor = "#FFD700"}
+                    onFocus={(e) => e.target.style.borderColor = "#E5A800"}
                     onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
                   />
                 </div>
@@ -692,7 +692,7 @@ export default function StudentProfilePage() {
                      type="submit" 
                      disabled={isSavingFee}
                      className="flex-1 py-2.5 rounded-lg text-sm font-bold disabled:opacity-50"
-                     style={{ background: "#FFD700", color: "#0A0E1A" }}
+                     style={{ background: "#1B73BA", color: "white" }}
                    >
                      {isSavingFee ? "Saving..." : "Save Fees"}
                    </button>
@@ -768,7 +768,7 @@ export default function StudentProfilePage() {
                     onChange={(e) => setProfileForm(p => ({ ...p, name: e.target.value }))}
                     className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none"
                     style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                    onFocus={(e) => e.target.style.borderColor = "#FFD700"}
+                    onFocus={(e) => e.target.style.borderColor = "#E5A800"}
                     onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
                   />
                 </div>
@@ -781,7 +781,7 @@ export default function StudentProfilePage() {
                     onChange={(e) => setProfileForm(p => ({ ...p, phone: e.target.value }))}
                     className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none"
                     style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                    onFocus={(e) => e.target.style.borderColor = "#FFD700"}
+                    onFocus={(e) => e.target.style.borderColor = "#E5A800"}
                     onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
                   />
                 </div>
@@ -794,7 +794,7 @@ export default function StudentProfilePage() {
                     onChange={(e) => setProfileForm(p => ({ ...p, dateOfBirth: e.target.value }))}
                     className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none"
                     style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                    onFocus={(e) => e.target.style.borderColor = "#FFD700"}
+                    onFocus={(e) => e.target.style.borderColor = "#E5A800"}
                     onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
                   />
                 </div>
@@ -807,7 +807,7 @@ export default function StudentProfilePage() {
                     onChange={(e) => setProfileForm(p => ({ ...p, address: e.target.value }))}
                     className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none resize-none"
                     style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                    onFocus={(e) => e.target.style.borderColor = "#FFD700"}
+                    onFocus={(e) => e.target.style.borderColor = "#E5A800"}
                     onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
                   />
                 </div>
@@ -820,7 +820,7 @@ export default function StudentProfilePage() {
                     onChange={(e) => setProfileForm(p => ({ ...p, educationalBackground: e.target.value }))}
                     className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none resize-none"
                     style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                    onFocus={(e) => e.target.style.borderColor = "#FFD700"}
+                    onFocus={(e) => e.target.style.borderColor = "#E5A800"}
                     onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
                   />
                 </div>
@@ -838,7 +838,7 @@ export default function StudentProfilePage() {
                      type="submit" 
                      disabled={isSavingProfile}
                      className="flex-1 py-2.5 rounded-lg text-sm font-bold disabled:opacity-50"
-                     style={{ background: "#FFD700", color: "#0A0E1A" }}
+                     style={{ background: "#1B73BA", color: "white" }}
                    >
                      {isSavingProfile ? "Saving..." : "Save Profile"}
                    </button>

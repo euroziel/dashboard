@@ -42,11 +42,11 @@ export default function AdminTopbar({ title, subtitle }: TopbarProps) {
       <div className="flex items-center gap-3">
         <div className="text-right hidden sm:block">
           <p className="text-sm font-medium text-white">{user?.username ?? "Admin"}</p>
-          <p className="text-xs" style={{ color: "#FFD700" }}>Administrator</p>
+          <p className="text-xs" style={{ color: "#E5A800" }}>Administrator</p>
         </div>
         <div
           className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold"
-          style={{ background: "rgba(255,215,0,0.15)", color: "#FFD700", border: "1px solid rgba(255,215,0,0.3)" }}
+          style={{ background: "rgba(229, 168, 0,0.15)", color: "#E5A800", border: "1px solid rgba(229, 168, 0,0.3)" }}
         >
           {user?.username?.charAt(0).toUpperCase() ?? "A"}
         </div>

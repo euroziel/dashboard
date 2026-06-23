@@ -97,14 +97,14 @@ export default function StudentTopbar({ title, subtitle }: TopbarProps) {
             <button 
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               className="relative p-2 rounded-full transition-colors hover:bg-white/5 outline-none"
-              style={{ color: isDropdownOpen ? "#FFD700" : "rgba(255,255,255,0.6)" }}
+              style={{ color: isDropdownOpen ? "#E5A800" : "rgba(255,255,255,0.6)" }}
             >
               <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
                 <path d="M13.73 21a2 2 0 0 1-3.46 0" />
               </svg>
               {unreadCount > 0 && (
-                <span className="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-red-500 border border-[#0A0E1A]"></span>
+                <span className="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-red-500 border border-[#030617]"></span>
               )}
             </button>
 
@@ -120,7 +120,7 @@ export default function StudentTopbar({ title, subtitle }: TopbarProps) {
                     <button 
                       onClick={handleMarkAllAsRead}
                       className="text-[10px] uppercase tracking-wider hover:text-white transition-colors"
-                      style={{ color: "#FFD700" }}
+                      style={{ color: "#E5A800" }}
                     >
                       Mark all read
                     </button>
@@ -142,13 +142,13 @@ export default function StudentTopbar({ title, subtitle }: TopbarProps) {
                           className="p-4 border-b last:border-0 cursor-pointer transition-colors"
                           style={{ 
                             borderColor: "rgba(255,255,255,0.04)",
-                            background: isUnread ? "rgba(255,215,0,0.03)" : "transparent"
+                            background: isUnread ? "rgba(229, 168, 0,0.03)" : "transparent"
                           }}
                           onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.03)")}
-                          onMouseLeave={(e) => (e.currentTarget.style.background = isUnread ? "rgba(255,215,0,0.03)" : "transparent")}
+                          onMouseLeave={(e) => (e.currentTarget.style.background = isUnread ? "rgba(229, 168, 0,0.03)" : "transparent")}
                         >
                           <div className="flex justify-between items-start mb-1">
-                            <h4 className="text-sm font-bold flex items-center gap-2" style={{ color: isUnread ? "#FFD700" : "white" }}>
+                            <h4 className="text-sm font-bold flex items-center gap-2" style={{ color: isUnread ? "#E5A800" : "white" }}>
                               {isUnread && <div className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0"></div>}
                               {ann.title}
                             </h4>
@@ -172,11 +172,11 @@ export default function StudentTopbar({ title, subtitle }: TopbarProps) {
           <div className="flex items-center gap-3 border-l pl-6" style={{ borderColor: "rgba(255,255,255,0.1)" }}>
             <div className="text-right hidden sm:block">
               <p className="text-sm font-medium text-white">{user?.username ?? "Student"}</p>
-              <p className="text-xs" style={{ color: "#FFD700" }}>Student</p>
+              <p className="text-xs" style={{ color: "#E5A800" }}>Student</p>
             </div>
             <div
               className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold"
-              style={{ background: "rgba(255,215,0,0.15)", color: "#FFD700", border: "1px solid rgba(255,215,0,0.3)" }}
+              style={{ background: "rgba(229, 168, 0,0.15)", color: "#E5A800", border: "1px solid rgba(229, 168, 0,0.3)" }}
             >
               {user?.username?.charAt(0).toUpperCase() ?? "S"}
             </div>
@@ -200,7 +200,7 @@ export default function StudentTopbar({ title, subtitle }: TopbarProps) {
             </button>
             
             <div className="mb-6 flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: "rgba(255,215,0,0.15)", color: "#FFD700" }}>
+              <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: "rgba(229, 168, 0,0.15)", color: "#E5A800" }}>
                 <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3z" />
                 </svg>
@@ -223,7 +223,7 @@ export default function StudentTopbar({ title, subtitle }: TopbarProps) {
               <button 
                 onClick={() => setSelectedAnnouncement(null)}
                 className="px-6 py-2.5 rounded-lg text-sm font-bold transition-colors"
-                style={{ background: "#FFD700", color: "#0A0E1A" }}
+                style={{ background: "#1B73BA", color: "white" }}
               >
                 Close Message
               </button>

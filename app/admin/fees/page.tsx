@@ -42,8 +42,8 @@ export default function AdminFeesPage() {
     return (
       <div className="flex flex-col min-h-screen">
         <AdminTopbar title="Global Finances" subtitle="View all student payments" />
-        <div className="flex-1 flex items-center justify-center min-h-screen" style={{ background: "#0A0E1A" }}>
-          <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: "#FFD700" }} />
+        <div className="flex-1 flex items-center justify-center min-h-screen" style={{ background: "#030617" }}>
+          <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: "#E5A800" }} />
         </div>
       </div>
     );
@@ -70,8 +70,8 @@ export default function AdminFeesPage() {
             <h3 className="text-2xl font-bold" style={{ color: "#86efac" }}>₹{totalCollected.toLocaleString('en-IN')}</h3>
           </div>
           <div className="euro-card rounded-xl p-6">
-            <p className="text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: "rgba(255,215,0,0.7)" }}>Total Outstanding</p>
-            <h3 className="text-2xl font-bold" style={{ color: "#FFD700" }}>₹{totalOutstanding.toLocaleString('en-IN')}</h3>
+            <p className="text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: "rgba(229, 168, 0,0.7)" }}>Total Outstanding</p>
+            <h3 className="text-2xl font-bold" style={{ color: "#E5A800" }}>₹{totalOutstanding.toLocaleString('en-IN')}</h3>
           </div>
         </div>
 
@@ -81,12 +81,12 @@ export default function AdminFeesPage() {
              <table className="w-full text-left text-sm">
                <thead>
                  <tr className="border-b" style={{ borderColor: "rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.02)" }}>
-                   <th className="px-6 py-4 font-semibold uppercase tracking-widest text-[10px]" style={{ color: "#FFD700" }}>Student</th>
-                   <th className="px-6 py-4 font-semibold uppercase tracking-widest text-[10px]" style={{ color: "#FFD700" }}>Total Fees</th>
-                   <th className="px-6 py-4 font-semibold uppercase tracking-widest text-[10px]" style={{ color: "#FFD700" }}>Paid Amount</th>
-                   <th className="px-6 py-4 font-semibold uppercase tracking-widest text-[10px]" style={{ color: "#FFD700" }}>Remaining</th>
-                   <th className="px-6 py-4 font-semibold uppercase tracking-widest text-[10px]" style={{ color: "#FFD700" }}>Status</th>
-                   <th className="px-6 py-4 font-semibold uppercase tracking-widest text-[10px]" style={{ color: "#FFD700" }}>Action</th>
+                   <th className="px-6 py-4 font-semibold uppercase tracking-widest text-[10px]" style={{ color: "#E5A800" }}>Student</th>
+                   <th className="px-6 py-4 font-semibold uppercase tracking-widest text-[10px]" style={{ color: "#E5A800" }}>Total Fees</th>
+                   <th className="px-6 py-4 font-semibold uppercase tracking-widest text-[10px]" style={{ color: "#E5A800" }}>Paid Amount</th>
+                   <th className="px-6 py-4 font-semibold uppercase tracking-widest text-[10px]" style={{ color: "#E5A800" }}>Remaining</th>
+                   <th className="px-6 py-4 font-semibold uppercase tracking-widest text-[10px]" style={{ color: "#E5A800" }}>Status</th>
+                   <th className="px-6 py-4 font-semibold uppercase tracking-widest text-[10px]" style={{ color: "#E5A800" }}>Action</th>
                  </tr>
                </thead>
                <tbody>
@@ -111,8 +111,8 @@ export default function AdminFeesPage() {
                          statusBg = "rgba(34,197,94,0.15)";
                        } else if (paid > 0) {
                          statusText = "Partial Payment";
-                         statusColor = "#FFD700";
-                         statusBg = "rgba(255,215,0,0.15)";
+                         statusColor = "#E5A800";
+                         statusBg = "rgba(229, 168, 0,0.15)";
                        } else {
                          statusText = "Unpaid";
                          statusColor = "#fca5a5";
@@ -132,7 +132,7 @@ export default function AdminFeesPage() {
                          </td>
                          <td className="px-6 py-4 font-medium text-white">₹{total.toLocaleString('en-IN')}</td>
                          <td className="px-6 py-4 font-medium" style={{ color: "#86efac" }}>₹{paid.toLocaleString('en-IN')}</td>
-                         <td className="px-6 py-4 font-bold" style={{ color: remaining > 0 ? "#FFD700" : "white" }}>
+                         <td className="px-6 py-4 font-bold" style={{ color: remaining > 0 ? "#E5A800" : "white" }}>
                            ₹{remaining > 0 ? remaining.toLocaleString('en-IN') : 0}
                          </td>
                          <td className="px-6 py-4">
@@ -144,7 +144,7 @@ export default function AdminFeesPage() {
                            <Link 
                              href={`/admin/students/${student.uid}`}
                              className="text-xs font-semibold hover:underline"
-                             style={{ color: "#FFD700" }}
+                             style={{ color: "#E5A800" }}
                            >
                              Manage Fees →
                            </Link>

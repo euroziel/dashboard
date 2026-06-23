@@ -121,14 +121,14 @@ export default function StudentDocumentsPage() {
     switch (status) {
       case "verified": return { bg: "rgba(34,197,94,0.15)", text: "#86efac" };
       case "rejected": return { bg: "rgba(239,68,68,0.15)", text: "#fca5a5" };
-      default: return { bg: "rgba(255,215,0,0.15)", text: "#FFD700" }; // pending
+      default: return { bg: "rgba(229, 168, 0,0.15)", text: "#E5A800" }; // pending
     }
   };
 
   if (loading || !student) {
     return (
-      <div className="flex-1 flex items-center justify-center min-h-screen" style={{ background: "#0A0E1A" }}>
-        <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: "#FFD700" }} />
+      <div className="flex-1 flex items-center justify-center min-h-screen" style={{ background: "#030617" }}>
+        <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: "#E5A800" }} />
       </div>
     );
   }
@@ -210,16 +210,16 @@ export default function StudentDocumentsPage() {
                   disabled={isUploading}
                   className="w-full text-sm text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold transition-all disabled:opacity-50"
                   style={{ 
-                    border: "1px dashed rgba(255,215,0,0.3)", 
+                    border: "1px dashed rgba(229, 168, 0,0.3)", 
                     padding: "16px", 
                     borderRadius: "8px",
-                    background: "rgba(255,215,0,0.02)"
+                    background: "rgba(229, 168, 0,0.02)"
                   }}
                 />
                 <style>{`
                   input[type=file]::file-selector-button {
-                    background-color: #FFD700;
-                    color: #0A0E1A;
+                    background-color: #E5A800;
+                    color: #030617;
                     transition: all 0.2s;
                     cursor: pointer;
                   }
@@ -236,10 +236,10 @@ export default function StudentDocumentsPage() {
                 <div>
                   <div className="flex justify-between text-xs mb-1">
                     <span style={{ color: "rgba(255,255,255,0.5)" }}>Uploading...</span>
-                    <span style={{ color: "#FFD700" }}>{uploadProgress}%</span>
+                    <span style={{ color: "#E5A800" }}>{uploadProgress}%</span>
                   </div>
                   <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.1)" }}>
-                    <div className="h-full rounded-full transition-all duration-300" style={{ width: `${uploadProgress}%`, background: "#FFD700" }} />
+                    <div className="h-full rounded-full transition-all duration-300" style={{ width: `${uploadProgress}%`, background: "#E5A800" }} />
                   </div>
                 </div>
               )}
@@ -248,7 +248,7 @@ export default function StudentDocumentsPage() {
                 type="submit"
                 disabled={!selectedFile || isUploading}
                 className="w-full py-3 rounded-lg text-sm font-bold transition-all disabled:opacity-50 flex justify-center items-center gap-2"
-                style={{ background: "#FFD700", color: "#0A0E1A" }}
+                style={{ background: "#1B73BA", color: "white" }}
               >
                 {isUploading ? "Uploading..." : "Upload Document"}
                 {!isUploading && (
@@ -267,7 +267,7 @@ export default function StudentDocumentsPage() {
         <div className="lg:col-span-2">
           <div className="euro-card rounded-xl flex flex-col h-full">
             <div className="px-6 py-5 border-b flex justify-between items-center" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
-              <h3 className="font-semibold text-sm uppercase tracking-widest" style={{ color: "#FFD700" }}>My Documents</h3>
+              <h3 className="font-semibold text-sm uppercase tracking-widest" style={{ color: "#E5A800" }}>My Documents</h3>
               <span className="text-xs px-2.5 py-1 rounded-full font-bold" style={{ background: "rgba(255,255,255,0.05)", color: "white" }}>
                 {documents.length} Total
               </span>
@@ -323,7 +323,7 @@ export default function StudentDocumentsPage() {
                              target="_blank" 
                              rel="noopener noreferrer"
                              className="p-2 rounded-lg transition-colors"
-                             style={{ background: "rgba(255,215,0,0.1)", color: "#FFD700" }}
+                             style={{ background: "rgba(229, 168, 0,0.1)", color: "#E5A800" }}
                              title="View Document"
                            >
                               <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

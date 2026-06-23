@@ -93,7 +93,7 @@ export default function StudentSidebar() {
           isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       style={{
-        background: "#0F1424",
+        background: "#030617",
         borderRight: "1px solid rgba(255,255,255,0.06)",
       }}
     >
@@ -104,12 +104,12 @@ export default function StudentSidebar() {
       >
         <div
           className="flex items-center justify-center w-9 h-9 rounded-lg font-bold text-sm shrink-0"
-          style={{ background: "rgba(255,215,0,0.15)", color: "#FFD700", border: "1px solid rgba(255,215,0,0.3)" }}
+          style={{ background: "rgba(229, 168, 0,0.15)", color: "#E5A800", border: "1px solid rgba(229, 168, 0,0.3)" }}
         >
           EZ
         </div>
         <div>
-          <p className="font-bold text-sm leading-tight" style={{ color: "#FFD700" }}>
+          <p className="font-bold text-sm leading-tight" style={{ color: "#E5A800" }}>
             EuroZiel
           </p>
           <p className="text-xs" style={{ color: "rgba(255,255,255,0.35)" }}>
@@ -132,16 +132,16 @@ export default function StudentSidebar() {
               href={item.href}
               className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150"
               style={{
-                color: isActive ? "#FFD700" : "rgba(255,255,255,0.55)",
+                color: isActive ? "#E5A800" : "rgba(255,255,255,0.55)",
                 background: isActive
-                  ? "rgba(255,215,0,0.08)"
+                  ? "rgba(229, 168, 0,0.08)"
                   : "transparent",
                 borderLeft: isActive
-                  ? "3px solid #FFD700"
+                  ? "3px solid #E5A800"
                   : "3px solid transparent",
               }}
             >
-              <span style={{ color: isActive ? "#FFD700" : "rgba(255,255,255,0.4)" }}>
+              <span style={{ color: isActive ? "#E5A800" : "rgba(255,255,255,0.4)" }}>
                 {item.icon}
               </span>
               {item.label}
@@ -158,7 +158,7 @@ export default function StudentSidebar() {
         <div className="flex items-center gap-3 mb-3">
           <div
             className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0"
-            style={{ background: "rgba(255,215,0,0.2)", color: "#FFD700" }}
+            style={{ background: "rgba(229, 168, 0,0.2)", color: "#E5A800" }}
           >
             {user?.username?.charAt(0).toUpperCase() ?? "S"}
           </div>

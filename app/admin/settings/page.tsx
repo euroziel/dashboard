@@ -87,7 +87,7 @@ export default function AdminSettingsPage() {
             onClick={handleSave}
             disabled={isSaving}
             className="px-6 py-2.5 rounded-lg font-bold text-sm transition-all disabled:opacity-50"
-            style={{ background: "#E5A800", color: "#1B73BA" }}
+            style={{ background: "#1B73BA", color: "white" }}
           >
             {isSaving ? "Saving..." : "Save Settings"}
           </button>

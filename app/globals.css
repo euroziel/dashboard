@@ -9,10 +9,10 @@
    ============================================ */
 @theme inline {
   /* EuroZiel Custom Colors */
-  --color-euro-dark: #0A0E1A;
-  --color-euro-gold: #FFD700;
+  --color-euro-dark: #030617;
+  --color-euro-gold: #E5A800;
   --color-euro-gray: #1A1F2E;
-  --color-euro-gold-muted: rgba(255, 215, 0, 0.15);
+  --color-euro-gold-muted: rgba(229, 168, 0, 0.15);
   --color-euro-glass: rgba(255, 255, 255, 0.05);
 
   /* Shadcn/Tailwind token mappings */
@@ -103,7 +103,7 @@
    ============================================ */
 .dark {
   /* EuroZiel deep navy background */
-  --background: #0A0E1A;
+  --background: #030617;
   --foreground: oklch(0.96 0 0);
 
   /* Cards = euroGray */
@@ -112,9 +112,9 @@
   --popover: #1A1F2E;
   --popover-foreground: oklch(0.96 0 0);
 
-  /* Primary = euroGold (#FFD700) */
-  --primary: #FFD700;
-  --primary-foreground: #0A0E1A;
+  /* Primary = euroGold (#E5A800) */
+  --primary: #E5A800;
+  --primary-foreground: #030617;
 
   /* Secondary & muted */
   --secondary: #1A1F2E;
@@ -123,32 +123,32 @@
   --muted-foreground: oklch(0.6 0 0);
 
   /* Accent = gold tint */
-  --accent: rgba(255, 215, 0, 0.1);
-  --accent-foreground: #FFD700;
+  --accent: rgba(229, 168, 0, 0.1);
+  --accent-foreground: #E5A800;
 
   --destructive: oklch(0.704 0.191 22.216);
 
   /* Borders = subtle white lines (glassmorphism) */
   --border: rgba(255, 255, 255, 0.1);
   --input: rgba(255, 255, 255, 0.08);
-  --ring: #FFD700;
+  --ring: #E5A800;
 
   /* Charts */
-  --chart-1: #FFD700;
+  --chart-1: #E5A800;
   --chart-2: oklch(0.7 0.15 90);
   --chart-3: oklch(0.5 0.1 90);
   --chart-4: oklch(0.4 0.08 90);
   --chart-5: oklch(0.3 0.05 90);
 
   /* Sidebar = euroGray variant */
-  --sidebar: #0F1424;
+  --sidebar: #030617;
   --sidebar-foreground: oklch(0.96 0 0);
-  --sidebar-primary: #FFD700;
-  --sidebar-primary-foreground: #0A0E1A;
-  --sidebar-accent: rgba(255, 215, 0, 0.08);
-  --sidebar-accent-foreground: #FFD700;
+  --sidebar-primary: #E5A800;
+  --sidebar-primary-foreground: #030617;
+  --sidebar-accent: rgba(229, 168, 0, 0.08);
+  --sidebar-accent-foreground: #E5A800;
   --sidebar-border: rgba(255, 255, 255, 0.08);
-  --sidebar-ring: #FFD700;
+  --sidebar-ring: #E5A800;
 }
 
 /* ============================================
@@ -160,7 +160,7 @@
   }
   body {
     @apply bg-background text-foreground;
-    background-color: #0A0E1A;
+    background-color: #030617;
   }
   html {
     @apply font-sans;
@@ -173,7 +173,7 @@
 @layer utilities {
   /* Glassmorphism card */
   .euro-card {
-    background: rgba(26, 31, 46, 0.8);
+    background: #030617;
     border: 1px solid rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -181,12 +181,12 @@
 
   /* Gold glow on progress bars / accents */
   .euro-glow {
-    box-shadow: 0 0 15px #FFD700, 0 0 30px rgba(255, 215, 0, 0.3);
+    box-shadow: 0 0 15px #E5A800, 0 0 30px rgba(229, 168, 0, 0.3);
   }
 
   /* Gold section heading border */
   .euro-heading {
-    border-left: 4px solid #FFD700;
+    border-left: 4px solid #E5A800;
     padding-left: 0.75rem;
   }
 

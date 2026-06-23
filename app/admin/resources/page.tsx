@@ -78,14 +78,14 @@ export default function AdminResourcesPage() {
 
   if (loading) {
     return (
-      <div className="flex-1 flex items-center justify-center min-h-screen" style={{ background: "#0A0E1A" }}>
-        <div className="animate-spin w-8 h-8 border-4 border-[#FFD700] border-t-transparent rounded-full"></div>
+      <div className="flex-1 flex items-center justify-center min-h-screen" style={{ background: "#030617" }}>
+        <div className="animate-spin w-8 h-8 border-4 border-[#E5A800] border-t-transparent rounded-full"></div>
       </div>
     );
   }
 
   return (
-    <div className="flex-1 flex flex-col min-h-screen" style={{ background: "#0A0E1A" }}>
+    <div className="flex-1 flex flex-col min-h-screen" style={{ background: "#030617" }}>
       <AdminTopbar title="Study Resources" />
       
       <main className="flex-1 p-4 md:p-8 overflow-y-auto">
@@ -100,7 +100,7 @@ export default function AdminResourcesPage() {
             <button
               onClick={() => setIsModalOpen(true)}
               className="px-5 py-2.5 rounded-lg text-sm font-bold shadow-lg transition-all"
-              style={{ background: "#FFD700", color: "#0A0E1A" }}
+              style={{ background: "#1B73BA", color: "white" }}
             >
               + Upload Resource
             </button>
@@ -176,7 +176,7 @@ export default function AdminResourcesPage() {
                     placeholder="e.g. APS Application Guide"
                     className="w-full px-4 py-3 rounded-lg text-sm text-white outline-none"
                     style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                    onFocus={(e) => e.target.style.borderColor = "#FFD700"}
+                    onFocus={(e) => e.target.style.borderColor = "#E5A800"}
                     onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
                   />
                 </div>
@@ -191,7 +191,7 @@ export default function AdminResourcesPage() {
                     placeholder="Provide details about what these materials cover..."
                     className="w-full px-4 py-3 rounded-lg text-sm text-white outline-none resize-none"
                     style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                    onFocus={(e) => e.target.style.borderColor = "#FFD700"}
+                    onFocus={(e) => e.target.style.borderColor = "#E5A800"}
                     onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
                   />
                 </div>
@@ -203,7 +203,7 @@ export default function AdminResourcesPage() {
                     required
                     multiple
                     onChange={handleFileChange}
-                    className="w-full px-4 py-3 rounded-lg text-sm text-white outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-[#FFD700] file:text-[#0A0E1A] hover:file:bg-[#e6c200] file:cursor-pointer"
+                    className="w-full px-4 py-3 rounded-lg text-sm text-white outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-[#E5A800] file:text-[#030617] hover:file:bg-[#e6c200] file:cursor-pointer"
                     style={{ background: "rgba(255,255,255,0.03)", border: "1px dashed rgba(255,255,255,0.2)" }}
                   />
                   {selectedFiles.length > 0 && (
@@ -229,7 +229,7 @@ export default function AdminResourcesPage() {
                      type="submit" 
                      disabled={isSubmitting || selectedFiles.length === 0}
                      className="flex-1 py-3 rounded-lg text-sm font-bold disabled:opacity-50 transition-all hover:brightness-110"
-                     style={{ background: "#FFD700", color: "#0A0E1A" }}
+                     style={{ background: "#1B73BA", color: "white" }}
                    >
                      {isSubmitting ? "Uploading..." : "Upload Material"}
                    </button>

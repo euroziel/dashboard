@@ -75,7 +75,7 @@ export default function StudentDashboard() {
               Hello, {student.name ?? student.username} 👋
             </h2>
             <p style={{ color: "rgba(255,255,255,0.45)" }}>
-              You are on step <strong style={{ color: "#FFD700" }}>{currentStep}</strong> of {MILESTONES.length}. Let&apos;s keep moving!
+              You are on step <strong style={{ color: "#E5A800" }}>{currentStep}</strong> of {MILESTONES.length}. Let&apos;s keep moving!
             </p>
           </div>
         </div>
@@ -84,18 +84,16 @@ export default function StudentDashboard() {
         <div className="euro-card rounded-xl p-6 relative">
           <div className="absolute top-0 left-0 w-full h-1 overflow-hidden rounded-t-xl" style={{ background: "rgba(255,255,255,0.05)" }}>
              <div 
-               className="h-full transition-all duration-1000 ease-in-out" 
+               className="h-full transition-all duration-1000 ease-in-out bg-[#E5A800] shadow-[0_0_10px_#E5A800] rounded-full" 
                style={{ 
-                 width: `${progressPercent}%`, 
-                 background: "#FFD700",
-                 boxShadow: "0 0 15px #FFD700"
+                 width: `${progressPercent}%`
                }} 
              />
           </div>
           
           <div className="flex flex-col sm:flex-row gap-6 mt-4">
             <div className="flex-1">
-              <p className="text-xs font-semibold uppercase tracking-widest mb-1" style={{ color: "rgba(255,215,0,0.7)" }}>Current Step</p>
+              <p className="text-xs font-semibold uppercase tracking-widest mb-1" style={{ color: "rgba(229, 168, 0,0.7)" }}>Current Step</p>
               <h3 className="text-xl font-bold text-white mb-2">{MILESTONES[currentStep - 1]}</h3>
               <p className="text-sm" style={{ color: "rgba(255,255,255,0.45)" }}>
                 {student.status === "Action Required" 
@@ -106,7 +104,7 @@ export default function StudentDashboard() {
             
             <div className="w-full sm:w-64 shrink-0 flex items-center justify-center p-6 rounded-lg" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)" }}>
               <div className="text-center">
-                 <div className="text-4xl font-bold mb-1" style={{ color: "#FFD700" }}>{progressPercent}%</div>
+                 <div className="text-4xl font-bold mb-1" style={{ color: "#E5A800" }}>{progressPercent}%</div>
                  <p className="text-xs uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.3)" }}>Journey Complete</p>
               </div>
             </div>
@@ -128,10 +126,10 @@ export default function StudentDashboard() {
                    <div 
                      className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 relative z-20 cursor-pointer"
                      style={{
-                       background: isCompleted ? "#FFD700" : isCurrent ? "#0A0E1A" : "#1A1F2E",
-                       color: isCompleted ? "#0A0E1A" : isCurrent ? "#FFD700" : "rgba(255,255,255,0.3)",
-                       border: isCurrent ? "2px solid #FFD700" : `1px solid ${isCompleted ? "#FFD700" : "rgba(255,255,255,0.2)"}`,
-                       boxShadow: isCurrent ? "0 0 10px rgba(255,215,0,0.3)" : "none"
+                       background: isCompleted ? "#E5A800" : isCurrent ? "#030617" : "#1A1F2E",
+                       color: isCompleted ? "#030617" : isCurrent ? "#E5A800" : "rgba(255,255,255,0.3)",
+                       border: isCurrent ? "2px solid #E5A800" : `1px solid ${isCompleted ? "#E5A800" : "rgba(255,255,255,0.2)"}`,
+                       boxShadow: isCurrent ? "0 0 10px rgba(229, 168, 0,0.3)" : "none"
                      }}
                    >
                      {isCompleted ? "✓" : stepNumber}
@@ -139,7 +137,7 @@ export default function StudentDashboard() {
                    {/* Tooltip on hover for larger screens */}
                    <div 
                      className={`absolute top-10 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-xs px-3 py-1.5 rounded pointer-events-none z-30 shadow-lg ${tooltipPositionClass}`} 
-                     style={{ background: "#FFD700", color: "#0A0E1A", fontWeight: "bold" }}
+                     style={{ background: "#1B73BA", color: "white", fontWeight: "bold" }}
                    >
                      {milestone}
                    </div>
@@ -156,7 +154,7 @@ export default function StudentDashboard() {
               
               {/* Upload Center Card */}
               <div className="euro-card rounded-xl p-6 flex flex-col">
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style={{ background: "rgba(255,215,0,0.1)", color: "#FFD700" }}>
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style={{ background: "rgba(229, 168, 0,0.1)", color: "#E5A800" }}>
                   <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                     <polyline points="14 2 14 8 20 8" />
@@ -168,7 +166,7 @@ export default function StudentDashboard() {
                 <p className="text-sm flex-1 mb-6" style={{ color: "rgba(255,255,255,0.45)" }}>
                   Manage and upload all required documents for your current step.
                 </p>
-                <Link href="/student/documents" className="block text-center py-2.5 rounded-lg text-sm font-semibold transition-all" style={{ background: "rgba(255,215,0,0.1)", color: "#FFD700", border: "1px solid rgba(255,215,0,0.25)" }}>
+                <Link href="/student/documents" className="block text-center py-2.5 rounded-lg text-sm font-semibold transition-all" style={{ background: "rgba(229, 168, 0,0.1)", color: "#E5A800", border: "1px solid rgba(229, 168, 0,0.25)" }}>
                   Manage Documents →
                 </Link>
               </div>
@@ -191,7 +189,7 @@ export default function StudentDashboard() {
                          <span className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>of ₹{totalFees.toLocaleString('en-IN')}</span>
                       </div>
                       <div className="h-1.5 rounded-full overflow-hidden bg-white/10">
-                        <div className="h-full rounded-full transition-all duration-500 ease-in-out" style={{ width: `${feePercent}%`, background: feePercent === 100 ? "#86efac" : "#FFD700" }} />
+                        <div className="h-full rounded-full transition-all duration-500 ease-in-out" style={{ width: `${feePercent}%`, background: feePercent === 100 ? "#86efac" : "#E5A800" }} />
                       </div>
                     </div>
                   ) : (
@@ -211,7 +209,7 @@ export default function StudentDashboard() {
           <div className="lg:col-span-1">
              <div className="euro-card rounded-xl flex flex-col h-full">
                 <div className="px-5 py-4 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
-                  <h3 className="font-semibold text-sm uppercase tracking-widest" style={{ color: "#FFD700" }}>Announcements</h3>
+                  <h3 className="font-semibold text-sm uppercase tracking-widest" style={{ color: "#E5A800" }}>Announcements</h3>
                 </div>
                 
                 <div className="flex-1 p-5 overflow-y-auto" style={{ maxHeight: "400px" }}>
@@ -227,7 +225,7 @@ export default function StudentDashboard() {
                           <div className="flex justify-between items-start mb-2">
                              <h4 className="text-sm font-bold text-white">{ann.title}</h4>
                              {ann.type === "individual" && (
-                               <span className="text-[10px] px-1.5 py-0.5 rounded uppercase tracking-wider" style={{ background: "rgba(255,215,0,0.15)", color: "#FFD700" }}>Direct</span>
+                               <span className="text-[10px] px-1.5 py-0.5 rounded uppercase tracking-wider" style={{ background: "rgba(229, 168, 0,0.15)", color: "#E5A800" }}>Direct</span>
                              )}
                           </div>
                           <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>{ann.message}</p>

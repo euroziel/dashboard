@@ -91,7 +91,7 @@ export default function StudentsPage() {
                 background: "#1A1F2E",
                 border: "1px solid rgba(255,255,255,0.1)",
               }}
-              onFocus={(e) => (e.target.style.borderColor = "rgba(255,215,0,0.5)")}
+              onFocus={(e) => (e.target.style.borderColor = "rgba(229, 168, 0,0.5)")}
               onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
             />
           </div>
@@ -100,7 +100,7 @@ export default function StudentsPage() {
           <Link
             href="/admin/students/add"
             className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all shrink-0"
-            style={{ background: "#FFD700", color: "#0A0E1A" }}
+            style={{ background: "#1B73BA", color: "white" }}
           >
             <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <line x1="12" y1="5" x2="12" y2="19" />
@@ -133,7 +133,7 @@ export default function StudentsPage() {
                 <Link
                   href="/admin/students/add"
                   className="mt-5 px-5 py-2.5 rounded-lg text-sm font-semibold"
-                  style={{ background: "#FFD700", color: "#0A0E1A" }}
+                  style={{ background: "#1B73BA", color: "white" }}
                 >
                   + Add Student
                 </Link>
@@ -148,7 +148,7 @@ export default function StudentsPage() {
                       <th
                         key={h}
                         className="text-left px-5 py-3.5 text-xs font-bold uppercase tracking-widest"
-                        style={{ color: "#FFD700" }}
+                        style={{ color: "#E5A800" }}
                       >
                         {h}
                       </th>
@@ -184,7 +184,7 @@ export default function StudentsPage() {
                           <div className="flex items-center gap-3">
                             <div
                               className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold shrink-0"
-                              style={{ background: "rgba(255,215,0,0.15)", color: "#FFD700" }}
+                              style={{ background: "rgba(229, 168, 0,0.15)", color: "#E5A800" }}
                             >
                               {(student.name ?? student.username)?.charAt(0).toUpperCase()}
                             </div>
@@ -214,9 +214,9 @@ export default function StudentsPage() {
                             }
                             className="text-xs px-2 py-1.5 rounded-lg outline-none transition-all cursor-pointer disabled:opacity-50"
                             style={{
-                              background: "#0A0E1A",
-                              color: "#FFD700",
-                              border: "1px solid rgba(255,215,0,0.3)",
+                              background: "#030617",
+                              color: "#E5A800",
+                              border: "1px solid rgba(229, 168, 0,0.3)",
                               minWidth: "160px",
                             }}
                           >
@@ -271,10 +271,10 @@ export default function StudentsPage() {
                                   className="h-full rounded-full transition-all duration-500 ease-in-out"
                                   style={{
                                     width: `${feePercent}%`,
-                                    background: feePercent === 100 ? "#86efac" : "#FFD700",
+                                    background: feePercent === 100 ? "#86efac" : "#E5A800",
                                     boxShadow:
                                       feePercent > 0
-                                        ? "0 0 6px rgba(255,215,0,0.4)"
+                                        ? "0 0 6px rgba(229, 168, 0,0.4)"
                                         : "none",
                                   }}
                                 />
@@ -293,15 +293,15 @@ export default function StudentsPage() {
                             onClick={() => router.push(`/admin/students/${student.id}`)}
                             className="text-xs px-3 py-1.5 rounded-lg transition-all"
                             style={{
-                              background: "rgba(255,215,0,0.08)",
-                              color: "#FFD700",
-                              border: "1px solid rgba(255,215,0,0.2)",
+                              background: "rgba(229, 168, 0,0.08)",
+                              color: "#E5A800",
+                              border: "1px solid rgba(229, 168, 0,0.2)",
                             }}
                             onMouseEnter={(e) =>
-                              (e.currentTarget.style.background = "rgba(255,215,0,0.15)")
+                              (e.currentTarget.style.background = "rgba(229, 168, 0,0.15)")
                             }
                             onMouseLeave={(e) =>
-                              (e.currentTarget.style.background = "rgba(255,215,0,0.08)")
+                              (e.currentTarget.style.background = "rgba(229, 168, 0,0.08)")
                             }
                           >
                             View Profile →
