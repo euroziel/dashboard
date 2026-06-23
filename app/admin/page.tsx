@@ -85,7 +85,7 @@ export default function AdminDashboard() {
   const totalStudents = students.length;
   const actionRequired = students.filter((s) => s.status === "Action Required").length;
   const totalFeesCollected = students.reduce((sum, s) => sum + (s.feesPaid ?? 0), 0);
-  const completedStudents = students.filter((s) => s.currentMilestone >= 8).length;
+  const completedStudents = students.filter((s) => s.currentMilestone >= MILESTONES.length).length;
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -209,7 +209,7 @@ export default function AdminDashboard() {
                 </thead>
                 <tbody>
                   {students.slice(0, 8).map((student) => {
-                    const progress = Math.round(((student.currentMilestone ?? 1) / 8) * 100);
+                    const progress = Math.round(((student.currentMilestone ?? 1) / MILESTONES.length) * 100);
                     const statusStyle = statusColors[student.status] ?? statusColors["In Progress"];
                     const feePercent =
                       student.totalFees > 0

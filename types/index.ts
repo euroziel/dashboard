@@ -13,7 +13,7 @@ export interface User {
   username: string;
   phone?: string;
   role: "admin" | "student";
-  currentMilestone: number; // 1–8 (students only)
+  currentMilestone: number; // 1–15 (students only)
   status: ApplicationStatus;
   createdAt: string; // ISO string
 }
@@ -90,7 +90,7 @@ export interface Document {
   id: string;
   studentId: string;
   studentName?: string;
-  milestoneIndex: number; // 1–8
+  milestoneIndex: number; // 1–15
   milestoneName?: string;
   fileName: string;
   fileUrl: string;
@@ -115,13 +115,20 @@ export type DocumentStatus = "pending" | "verified" | "rejected";
 
 export const MILESTONES: string[] = [
   "Profile Verification",
-  "APS Support",
-  "University Match",
-  "SOP / LOR",
-  "Application",
+  "University & Course Selection",
+  "APS Application",
+  "SOP / LOR / CV Creation",
+  "IELTS / GRE / German Prep",
+  "University Application",
   "Offer Letter",
-  "Visa",
+  "Loan Assistance",
+  "Blocked Account Opening",
+  "Insurance Assistance",
+  "Visa Guidance",
   "Flight to Germany",
+  "On-Arrival Pickup",
+  "Accommodation",
+  "Settling in Germany"
 ];
 
 export const APPLICATION_STATUSES: ApplicationStatus[] = [

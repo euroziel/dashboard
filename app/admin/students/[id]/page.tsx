@@ -161,7 +161,7 @@ export default function StudentProfilePage() {
   }
 
   const currentStep = student.currentMilestone ?? 1;
-  const progressPercent = Math.round((currentStep / 8) * 100);
+  const progressPercent = Math.round((currentStep / MILESTONES.length) * 100);
   const actualTotalFees = finances?.totalFees ?? student.totalFees ?? 0;
   const actualPaidFees = finances?.paidAmount ?? student.feesPaid ?? 0;
   const feePercent = actualTotalFees > 0 ? Math.min(100, Math.round((actualPaidFees / actualTotalFees) * 100)) : 0;

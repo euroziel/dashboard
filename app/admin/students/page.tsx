@@ -221,7 +221,7 @@ export default function StudentsPage() {
                             }}
                           >
                             {MILESTONES.map((m, i) => (
-                              <option key={i + 1} value={i + 1}>
+                              <option key={i + 1} value={i + 1} className="bg-[#1A1F2E] text-white">
                                 Step {i + 1}: {m}
                               </option>
                             ))}
@@ -244,7 +244,7 @@ export default function StudentsPage() {
                             }}
                           >
                             {APPLICATION_STATUSES.map((s) => (
-                              <option key={s} value={s}>
+                              <option key={s} value={s} className="bg-[#1A1F2E] text-white">
                                 {s}
                               </option>
                             ))}

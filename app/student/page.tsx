@@ -58,7 +58,7 @@ export default function StudentDashboard() {
   }
 
   const currentStep = student.currentMilestone ?? 1;
-  const progressPercent = Math.round((currentStep / 8) * 100);
+  const progressPercent = Math.round((currentStep / MILESTONES.length) * 100);
   const feesPaid = finances?.paidAmount ?? student.feesPaid ?? 0;
   const totalFees = finances?.totalFees ?? student.totalFees ?? 0;
   const feePercent = totalFees > 0 ? Math.min(100, Math.round((feesPaid / totalFees) * 100)) : 0;
@@ -75,7 +75,7 @@ export default function StudentDashboard() {
               Hello, {student.name ?? student.username} 👋
             </h2>
             <p style={{ color: "rgba(255,255,255,0.45)" }}>
-              You are on step <strong style={{ color: "#FFD700" }}>{currentStep}</strong> of 8. Let's keep moving!
+              You are on step <strong style={{ color: "#FFD700" }}>{currentStep}</strong> of {MILESTONES.length}. Let's keep moving!
             </p>
           </div>
         </div>
