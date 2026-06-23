@@ -48,5 +48,10 @@ service cloud.firestore {
       allow create: if isOwner(request.resource.data.studentId) || isAdmin();
       allow update, delete: if isAdmin();
     }
+
+    match /settings/{docId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
   }
 }

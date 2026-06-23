@@ -11,6 +11,7 @@ export default function GlobalAnnouncementsPage() {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -27,6 +28,15 @@ export default function GlobalAnnouncementsPage() {
     if (!title.trim() || !message.trim()) return;
 
     setIsSubmitting(true);
+    
+    let attachmentUrl = "";
+    let attachmentName = "";
+    if (selectedFile) {
+       alert("Storage is not yet enabled in this environment. Using a mock URL for the attachment.");
+       attachmentUrl = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
+       attachmentName = selectedFile.name;
+    }
+
     try {
       await createAnnouncement({
         type: "global",
@@ -34,9 +44,11 @@ export default function GlobalAnnouncementsPage() {
         title: title.trim(),
         message: message.trim(),
         createdBy: user?.username ?? "Admin",
+        ...(attachmentUrl ? { attachmentUrl, attachmentName } : {})
       });
       setTitle("");
       setMessage("");
+      setSelectedFile(null);
     } catch (error) {
       console.error(error);
       alert("Failed to post announcement.");
@@ -91,6 +103,18 @@ export default function GlobalAnnouncementsPage() {
                 />
               </div>
 
+              <div>
+                <label className="block text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>
+                  Attach File (Optional)
+                </label>
+                <input
+                  type="file"
+                  onChange={(e) => setSelectedFile(e.target.files ? e.target.files[0] : null)}
+                  className="w-full px-4 py-2.5 rounded-lg text-sm text-white outline-none transition-colors file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-white/10 file:text-white hover:file:bg-white/20"
+                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
+                />
+              </div>
+
               <button
                 type="submit"
                 disabled={isSubmitting || !title.trim() || !message.trim()}
@@ -132,6 +156,23 @@ export default function GlobalAnnouncementsPage() {
                            <span className="text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider font-bold" style={{ background: "rgba(34,197,94,0.15)", color: "#86efac" }}>Global</span>
                         </div>
                         <p className="text-sm leading-relaxed mb-4" style={{ color: "rgba(255,255,255,0.7)" }}>{ann.message}</p>
+                        
+                        {ann.attachmentUrl && (
+                          <div className="mb-4">
+                            <a 
+                              href={ann.attachmentUrl} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-semibold transition-colors hover:bg-white/10"
+                              style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "white" }}
+                            >
+                              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path d="M21.44 11.05l-9.19 9.19a6 6 0 1 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+                              </svg>
+                              {ann.attachmentName || "Attached Document"}
+                            </a>
+                          </div>
+                        )}
                         
                         <div className="flex items-center justify-between text-xs" style={{ color: "rgba(255,255,255,0.35)", borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: "12px" }}>
                           <span>Posted by {ann.createdBy}</span>

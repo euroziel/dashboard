@@ -31,6 +31,7 @@ import type {
   ApplicationStatus,
   DocumentStatus,
   PaymentRecord,
+  SystemSettings,
 } from "@/types";
 
 // ─────────────────────────────────────────
@@ -42,6 +43,7 @@ export const adminsCol = collection(db, "admins");
 export const announcementsCol = collection(db, "announcements");
 export const documentsCol = collection(db, "documents");
 export const financesCol = collection(db, "finances");
+export const settingsCol = collection(db, "settings");
 
 // ─────────────────────────────────────────
 // USERS
@@ -290,4 +292,16 @@ export function subscribeToAllDocuments(
     const docs = snap.docs.map((d) => ({ id: d.id, ...d.data() } as Document));
     callback(docs);
   });
+}
+
+// ─────────────────────────────────────────
+// SYSTEM SETTINGS
+// ─────────────────────────────────────────
+export async function getSystemSettings(): Promise<SystemSettings | null> {
+  const snap = await getDoc(doc(db, "settings", "global"));
+  return snap.exists() ? (snap.data() as SystemSettings) : null;
+}
+
+export async function updateSystemSettings(data: Partial<SystemSettings>): Promise<void> {
+  await setDoc(doc(db, "settings", "global"), data, { merge: true });
 }

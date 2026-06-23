@@ -80,6 +80,8 @@ export interface Announcement {
   createdAt: string;
   createdBy: string; // admin username
   readBy?: string[]; // array of studentIds who have read it
+  attachmentUrl?: string;
+  attachmentName?: string;
 }
 
 // ─────────────────────────────────────────
@@ -112,6 +114,17 @@ export type ApplicationStatus =
   | "On Hold";
 
 export type DocumentStatus = "pending" | "verified" | "rejected";
+
+export type DocumentRequirement = "optional" | "mandatory" | "not_required";
+
+export interface MilestoneConfig {
+  milestoneIndex: number;
+  requirement: DocumentRequirement;
+}
+
+export interface SystemSettings {
+  milestoneConfigs?: MilestoneConfig[];
+}
 
 export const MILESTONES: string[] = [
   "Profile Verification",

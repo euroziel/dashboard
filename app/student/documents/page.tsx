@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import StudentTopbar from "@/components/student/Topbar";
-import { getStudent, createDocument, subscribeToStudentDocuments } from "@/lib/collections";
-import type { Student, Document } from "@/types";
+import { getStudent, createDocument, subscribeToStudentDocuments, getSystemSettings } from "@/lib/collections";
+import type { Student, Document, MilestoneConfig } from "@/types";
 import { MILESTONES } from "@/types";
 import { storage } from "@/lib/firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
@@ -14,6 +14,7 @@ export default function StudentDocumentsPage() {
   const [student, setStudent] = useState<Student | null>(null);
   const [documents, setDocuments] = useState<Document[]>([]);
   const [loading, setLoading] = useState(true);
+  const [settings, setSettings] = useState<MilestoneConfig[]>([]);
 
   // Upload State
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -28,6 +29,11 @@ export default function StudentDocumentsPage() {
       if (data) {
         setStudent(data);
         setSelectedMilestone(data.currentMilestone ?? 1);
+      }
+      
+      const sysSettings = await getSystemSettings();
+      if (sysSettings?.milestoneConfigs) {
+        setSettings(sysSettings.milestoneConfigs);
       }
     }
     load();
@@ -52,6 +58,9 @@ export default function StudentDocumentsPage() {
     e.preventDefault();
     if (!selectedFile || !student || !user?.uid) return;
 
+    alert("Storage is not yet enabled in this environment.");
+    
+    /* TEMPORARILY DISABLED STORAGE FOR PRODUCTION SETUP
     setIsUploading(true);
     setUploadProgress(0);
 
@@ -105,6 +114,7 @@ export default function StudentDocumentsPage() {
         }
       }
     );
+    */
   };
 
   const getStatusColor = (status: string) => {
@@ -131,6 +141,36 @@ export default function StudentDocumentsPage() {
         
         {/* LEFT: Upload Form */}
         <div className="lg:col-span-1 space-y-6">
+          {(() => {
+            const mandatoryMissing = settings.filter(s => {
+              if (s.requirement !== "mandatory") return false;
+              if (s.milestoneIndex > (student.currentMilestone ?? 1)) return false;
+              const hasDoc = documents.some(d => d.milestoneIndex === s.milestoneIndex && d.status !== "rejected");
+              return !hasDoc;
+            }).map(s => MILESTONES[s.milestoneIndex - 1]);
+
+            if (mandatoryMissing.length === 0) return null;
+
+            return (
+              <div className="rounded-xl p-4 flex gap-4" style={{ background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)" }}>
+                <div className="mt-0.5" style={{ color: "#fca5a5" }}>
+                  <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                    <line x1="12" y1="9" x2="12" y2="13" />
+                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                  </svg>
+                </div>
+                <div>
+                  <h4 className="font-bold text-sm mb-1" style={{ color: "#fca5a5" }}>Action Required</h4>
+                  <p className="text-xs mb-2" style={{ color: "rgba(252,165,165,0.8)" }}>You are missing mandatory documents for your current or past steps:</p>
+                  <ul className="text-xs list-disc list-inside space-y-1" style={{ color: "rgba(252,165,165,0.8)" }}>
+                    {mandatoryMissing.map((m, i) => <li key={i}>{m}</li>)}
+                  </ul>
+                </div>
+              </div>
+            );
+          })()}
+
           <div className="euro-card rounded-xl p-6 sticky top-8">
             <h2 className="text-xl font-bold text-white mb-6">Upload Document</h2>
             
@@ -146,9 +186,15 @@ export default function StudentDocumentsPage() {
                   className="w-full px-3 py-2.5 rounded-lg text-sm outline-none transition-all cursor-pointer disabled:opacity-50"
                   style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "white" }}
                 >
-                  {MILESTONES.map((m, i) => (
-                    <option key={i + 1} value={i + 1} style={{ background: "#1A1F2E", color: "white" }}>Step {i + 1}: {m}</option>
-                  ))}
+                  {MILESTONES.map((m, i) => {
+                    const req = settings.find(s => s.milestoneIndex === i + 1)?.requirement || "optional";
+                    if (req === "not_required") return null;
+                    return (
+                      <option key={i + 1} value={i + 1} style={{ background: "#1A1F2E", color: "white" }}>
+                        Step {i + 1}: {m} {req === "mandatory" ? "(Mandatory)" : ""}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
 

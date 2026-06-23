@@ -75,7 +75,7 @@ export default function StudentDashboard() {
               Hello, {student.name ?? student.username} 👋
             </h2>
             <p style={{ color: "rgba(255,255,255,0.45)" }}>
-              You are on step <strong style={{ color: "#FFD700" }}>{currentStep}</strong> of {MILESTONES.length}. Let's keep moving!
+              You are on step <strong style={{ color: "#FFD700" }}>{currentStep}</strong> of {MILESTONES.length}. Let&apos;s keep moving!
             </p>
           </div>
         </div>
@@ -231,6 +231,24 @@ export default function StudentDashboard() {
                              )}
                           </div>
                           <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>{ann.message}</p>
+                          
+                          {ann.attachmentUrl && (
+                            <div className="mt-3">
+                              <a 
+                                href={ann.attachmentUrl} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-semibold transition-colors hover:bg-white/10"
+                                style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "white" }}
+                              >
+                                <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                  <path d="M21.44 11.05l-9.19 9.19a6 6 0 1 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+                                </svg>
+                                {ann.attachmentName || "Attached Document"}
+                              </a>
+                            </div>
+                          )}
+
                           <p className="text-[10px] mt-3" style={{ color: "rgba(255,255,255,0.3)" }}>
                             {new Date(ann.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                           </p>

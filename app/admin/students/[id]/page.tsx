@@ -37,6 +37,7 @@ export default function StudentProfilePage() {
   // Announcement State
   const [noteTitle, setNoteTitle] = useState("");
   const [noteMessage, setNoteMessage] = useState("");
+  const [selectedNoteFile, setSelectedNoteFile] = useState<File | null>(null);
   const [isPostingNote, setIsPostingNote] = useState(false);
 
   useEffect(() => {
@@ -123,16 +124,27 @@ export default function StudentProfilePage() {
     if (!noteTitle.trim() || !noteMessage.trim()) return;
 
     setIsPostingNote(true);
+    
+    let attachmentUrl = "";
+    let attachmentName = "";
+    if (selectedNoteFile) {
+       alert("Storage is not yet enabled in this environment. Using a mock URL for the attachment.");
+       attachmentUrl = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
+       attachmentName = selectedNoteFile.name;
+    }
+
     try {
       await createAnnouncement({
         type: "individual",
-        targetId: id,
+        targetId: id as string,
         title: noteTitle.trim(),
         message: noteMessage.trim(),
         createdBy: user?.username ?? "Admin",
+        ...(attachmentUrl ? { attachmentUrl, attachmentName } : {})
       });
       setNoteTitle("");
       setNoteMessage("");
+      setSelectedNoteFile(null);
     } catch (err) {
       console.error(err);
       alert("Failed to post note.");
@@ -383,6 +395,12 @@ export default function StudentProfilePage() {
                     onFocus={(e) => (e.target.style.borderColor = "#FFD700")}
                     onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
                   />
+                  <input
+                    type="file"
+                    onChange={(e) => setSelectedNoteFile(e.target.files ? e.target.files[0] : null)}
+                    className="w-full px-3 py-2 rounded-lg text-xs text-white outline-none file:mr-3 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-white/10 file:text-white hover:file:bg-white/20"
+                    style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
+                  />
                   <button
                     type="submit"
                     disabled={isPostingNote || !noteTitle.trim() || !noteMessage.trim()}
@@ -409,6 +427,24 @@ export default function StudentProfilePage() {
                          )}
                        </div>
                        <p className="text-xs mb-2 leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>{ann.message}</p>
+                       
+                       {ann.attachmentUrl && (
+                         <div className="mb-3">
+                           <a 
+                             href={ann.attachmentUrl} 
+                             target="_blank" 
+                             rel="noopener noreferrer"
+                             className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-semibold transition-colors hover:bg-white/10"
+                             style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "white" }}
+                           >
+                             <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                               <path d="M21.44 11.05l-9.19 9.19a6 6 0 1 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+                             </svg>
+                             {ann.attachmentName || "Attached Document"}
+                           </a>
+                         </div>
+                       )}
+
                        <div className="flex justify-between items-center text-[10px]" style={{ color: "rgba(255,255,255,0.3)" }}>
                          <span>By {ann.createdBy}</span>
                          <span>{new Date(ann.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>
