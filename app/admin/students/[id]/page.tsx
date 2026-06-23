@@ -2,8 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { getStudent, getFinances, setFinances, updateStudent, createAnnouncement, subscribeToAnnouncements } from "@/lib/collections";
-import type { Student, Finances, PaymentRecord, Announcement } from "@/types";
+import { 
+  getStudent, 
+  getFinances, 
+  setFinances, 
+  updateStudent, 
+  createAnnouncement, 
+  subscribeToAnnouncements,
+  subscribeToStudentDocuments,
+  updateDocumentStatus,
+  getSystemSettings
+} from "@/lib/collections";
+import type { Student, Finances, PaymentRecord, Announcement, Document, MilestoneConfig } from "@/types";
 import { MILESTONES, APPLICATION_STATUSES } from "@/types";
 import AdminTopbar from "@/components/admin/Topbar";
 import { useAuth } from "@/context/AuthContext";
@@ -20,6 +30,7 @@ export default function StudentProfilePage() {
 
   // Fee Modal State
   const [isFeeModalOpen, setIsFeeModalOpen] = useState(false);
+  const [isConfirmFeeModalOpen, setIsConfirmFeeModalOpen] = useState(false);
   const [feeForm, setFeeForm] = useState({ totalFees: 0, paidAmount: 0 });
   const [isSavingFee, setIsSavingFee] = useState(false);
 
@@ -40,12 +51,17 @@ export default function StudentProfilePage() {
   const [selectedNoteFile, setSelectedNoteFile] = useState<File | null>(null);
   const [isPostingNote, setIsPostingNote] = useState(false);
 
+  // Documents State
+  const [documents, setDocuments] = useState<Document[]>([]);
+  const [settings, setSettings] = useState<MilestoneConfig[]>([]);
+
   useEffect(() => {
     async function load() {
       try {
-        const [studentData, financeData] = await Promise.all([
+        const [studentData, financeData, settingsData] = await Promise.all([
           getStudent(id),
           getFinances(id),
+          getSystemSettings(),
         ]);
         if (studentData) {
           setStudent(studentData);
@@ -55,6 +71,9 @@ export default function StudentProfilePage() {
           });
         }
         setFinancesData(financeData);
+        if (settingsData?.milestoneConfigs) {
+          setSettings(settingsData.milestoneConfigs);
+        }
       } catch (err) {
         console.error(err);
       } finally {
@@ -68,11 +87,22 @@ export default function StudentProfilePage() {
       setAnnouncements(data.filter((a) => a.type === "individual" && a.targetId === id));
     });
 
-    return () => unsubAnnouncements();
+    const unsubDocs = subscribeToStudentDocuments(id, (data) => {
+      setDocuments(data);
+    });
+
+    return () => {
+      unsubAnnouncements();
+      unsubDocs();
+    };
   }, [id]);
 
-  const handleUpdateFees = async (e: React.FormEvent) => {
+  const handleUpdateFees = (e: React.FormEvent) => {
     e.preventDefault();
+    setIsConfirmFeeModalOpen(true);
+  };
+
+  const executeFeeUpdate = async () => {
     setIsSavingFee(true);
     try {
       await setFinances(id, {
@@ -85,6 +115,7 @@ export default function StudentProfilePage() {
       const newStudent = await getStudent(id);
       if (newStudent) setStudent(newStudent);
       
+      setIsConfirmFeeModalOpen(false);
       setIsFeeModalOpen(false);
     } catch (err) {
       console.error(err);
@@ -150,6 +181,42 @@ export default function StudentProfilePage() {
       alert("Failed to post note.");
     } finally {
       setIsPostingNote(false);
+    }
+  };
+
+  const handleDocumentStatus = async (docId: string, status: "approved" | "rejected") => {
+    try {
+      await updateDocumentStatus(docId, status);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to update document status.");
+    }
+  };
+
+  const mandatoryRequirements = settings.filter(s => s.requirement === "mandatory" && s.milestoneIndex <= (student?.currentMilestone ?? 1));
+
+  const handleSendReminder = async () => {
+    const missingDocs = mandatoryRequirements.filter(req => 
+       !documents.some(d => d.milestoneIndex === req.milestoneIndex && d.status !== "rejected")
+    ).map(req => `Step ${req.milestoneIndex}: ${MILESTONES[req.milestoneIndex - 1]}`);
+
+    if (missingDocs.length === 0) {
+      alert("This student has uploaded all mandatory documents for their current step.");
+      return;
+    }
+
+    try {
+      await createAnnouncement({
+        type: "individual",
+        targetId: id as string,
+        title: "Action Required: Missing Mandatory Documents",
+        message: `Please upload the following required documents to proceed:\n\n${missingDocs.join("\n")}`,
+        createdBy: user?.username ?? "System",
+      });
+      alert("Reminder sent successfully!");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to send reminder.");
     }
   };
 
@@ -455,6 +522,122 @@ export default function StudentProfilePage() {
                </div>
             </div>
 
+            {/* Uploaded Documents Section */}
+            <div className="euro-card rounded-xl p-6">
+               <div className="flex items-center justify-between mb-4">
+                 <h3 className="font-bold text-lg text-white" style={{ borderLeft: "3px solid #FFD700", paddingLeft: "10px" }}>Document Center</h3>
+               </div>
+
+               {/* Mandatory Checklist */}
+               {mandatoryRequirements.length > 0 && (
+                 <div className="mb-6 p-4 rounded-lg" style={{ background: "rgba(0,0,0,0.2)", border: "1px solid rgba(255,255,255,0.05)" }}>
+                   <div className="flex items-center justify-between mb-3">
+                     <h4 className="text-xs uppercase tracking-widest font-bold" style={{ color: "rgba(255,255,255,0.5)" }}>
+                       Mandatory Requirements for Step {student?.currentMilestone}
+                     </h4>
+                     <button
+                       onClick={handleSendReminder}
+                       className="px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider transition-all"
+                       style={{ background: "rgba(59,130,246,0.1)", color: "#93c5fd", border: "1px solid rgba(59,130,246,0.2)" }}
+                       onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(59,130,246,0.2)")}
+                       onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(59,130,246,0.1)")}
+                     >
+                       Send Reminder
+                     </button>
+                   </div>
+                   
+                   <div className="space-y-2">
+                     {mandatoryRequirements.map(req => {
+                        const isUploaded = documents.some(d => d.milestoneIndex === req.milestoneIndex && d.status !== "rejected");
+                        const mName = MILESTONES[req.milestoneIndex - 1];
+                        return (
+                          <div key={req.milestoneIndex} className="flex items-center gap-3 text-sm">
+                            <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0" style={{ 
+                              background: isUploaded ? "rgba(34,197,94,0.15)" : "rgba(239,68,68,0.15)",
+                              color: isUploaded ? "#86efac" : "#fca5a5"
+                            }}>
+                              {isUploaded ? "✓" : "!"}
+                            </div>
+                            <span style={{ color: isUploaded ? "rgba(255,255,255,0.8)" : "white", textDecoration: isUploaded ? "line-through" : "none" }}>
+                              Step {req.milestoneIndex}: {mName}
+                            </span>
+                          </div>
+                        );
+                     })}
+                   </div>
+                 </div>
+               )}
+               
+               <h4 className="text-xs uppercase tracking-widest font-bold mb-3" style={{ color: "rgba(255,255,255,0.5)" }}>All Uploads</h4>
+               <div className="space-y-3 max-h-80 overflow-y-auto pr-2">
+                 {documents.length === 0 ? (
+                   <p className="text-sm text-center py-4" style={{ color: "rgba(255,255,255,0.4)" }}>No documents uploaded by this student.</p>
+                 ) : (
+                   documents.map(doc => (
+                     <div key={doc.id} className="p-4 rounded-lg flex flex-col md:flex-row md:items-center justify-between gap-4" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)" }}>
+                       <div>
+                         <h4 className="font-bold text-sm text-white mb-1">{doc.milestoneName || doc.fileName}</h4>
+                         <p className="text-xs mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>
+                           <a 
+                             href={doc.fileUrl} 
+                             target="_blank" 
+                             rel="noopener noreferrer" 
+                             className="hover:underline text-blue-400"
+                           >
+                             {doc.fileName}
+                           </a> 
+                           {" "}• {new Date(doc.uploadedAt).toLocaleDateString()}
+                         </p>
+                         
+                         <span className="text-[10px] px-2 py-0.5 rounded uppercase tracking-wider font-bold" style={{ 
+                           background: doc.status === "approved" ? "rgba(34,197,94,0.15)" : doc.status === "rejected" ? "rgba(239,68,68,0.15)" : "rgba(255,215,0,0.15)", 
+                           color: doc.status === "approved" ? "#86efac" : doc.status === "rejected" ? "#fca5a5" : "#FFD700" 
+                         }}>
+                           {doc.status}
+                         </span>
+                       </div>
+                       
+                       <div className="flex gap-2 shrink-0">
+                         {doc.status === "pending" && (
+                           <>
+                             <button 
+                               onClick={() => handleDocumentStatus(doc.id, "approved")}
+                               className="px-3 py-1.5 rounded-md text-xs font-bold transition-all"
+                               style={{ background: "rgba(34,197,94,0.1)", color: "#86efac", border: "1px solid rgba(34,197,94,0.2)" }}
+                               onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(34,197,94,0.2)")}
+                               onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(34,197,94,0.1)")}
+                             >
+                               Approve
+                             </button>
+                             <button 
+                               onClick={() => handleDocumentStatus(doc.id, "rejected")}
+                               className="px-3 py-1.5 rounded-md text-xs font-bold transition-all"
+                               style={{ background: "rgba(239,68,68,0.1)", color: "#fca5a5", border: "1px solid rgba(239,68,68,0.2)" }}
+                               onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(239,68,68,0.2)")}
+                               onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(239,68,68,0.1)")}
+                             >
+                               Reject
+                             </button>
+                           </>
+                         )}
+                         {doc.status !== "pending" && (
+                            <button 
+                              onClick={() => handleDocumentStatus(doc.id, "pending")}
+                              className="px-3 py-1.5 rounded-md text-[10px] uppercase font-bold transition-all"
+                              style={{ background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.5)" }}
+                              onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.1)")}
+                              onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}
+                            >
+                              Reset
+                            </button>
+                         )}
+                       </div>
+                     </div>
+                   ))
+                 )}
+               </div>
+            </div>
+
           </div>
         </div>
       </main>
@@ -515,6 +698,57 @@ export default function StudentProfilePage() {
                    </button>
                 </div>
               </form>
+           </div>
+        </div>
+      )}
+
+      {/* Confirm Fee Update Modal */}
+      {isConfirmFeeModalOpen && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center px-4" style={{ background: "rgba(10,14,26,0.9)", backdropFilter: "blur(8px)" }}>
+           <div className="euro-card w-full max-w-md rounded-xl p-6 shadow-2xl border border-red-500/30">
+              <div className="flex items-center gap-3 mb-4 text-red-400">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                  <line x1="12" y1="9" x2="12" y2="13"></line>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                <h3 className="text-lg font-bold">Confirm Fee Update</h3>
+              </div>
+              
+              <p className="text-sm mb-6 leading-relaxed" style={{ color: "rgba(255,255,255,0.7)" }}>
+                Are you sure you want to set this fee structure? This will permanently update the student's financial records.
+              </p>
+
+              <div className="p-4 rounded-lg mb-6" style={{ background: "rgba(0,0,0,0.3)" }}>
+                <div className="flex justify-between mb-2">
+                  <span className="text-xs uppercase tracking-widest font-bold text-white/50">Total Fees:</span>
+                  <span className="text-sm font-bold text-white">₹{Number(feeForm.totalFees).toLocaleString('en-IN')}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-xs uppercase tracking-widest font-bold text-white/50">Paid Amount:</span>
+                  <span className="text-sm font-bold text-green-400">₹{Number(feeForm.paidAmount).toLocaleString('en-IN')}</span>
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                 <button 
+                   type="button" 
+                   onClick={() => setIsConfirmFeeModalOpen(false)}
+                   className="flex-1 py-2.5 rounded-lg text-sm font-semibold"
+                   style={{ background: "rgba(255,255,255,0.05)", color: "white" }}
+                 >
+                   Cancel
+                 </button>
+                 <button 
+                   type="button" 
+                   onClick={executeFeeUpdate}
+                   disabled={isSavingFee}
+                   className="flex-1 py-2.5 rounded-lg text-sm font-bold disabled:opacity-50 flex items-center justify-center gap-2"
+                   style={{ background: "rgba(239,68,68,0.15)", color: "#fca5a5", border: "1px solid rgba(239,68,68,0.3)" }}
+                 >
+                   {isSavingFee ? "Saving..." : "Confirm & Save"}
+                 </button>
+              </div>
            </div>
         </div>
       )}
