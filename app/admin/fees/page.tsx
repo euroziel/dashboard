@@ -58,7 +58,7 @@ export default function AdminFeesPage() {
     <div className="flex flex-col min-h-screen relative">
       <AdminTopbar title="Global Finances" subtitle="View all student payments and dues" />
 
-      <main className="flex-1 p-8">
+      <main className="flex-1 p-4 md:p-8">
         {/* Top Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="euro-card rounded-xl p-6">

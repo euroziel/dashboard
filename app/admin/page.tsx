@@ -69,7 +69,7 @@ export default function AdminDashboard() {
     return (
       <div className="flex flex-col min-h-screen">
         <AdminTopbar title="Dashboard" subtitle="Loading metrics..." />
-        <main className="flex-1 p-8 space-y-8">
+        <main className="flex-1 p-4 md:p-8 space-y-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
             <SkeletonCard />
             <SkeletonCard />
@@ -91,7 +91,7 @@ export default function AdminDashboard() {
     <div className="flex flex-col min-h-screen">
       <AdminTopbar title="Dashboard" subtitle="Welcome back — here's what's happening" />
 
-      <main className="flex-1 p-8 space-y-8">
+      <main className="flex-1 p-4 md:p-8 space-y-8">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
           <StatCard

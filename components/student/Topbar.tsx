@@ -63,16 +63,16 @@ export default function StudentTopbar({ title, subtitle }: TopbarProps) {
   return (
     <>
       <header
-        className="flex items-center justify-between px-8 py-4 relative z-40"
+        className="flex items-center justify-between px-4 md:px-8 py-4 relative z-40"
         style={{
           background: "rgba(10, 14, 26, 0.8)",
           borderBottom: "1px solid rgba(255,255,255,0.06)",
           backdropFilter: "blur(12px)",
         }}
       >
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 md:gap-4 min-w-0">
           <button 
-            className="md:hidden text-white p-2 rounded-lg hover:bg-white/5 transition-colors"
+            className="md:hidden shrink-0 text-white p-2 rounded-lg hover:bg-white/5 transition-colors"
             onClick={() => window.dispatchEvent(new Event('toggle-sidebar'))}
           >
             <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -81,17 +81,17 @@ export default function StudentTopbar({ title, subtitle }: TopbarProps) {
               <line x1="3" y1="18" x2="21" y2="18" />
             </svg>
           </button>
-          <div>
-            <h1 className="text-xl font-bold text-white">{title}</h1>
+          <div className="min-w-0">
+            <h1 className="text-lg md:text-xl font-bold text-white truncate">{title}</h1>
           {subtitle && (
-            <p className="text-sm mt-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>
+            <p className="text-xs md:text-sm mt-0.5 truncate" style={{ color: "rgba(255,255,255,0.4)" }}>
               {subtitle}
             </p>
             )}
           </div>
         </div>
         
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-3 md:gap-6 shrink-0 ml-2">
           {/* Notification Bell */}
           <div className="relative" ref={dropdownRef}>
             <button 
@@ -187,7 +187,7 @@ export default function StudentTopbar({ title, subtitle }: TopbarProps) {
       {/* Message Modal */}
       {selectedAnnouncement && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center px-4" style={{ background: "rgba(10,14,26,0.8)", backdropFilter: "blur(4px)" }}>
-          <div className="euro-card w-full max-w-lg rounded-xl p-8 shadow-2xl relative">
+          <div className="euro-card w-full max-w-lg rounded-xl p-6 md:p-8 shadow-2xl relative">
             <button 
               onClick={() => setSelectedAnnouncement(null)}
               className="absolute top-4 right-4 p-2 rounded-full hover:bg-white/5 transition-colors"

@@ -61,7 +61,7 @@ export default function GlobalAnnouncementsPage() {
     <div className="flex flex-col min-h-screen">
       <AdminTopbar title="Global Announcements" subtitle="Send messages to all students" />
 
-      <main className="flex-1 p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl w-full">
+      <main className="flex-1 p-4 md:p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl w-full">
         
         {/* Creator Form */}
         <div>

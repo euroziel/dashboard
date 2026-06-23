@@ -249,7 +249,7 @@ export default function StudentProfilePage() {
     <div className="flex flex-col min-h-screen relative">
       <AdminTopbar title="Student Profile" subtitle={`Managing profile for ${student.name ?? student.username}`} />
 
-      <main className="flex-1 p-8">
+      <main className="flex-1 p-4 md:p-8">
         <button 
           onClick={() => router.push("/admin/students")}
           className="mb-6 flex items-center gap-2 text-sm font-medium transition-colors"
@@ -331,11 +331,15 @@ export default function StudentProfilePage() {
                     className="w-full px-3 py-2.5 rounded-lg text-sm outline-none transition-all cursor-pointer"
                     style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#E5A800" }}
                   >
-                    {MILESTONES.map((m, i) => (
-                      <option key={i + 1} value={i + 1} style={{ background: "#1A1F2E", color: "white" }}>
-                        Step {i + 1}: {m}
-                      </option>
-                    ))}
+                    {MILESTONES.map((m, i) => {
+                      const text = `Step ${i + 1}: ${m}`;
+                      const display = text.length > 25 ? text.slice(0, 25) + "..." : text;
+                      return (
+                        <option key={i + 1} value={i + 1} style={{ background: "#1A1F2E", color: "white", fontSize: "14px" }}>
+                          {display}
+                        </option>
+                      );
+                    })}
                   </select>
                 </div>
 
@@ -350,7 +354,7 @@ export default function StudentProfilePage() {
                     style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "white" }}
                   >
                     {APPLICATION_STATUSES.map((s) => (
-                      <option key={s} value={s} style={{ background: "#1A1F2E", color: "white" }}>
+                      <option key={s} value={s} style={{ background: "#1A1F2E", color: "white", fontSize: "14px" }}>
                         {s}
                       </option>
                     ))}

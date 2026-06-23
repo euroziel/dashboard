@@ -68,7 +68,7 @@ export default function StudentsPage() {
     <div className="flex flex-col min-h-screen">
       <AdminTopbar title="Students" subtitle="Manage all student journeys" />
 
-      <main className="flex-1 p-8">
+      <main className="flex-1 p-4 md:p-8">
         {/* Toolbar */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
           {/* Search */}
@@ -217,14 +217,18 @@ export default function StudentsPage() {
                               background: "#030617",
                               color: "#E5A800",
                               border: "1px solid rgba(229, 168, 0,0.3)",
-                              minWidth: "160px",
+                              width: "140px",
                             }}
                           >
-                            {MILESTONES.map((m, i) => (
-                              <option key={i + 1} value={i + 1} className="bg-[#1A1F2E] text-white">
-                                Step {i + 1}: {m}
-                              </option>
-                            ))}
+                            {MILESTONES.map((m, i) => {
+                              const text = `Step ${i + 1}: ${m}`;
+                              const display = text.length > 22 ? text.slice(0, 22) + "..." : text;
+                              return (
+                                <option key={i + 1} value={i + 1} className="bg-[#1A1F2E] text-white text-xs">
+                                  {display}
+                                </option>
+                              );
+                            })}
                           </select>
                         </td>
 
@@ -244,7 +248,7 @@ export default function StudentsPage() {
                             }}
                           >
                             {APPLICATION_STATUSES.map((s) => (
-                              <option key={s} value={s} className="bg-[#1A1F2E] text-white">
+                              <option key={s} value={s} className="bg-[#1A1F2E] text-white text-xs">
                                 {s}
                               </option>
                             ))}

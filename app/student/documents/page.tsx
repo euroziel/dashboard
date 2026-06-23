@@ -137,7 +137,7 @@ export default function StudentDocumentsPage() {
     <div className="flex flex-col min-h-screen">
       <StudentTopbar title="Document Center" subtitle="Upload and track your application documents" />
 
-      <main className="flex-1 p-8 grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto w-full">
+      <main className="flex-1 p-4 md:p-8 grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto w-full">
         
         {/* LEFT: Upload Form */}
         <div className="lg:col-span-1 space-y-6">

@@ -134,7 +134,7 @@ export default function StudentAnnouncementsPage() {
       {/* Message Modal */}
       {selectedAnnouncement && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center px-4" style={{ background: "rgba(10,14,26,0.8)", backdropFilter: "blur(4px)" }}>
-          <div className="euro-card w-full max-w-lg rounded-xl p-8 shadow-2xl relative">
+          <div className="euro-card w-full max-w-lg rounded-xl p-6 md:p-8 shadow-2xl relative">
             <button 
               onClick={() => setSelectedAnnouncement(null)}
               className="absolute top-4 right-4 p-2 rounded-full hover:bg-white/5 transition-colors"

@@ -174,13 +174,13 @@ export default function StudentFeesPage() {
       <Script src="https://checkout.razorpay.com/v1/checkout.js" />
       <StudentTopbar title="Fees & Payments" subtitle="Manage your journey installments" />
 
-      <main className="flex-1 p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto w-full">
+      <main className="flex-1 p-4 md:p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto w-full">
         
         {/* Left: Fee Status & Payment Form */}
         <div className="space-y-8">
           
           {/* Summary Card */}
-          <div className="rounded-xl p-8" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.08)" }}>
+          <div className="rounded-xl p-6 md:p-8" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.08)" }}>
              <h2 className="text-xl font-bold text-white mb-6">Fee Summary</h2>
              
              {totalFees === 0 ? (
@@ -211,7 +211,7 @@ export default function StudentFeesPage() {
 
           {/* Payment Form */}
           {remainingAmount > 0 && (
-            <div className="euro-card rounded-xl p-8">
+            <div className="euro-card rounded-xl p-6 md:p-8">
               <h3 className="text-lg font-bold text-white mb-6" style={{ borderLeft: "3px solid #E5A800", paddingLeft: "10px" }}>Make a Payment</h3>
               
               <div className="space-y-4">
@@ -307,7 +307,7 @@ export default function StudentFeesPage() {
       {/* Payment Details Modal */}
       {selectedPayment && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center px-4" style={{ background: "rgba(10,14,26,0.8)", backdropFilter: "blur(4px)" }}>
-          <div className="euro-card w-full max-w-md rounded-xl p-8 shadow-2xl relative">
+          <div className="euro-card w-full max-w-md rounded-xl p-6 md:p-8 shadow-2xl relative">
             <button 
               onClick={() => setSelectedPayment(null)}
               className="absolute top-4 right-4 p-2 rounded-full hover:bg-white/5 transition-colors"

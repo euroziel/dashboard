@@ -76,7 +76,7 @@ export default function StudentDashboard() {
     <div className="flex flex-col min-h-screen">
       <StudentTopbar title="My Journey" subtitle="Track your progress to Germany" />
 
-      <main className="flex-1 p-8 space-y-8 max-w-7xl mx-auto w-full">
+      <main className="flex-1 p-4 md:p-8 space-y-8 max-w-7xl mx-auto w-full">
         {/* Welcome Section */}
         <div className="flex items-end justify-between">
           <div>
@@ -120,39 +120,41 @@ export default function StudentDashboard() {
           </div>
 
           {/* Stepper Visual */}
-          <div className="mt-8 flex justify-between relative pb-4">
-             <div className="absolute top-4 left-0 w-full h-0.5" style={{ background: "rgba(255,255,255,0.1)", zIndex: 0 }} />
-             {MILESTONES.map((milestone, idx) => {
-               const stepNumber = idx + 1;
-               const isCompleted = stepNumber < currentStep;
-               const isCurrent = stepNumber === currentStep;
-               
-               // To prevent the last tooltip from overflowing the screen on the right edge
-               const tooltipPositionClass = idx === MILESTONES.length - 1 ? "right-0" : "left-1/2 -translate-x-1/2";
-               
-               return (
-                 <div key={stepNumber} className="relative z-10 flex flex-col items-center group">
-                   <div 
-                     className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 relative z-20 cursor-pointer"
-                     style={{
-                       background: isCompleted ? "#E5A800" : isCurrent ? "#030617" : "#1A1F2E",
-                       color: isCompleted ? "#030617" : isCurrent ? "#E5A800" : "rgba(255,255,255,0.3)",
-                       border: isCurrent ? "2px solid #E5A800" : `1px solid ${isCompleted ? "#E5A800" : "rgba(255,255,255,0.2)"}`,
-                       boxShadow: isCurrent ? "0 0 10px rgba(229, 168, 0,0.3)" : "none"
-                     }}
-                   >
-                     {isCompleted ? "✓" : stepNumber}
+          <div className="mt-8 overflow-x-auto pb-6">
+            <div className="flex justify-between relative min-w-[800px]">
+               <div className="absolute top-4 left-0 w-full h-0.5" style={{ background: "rgba(255,255,255,0.1)", zIndex: 0 }} />
+               {MILESTONES.map((milestone, idx) => {
+                 const stepNumber = idx + 1;
+                 const isCompleted = stepNumber < currentStep;
+                 const isCurrent = stepNumber === currentStep;
+                 
+                 // To prevent the last tooltip from overflowing the screen on the right edge
+                 const tooltipPositionClass = idx === MILESTONES.length - 1 ? "right-0" : "left-1/2 -translate-x-1/2";
+                 
+                 return (
+                   <div key={stepNumber} className="relative z-10 flex flex-col items-center group">
+                     <div 
+                       className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 relative z-20 cursor-pointer"
+                       style={{
+                         background: isCompleted ? "#E5A800" : isCurrent ? "#030617" : "#1A1F2E",
+                         color: isCompleted ? "#030617" : isCurrent ? "#E5A800" : "rgba(255,255,255,0.3)",
+                         border: isCurrent ? "2px solid #E5A800" : `1px solid ${isCompleted ? "#E5A800" : "rgba(255,255,255,0.2)"}`,
+                         boxShadow: isCurrent ? "0 0 10px rgba(229, 168, 0,0.3)" : "none"
+                       }}
+                     >
+                       {isCompleted ? "✓" : stepNumber}
+                     </div>
+                     {/* Tooltip on hover for larger screens */}
+                     <div 
+                       className={`absolute top-10 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-xs px-3 py-1.5 rounded pointer-events-none z-30 shadow-lg ${tooltipPositionClass}`} 
+                       style={{ background: "#1B73BA", color: "white", fontWeight: "bold" }}
+                     >
+                       {milestone}
+                     </div>
                    </div>
-                   {/* Tooltip on hover for larger screens */}
-                   <div 
-                     className={`absolute top-10 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-xs px-3 py-1.5 rounded pointer-events-none z-30 shadow-lg ${tooltipPositionClass}`} 
-                     style={{ background: "#1B73BA", color: "white", fontWeight: "bold" }}
-                   >
-                     {milestone}
-                   </div>
-                 </div>
-               )
-             })}
+                 )
+               })}
+            </div>
           </div>
         </div>
 
@@ -301,7 +303,7 @@ export default function StudentDashboard() {
       {/* Message Modal */}
       {selectedAnnouncement && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center px-4" style={{ background: "rgba(10,14,26,0.8)", backdropFilter: "blur(4px)" }}>
-          <div className="euro-card w-full max-w-lg rounded-xl p-8 shadow-2xl relative">
+          <div className="euro-card w-full max-w-lg rounded-xl p-6 md:p-8 shadow-2xl relative">
             <button 
               onClick={() => setSelectedAnnouncement(null)}
               className="absolute top-4 right-4 p-2 rounded-full hover:bg-white/5 transition-colors"

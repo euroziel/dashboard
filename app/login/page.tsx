@@ -82,7 +82,7 @@ export default function Login() {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center relative overflow-hidden"
+      className="min-h-screen flex items-center justify-center relative overflow-hidden px-4"
       style={{ backgroundColor: "#030617" }}
     >
       {/* Ambient background glow */}
@@ -97,7 +97,7 @@ export default function Login() {
 
       {/* Login Card */}
       <div
-        className="relative z-10 w-full max-w-md mx-4 rounded-2xl p-8"
+        className="relative z-10 w-full max-w-md rounded-2xl p-6 md:p-8"
         style={{
           background: "rgba(26, 31, 46, 0.85)",
           border: "1px solid rgba(229, 168, 0, 0.2)",

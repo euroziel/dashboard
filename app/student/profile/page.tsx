@@ -68,10 +68,10 @@ export default function StudentProfilePage() {
     <div className="flex flex-col min-h-screen">
       <StudentTopbar title="My Profile" subtitle="Manage your personal information" />
 
-      <main className="flex-1 p-8 max-w-4xl w-full mx-auto space-y-8">
+      <main className="flex-1 p-4 md:p-8 max-w-4xl w-full mx-auto space-y-8">
         
         {/* Read-Only Identity Card */}
-        <div className="rounded-xl p-8 flex items-center gap-6" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.08)" }}>
+        <div className="rounded-xl p-6 md:p-8 flex flex-col md:flex-row items-center md:items-start text-center md:text-left gap-6" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.08)" }}>
           <div 
             className="w-20 h-20 rounded-full flex items-center justify-center text-3xl font-bold shrink-0"
             style={{ background: "rgba(229, 168, 0,0.15)", color: "#E5A800", border: "1px solid rgba(229, 168, 0,0.3)" }}
@@ -88,7 +88,7 @@ export default function StudentProfilePage() {
         </div>
 
         {/* Editable Profile Form */}
-        <div className="euro-card rounded-xl p-8">
+        <div className="euro-card rounded-xl p-6 md:p-8">
            <h3 className="text-lg font-bold text-white mb-6" style={{ borderLeft: "3px solid #E5A800", paddingLeft: "10px" }}>
              Contact & Background Details
            </h3>

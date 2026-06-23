@@ -76,7 +76,7 @@ export default function AddStudentPage() {
     <div className="flex flex-col min-h-screen">
       <AdminTopbar title="Add User" subtitle="Create a new student or admin account" />
 
-      <main className="flex-1 p-8">
+      <main className="flex-1 p-4 md:p-8">
         <div className="max-w-xl mx-auto">
           <div
             className="euro-card rounded-xl p-8"

@@ -74,7 +74,7 @@ export default function AdminSettingsPage() {
     <div className="flex-1 flex flex-col min-h-screen">
       <AdminTopbar title="System Settings" subtitle="Configure platform rules" />
 
-      <main className="flex-1 p-8 max-w-5xl mx-auto w-full space-y-8">
+      <main className="flex-1 p-4 md:p-8 max-w-5xl mx-auto w-full space-y-8">
         
         <div className="flex justify-between items-end">
           <div>
