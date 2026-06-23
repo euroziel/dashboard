@@ -13,6 +13,7 @@ export default function StudentDashboard() {
   const { user } = useAuth();
   const [student, setStudent] = useState<Student | null>(null);
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+  const [announcementFilter, setAnnouncementFilter] = useState<"all" | "direct" | "general">("all");
   const [finances, setFinances] = useState<Finances | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -62,6 +63,13 @@ export default function StudentDashboard() {
   const feesPaid = finances?.paidAmount ?? student.feesPaid ?? 0;
   const totalFees = finances?.totalFees ?? student.totalFees ?? 0;
   const feePercent = totalFees > 0 ? Math.min(100, Math.round((feesPaid / totalFees) * 100)) : 0;
+
+  const filteredAnnouncements = announcements.filter((ann) => {
+    if (announcementFilter === "all") return true;
+    if (announcementFilter === "direct") return ann.type === "individual";
+    if (announcementFilter === "general") return ann.type === "global";
+    return true;
+  });
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -208,24 +216,48 @@ export default function StudentDashboard() {
           {/* Announcements Feed (Right Column) */}
           <div className="lg:col-span-1">
              <div className="euro-card rounded-xl flex flex-col h-full">
-                <div className="px-5 py-4 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+                <div className="px-5 py-4 border-b flex justify-between items-center" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
                   <h3 className="font-semibold text-sm uppercase tracking-widest" style={{ color: "#E5A800" }}>Announcements</h3>
                 </div>
                 
+                {/* Filters */}
+                <div className="px-5 py-2 border-b flex gap-2" style={{ borderColor: "rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.02)" }}>
+                  <button 
+                    onClick={() => setAnnouncementFilter("all")}
+                    className={`px-3 py-1 text-xs rounded-full transition-colors ${announcementFilter === "all" ? "bg-[#1B73BA] text-white" : "bg-white/5 text-white/50 hover:text-white"}`}
+                  >
+                    All
+                  </button>
+                  <button 
+                    onClick={() => setAnnouncementFilter("direct")}
+                    className={`px-3 py-1 text-xs rounded-full transition-colors ${announcementFilter === "direct" ? "bg-[#1B73BA] text-white" : "bg-white/5 text-white/50 hover:text-white"}`}
+                  >
+                    Direct
+                  </button>
+                  <button 
+                    onClick={() => setAnnouncementFilter("general")}
+                    className={`px-3 py-1 text-xs rounded-full transition-colors ${announcementFilter === "general" ? "bg-[#1B73BA] text-white" : "bg-white/5 text-white/50 hover:text-white"}`}
+                  >
+                    General
+                  </button>
+                </div>
+                
                 <div className="flex-1 p-5 overflow-y-auto" style={{ maxHeight: "400px" }}>
-                  {announcements.length === 0 ? (
+                  {filteredAnnouncements.length === 0 ? (
                     <div className="text-center py-10">
                       <div className="text-3xl mb-2">📬</div>
-                      <p className="text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>No new announcements.</p>
+                      <p className="text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>No announcements in this category.</p>
                     </div>
                   ) : (
                     <div className="space-y-4">
-                      {announcements.map((ann) => (
+                      {filteredAnnouncements.map((ann) => (
                         <div key={ann.id} className="p-4 rounded-lg" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)" }}>
                           <div className="flex justify-between items-start mb-2">
                              <h4 className="text-sm font-bold text-white">{ann.title}</h4>
-                             {ann.type === "individual" && (
+                             {ann.type === "individual" ? (
                                <span className="text-[10px] px-1.5 py-0.5 rounded uppercase tracking-wider" style={{ background: "rgba(229, 168, 0,0.15)", color: "#E5A800" }}>Direct</span>
+                             ) : (
+                               <span className="text-[10px] px-1.5 py-0.5 rounded uppercase tracking-wider" style={{ background: "rgba(27, 115, 186,0.15)", color: "#1B73BA" }}>General</span>
                              )}
                           </div>
                           <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>{ann.message}</p>

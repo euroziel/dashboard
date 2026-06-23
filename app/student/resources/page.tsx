@@ -53,6 +53,11 @@ export default function StudentResourcesPage() {
             ) : (
               resources.map((res) => (
                 <div key={res.id} className="euro-card rounded-xl p-6 flex flex-col h-full shadow-lg transition-transform hover:-translate-y-1">
+                  {res.thumbnailUrl && (
+                    <div className="w-full h-40 mb-4 rounded-lg overflow-hidden bg-white/5 flex-shrink-0 border border-white/10">
+                      <img src={res.thumbnailUrl} alt={res.title} className="w-full h-full object-cover transition-transform hover:scale-105" />
+                    </div>
+                  )}
                   <div className="flex items-start justify-between mb-3">
                     <h3 className="font-bold text-lg text-white leading-tight">{res.title}</h3>
                     <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style={{ background: "rgba(229, 168, 0,0.1)", color: "#E5A800" }}>

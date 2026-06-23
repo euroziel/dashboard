@@ -15,6 +15,7 @@ export default function AdminResourcesPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -49,6 +50,7 @@ export default function AdminResourcesPage() {
       await createResource({
         title,
         description,
+        thumbnailUrl: thumbnailUrl.trim() || undefined,
         createdBy: user?.username ?? "Admin",
         files: mockUploadedFiles,
       });
@@ -57,6 +59,7 @@ export default function AdminResourcesPage() {
       setIsModalOpen(false);
       setTitle("");
       setDescription("");
+      setThumbnailUrl("");
       setSelectedFiles([]);
     } catch (err) {
       console.error(err);
@@ -123,6 +126,11 @@ export default function AdminResourcesPage() {
                       <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
                     </svg>
                   </button>
+                  {res.thumbnailUrl && (
+                    <div className="w-full h-40 mb-4 rounded-lg overflow-hidden bg-white/5 flex-shrink-0 border border-white/10">
+                      <img src={res.thumbnailUrl} alt={res.title} className="w-full h-full object-cover transition-transform hover:scale-105" />
+                    </div>
+                  )}
                   <h3 className="font-bold text-lg text-white mb-2 pr-8">{res.title}</h3>
                   <p className="text-sm flex-1 mb-4 leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>{res.description}</p>
                   
@@ -190,6 +198,20 @@ export default function AdminResourcesPage() {
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder="Provide details about what these materials cover..."
                     className="w-full px-4 py-3 rounded-lg text-sm text-white outline-none resize-none"
+                    style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
+                    onFocus={(e) => e.target.style.borderColor = "#E5A800"}
+                    onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>Thumbnail URL (Optional)</label>
+                  <input 
+                    type="url" 
+                    value={thumbnailUrl} 
+                    onChange={(e) => setThumbnailUrl(e.target.value)}
+                    placeholder="e.g. https://example.com/image.jpg"
+                    className="w-full px-4 py-3 rounded-lg text-sm text-white outline-none"
                     style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
                     onFocus={(e) => e.target.style.borderColor = "#E5A800"}
                     onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}

@@ -115,6 +115,7 @@ export interface StudyResource {
   createdAt: string;
   createdBy: string;
   files: { name: string; url: string }[];
+  thumbnailUrl?: string;
 }
 
 // ─────────────────────────────────────────
