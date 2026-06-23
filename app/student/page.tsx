@@ -15,6 +15,7 @@ export default function StudentDashboard() {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [announcementFilter, setAnnouncementFilter] = useState<"all" | "direct" | "general">("all");
   const [selectedAnnouncement, setSelectedAnnouncement] = useState<Announcement | null>(null);
+  const [activeTooltip, setActiveTooltip] = useState<number | null>(null);
   const [finances, setFinances] = useState<Finances | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -120,7 +121,7 @@ export default function StudentDashboard() {
           </div>
 
           {/* Stepper Visual */}
-          <div className="mt-8 overflow-x-auto pb-6">
+          <div className="mt-8 overflow-x-auto pb-16">
             <div className="flex justify-between relative min-w-[800px]">
                <div className="absolute top-4 left-0 w-full h-0.5" style={{ background: "rgba(255,255,255,0.1)", zIndex: 0 }} />
                {MILESTONES.map((milestone, idx) => {
@@ -128,11 +129,19 @@ export default function StudentDashboard() {
                  const isCompleted = stepNumber < currentStep;
                  const isCurrent = stepNumber === currentStep;
                  
-                 // To prevent the last tooltip from overflowing the screen on the right edge
-                 const tooltipPositionClass = idx === MILESTONES.length - 1 ? "right-0" : "left-1/2 -translate-x-1/2";
+                 let tooltipPositionClass = "left-1/2 -translate-x-1/2";
+                 if (idx === 0 || idx === 1) {
+                   tooltipPositionClass = "left-0";
+                 } else if (idx === MILESTONES.length - 1 || idx === MILESTONES.length - 2) {
+                   tooltipPositionClass = "right-0";
+                 }
                  
                  return (
-                   <div key={stepNumber} className="relative z-10 flex flex-col items-center group">
+                   <div 
+                     key={stepNumber} 
+                     className="relative z-10 flex flex-col items-center group"
+                     onClick={() => setActiveTooltip(activeTooltip === idx ? null : idx)}
+                   >
                      <div 
                        className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 relative z-20 cursor-pointer"
                        style={{
@@ -144,9 +153,9 @@ export default function StudentDashboard() {
                      >
                        {isCompleted ? "✓" : stepNumber}
                      </div>
-                     {/* Tooltip on hover for larger screens */}
+                     {/* Tooltip on hover for larger screens, tap for mobile */}
                      <div 
-                       className={`absolute top-10 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-xs px-3 py-1.5 rounded pointer-events-none z-30 shadow-lg ${tooltipPositionClass}`} 
+                       className={`absolute top-10 transition-opacity whitespace-nowrap text-xs px-3 py-1.5 rounded z-30 shadow-lg ${tooltipPositionClass} ${activeTooltip === idx ? "opacity-100 pointer-events-auto" : "opacity-0 group-hover:opacity-100 pointer-events-none"}`} 
                        style={{ background: "#1B73BA", color: "white", fontWeight: "bold" }}
                      >
                        {milestone}

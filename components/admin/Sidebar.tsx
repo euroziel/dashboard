@@ -142,6 +142,7 @@ export default function AdminSidebar() {
             <Link
               key={item.href}
               href={item.href}
+              onClick={() => setIsOpen(false)}
               className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150"
               style={{
                 color: isActive ? "#E5A800" : "rgba(255,255,255,0.55)",

@@ -111,7 +111,7 @@ export default function StudentTopbar({ title, subtitle }: TopbarProps) {
             {/* Notification Dropdown */}
             {isDropdownOpen && (
               <div 
-                className="absolute right-0 mt-2 w-80 rounded-xl shadow-2xl overflow-hidden"
+                className="absolute right-[-60px] sm:right-0 mt-2 w-[calc(100vw-2rem)] sm:w-80 max-w-[360px] rounded-xl shadow-2xl overflow-hidden"
                 style={{ background: "#1A1F2E", border: "1px solid rgba(255,255,255,0.1)", transformOrigin: "top right" }}
               >
                 <div className="px-4 py-3 border-b flex justify-between items-center" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
