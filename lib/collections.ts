@@ -32,6 +32,7 @@ import type {
   DocumentStatus,
   PaymentRecord,
   SystemSettings,
+  StudyResource,
 } from "@/types";
 
 // ─────────────────────────────────────────
@@ -43,6 +44,7 @@ export const adminsCol = collection(db, "admins");
 export const announcementsCol = collection(db, "announcements");
 export const documentsCol = collection(db, "documents");
 export const financesCol = collection(db, "finances");
+export const resourcesCol = collection(db, "resources");
 export const settingsCol = collection(db, "settings");
 
 // ─────────────────────────────────────────
@@ -304,4 +306,31 @@ export async function getSystemSettings(): Promise<SystemSettings | null> {
 
 export async function updateSystemSettings(data: Partial<SystemSettings>): Promise<void> {
   await setDoc(doc(db, "settings", "global"), data, { merge: true });
+}
+
+// ─────────────────────────────────────────
+// RESOURCES
+// ─────────────────────────────────────────
+export async function createResource(
+  data: Omit<StudyResource, "id" | "createdAt">
+): Promise<string> {
+  const ref = await addDoc(resourcesCol, {
+    ...data,
+    createdAt: new Date().toISOString(),
+  });
+  return ref.id;
+}
+
+export async function deleteResource(id: string): Promise<void> {
+  await deleteDoc(doc(db, "resources", id));
+}
+
+export function subscribeToResources(
+  callback: (resources: StudyResource[]) => void
+): Unsubscribe {
+  const q = query(resourcesCol, orderBy("createdAt", "desc"));
+  return onSnapshot(q, (snap) => {
+    const res = snap.docs.map((d) => ({ id: d.id, ...d.data() } as StudyResource));
+    callback(res);
+  });
 }

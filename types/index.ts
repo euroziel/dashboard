@@ -105,6 +105,19 @@ export interface Document {
 }
 
 // ─────────────────────────────────────────
+// RESOURCES (Firestore: /resources/{id})
+// Study materials uploaded by admin
+// ─────────────────────────────────────────
+export interface StudyResource {
+  id: string;
+  title: string;
+  description: string;
+  createdAt: string;
+  createdBy: string;
+  files: { name: string; url: string }[];
+}
+
+// ─────────────────────────────────────────
 // SHARED ENUMS / TYPES
 // ─────────────────────────────────────────
 export type ApplicationStatus =
