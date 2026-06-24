@@ -9,7 +9,7 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
-
+remainder.md
 # testing
 /coverage
 
@@ -32,6 +32,13 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+
+# Firebase Admin SDK service account keys — NEVER commit these
+*firebase-adminsdk*.json
+*service-account*.json
+
+# Local task tracker — dev only
+task.md
 
 # vercel
 .vercel
