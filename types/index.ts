@@ -23,6 +23,7 @@ export interface User {
 // Extended student profile — mirrors User + extra fields
 // ─────────────────────────────────────────
 export interface Student extends User {
+  id: string; // Firestore document ID (same value as uid)
   role: "student";
   address?: string;
   dateOfBirth?: string;

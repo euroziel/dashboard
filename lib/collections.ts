@@ -65,15 +65,15 @@ export async function updateUser(uid: string, data: Partial<User>): Promise<void
 export async function getAllStudents(): Promise<Student[]> {
   const snap = await getDocs(query(studentsCol, orderBy("createdAt", "desc")));
   return snap.docs.map((d) => {
-    const data = d.data() as Omit<Student, "uid">;
-    return ({ uid: d.id, ...data } as Student);
+    const data = d.data() as Omit<Student, "uid" | "id">;
+    return ({ id: d.id, uid: d.id, ...data } as Student);
   });
 }
 
 export async function getStudent(uid: string): Promise<Student | null> {
   const snap = await getDoc(doc(db, "students", uid));
   return snap.exists()
-    ? ({ uid: snap.id, ...(snap.data() as Omit<Student, "uid">) } as Student)
+    ? ({ id: snap.id, uid: snap.id, ...(snap.data() as Omit<Student, "uid" | "id">) } as Student)
     : null;
 }
 
@@ -98,8 +98,8 @@ export function subscribeToStudents(
   const q = query(studentsCol, orderBy("createdAt", "desc"), ...constraints);
   return onSnapshot(q, (snap) => {
     const students = snap.docs.map((d) => {
-      const data = d.data() as Omit<Student, "uid">;
-      return ({ uid: d.id, ...data } as Student);
+      const data = d.data() as Omit<Student, "uid" | "id">;
+      return ({ id: d.id, uid: d.id, ...data } as Student);
     });
     callback(students);
   });
