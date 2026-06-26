@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { 
-  getStudent, 
-  getFinances, 
-  setFinances, 
-  updateStudent, 
-  createAnnouncement, 
+import {
+  getStudent,
+  getFinances,
+  setFinances,
+  updateStudent,
+  createAnnouncement,
   subscribeToAnnouncements,
   subscribeToStudentDocuments,
   updateDocumentStatus,
@@ -114,7 +114,7 @@ export default function StudentProfilePage() {
       setFinancesData(newFinances);
       const newStudent = await getStudent(id);
       if (newStudent) setStudent(newStudent);
-      
+
       setIsConfirmFeeModalOpen(false);
       setIsFeeModalOpen(false);
     } catch (err) {
@@ -155,13 +155,13 @@ export default function StudentProfilePage() {
     if (!noteTitle.trim() || !noteMessage.trim()) return;
 
     setIsPostingNote(true);
-    
+
     let attachmentUrl = "";
     let attachmentName = "";
     if (selectedNoteFile) {
-       alert("Storage is not yet enabled in this environment. Using a mock URL for the attachment.");
-       attachmentUrl = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
-       attachmentName = selectedNoteFile.name;
+      alert("Storage is not yet enabled in this environment. Using a mock URL for the attachment.");
+      attachmentUrl = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
+      attachmentName = selectedNoteFile.name;
     }
 
     try {
@@ -171,6 +171,7 @@ export default function StudentProfilePage() {
         title: noteTitle.trim(),
         message: noteMessage.trim(),
         createdBy: user?.username ?? "Admin",
+        createdAt: new Date().toISOString(), // or new Date(), depending on your type
         ...(attachmentUrl ? { attachmentUrl, attachmentName } : {})
       });
       setNoteTitle("");
@@ -196,8 +197,8 @@ export default function StudentProfilePage() {
   const mandatoryRequirements = settings.filter(s => s.requirement === "mandatory" && s.milestoneIndex <= (student?.currentMilestone ?? 1));
 
   const handleSendReminder = async () => {
-    const missingDocs = mandatoryRequirements.filter(req => 
-       !documents.some(d => d.milestoneIndex === req.milestoneIndex && d.status !== "rejected")
+    const missingDocs = mandatoryRequirements.filter(req =>
+      !documents.some(d => d.milestoneIndex === req.milestoneIndex && d.status !== "rejected")
     ).map(req => `Step ${req.milestoneIndex}: ${MILESTONES[req.milestoneIndex - 1]}`);
 
     if (missingDocs.length === 0) {
@@ -212,6 +213,7 @@ export default function StudentProfilePage() {
         title: "Action Required: Missing Mandatory Documents",
         message: `Please upload the following required documents to proceed:\n\n${missingDocs.join("\n")}`,
         createdBy: user?.username ?? "System",
+        createdAt: new Date().toISOString(), // or new Date(), depending on your type
       });
       alert("Reminder sent successfully!");
     } catch (err) {
@@ -250,7 +252,7 @@ export default function StudentProfilePage() {
       <AdminTopbar title="Student Profile" subtitle={`Managing profile for ${student.name ?? student.username}`} />
 
       <main className="flex-1 p-4 md:p-8">
-        <button 
+        <button
           onClick={() => router.push("/admin/students")}
           className="mb-6 flex items-center gap-2 text-sm font-medium transition-colors"
           style={{ color: "rgba(255,255,255,0.4)" }}
@@ -263,10 +265,10 @@ export default function StudentProfilePage() {
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
           {/* LEFT COLUMN: Profile Info & Status Controls */}
           <div className="xl:col-span-1 space-y-6">
-            
+
             {/* Identity Card */}
             <div className="euro-card rounded-xl p-6 relative">
-              <button 
+              <button
                 onClick={() => {
                   setProfileForm({
                     name: student.name || "",
@@ -284,9 +286,9 @@ export default function StudentProfilePage() {
               >
                 Edit
               </button>
-              
+
               <div className="flex items-center gap-4 mb-6">
-                <div 
+                <div
                   className="w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold shrink-0"
                   style={{ background: "rgba(229, 168, 0,0.15)", color: "#E5A800", border: "1px solid rgba(229, 168, 0,0.3)" }}
                 >
@@ -297,7 +299,7 @@ export default function StudentProfilePage() {
                   <p className="text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>@{student.username}</p>
                 </div>
               </div>
-              
+
               <div className="space-y-4 text-sm">
                 <div>
                   <p className="text-xs uppercase tracking-widest font-semibold mb-1" style={{ color: "rgba(255,255,255,0.3)" }}>Email Address</p>
@@ -319,7 +321,7 @@ export default function StudentProfilePage() {
             {/* Controls Card */}
             <div className="euro-card rounded-xl p-6">
               <h3 className="font-bold text-lg text-white mb-5" style={{ borderLeft: "3px solid #E5A800", paddingLeft: "10px" }}>Journey Controls</h3>
-              
+
               <div className="space-y-5">
                 <div>
                   <label className="block text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: "rgba(255,255,255,0.4)" }}>
@@ -367,279 +369,279 @@ export default function StudentProfilePage() {
 
           {/* RIGHT COLUMN: Progress & Fees */}
           <div className="xl:col-span-2 space-y-6">
-            
+
             {/* Journey Progress */}
             <div className="euro-card rounded-xl p-6">
-               <h3 className="font-bold text-lg text-white mb-6" style={{ borderLeft: "3px solid #E5A800", paddingLeft: "10px" }}>Journey Progress</h3>
-               
-               <div className="flex items-center justify-between mb-2">
-                 <p className="text-sm font-medium text-white">Step {currentStep}: {MILESTONES[currentStep - 1]}</p>
-                 <p className="text-sm font-bold" style={{ color: "#E5A800" }}>{progressPercent}%</p>
-               </div>
-               <div className="w-full h-2 rounded-full overflow-hidden mb-8" style={{ background: "rgba(255,255,255,0.05)" }}>
-                 <div className="h-full rounded-full transition-all duration-500" style={{ width: `${progressPercent}%`, background: "#E5A800", boxShadow: "0 0 10px #E5A800" }} />
-               </div>
+              <h3 className="font-bold text-lg text-white mb-6" style={{ borderLeft: "3px solid #E5A800", paddingLeft: "10px" }}>Journey Progress</h3>
 
-               {/* Quick Stepper */}
-               <div className="flex justify-between relative">
-                 <div className="absolute top-1/2 left-0 w-full h-px -translate-y-1/2" style={{ background: "rgba(255,255,255,0.1)", zIndex: 0 }} />
-                 {MILESTONES.map((m, idx) => {
-                   const sNum = idx + 1;
-                   const isPast = sNum < currentStep;
-                   const isCurr = sNum === currentStep;
-                   return (
-                     <div 
-                       key={sNum} 
-                       className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold z-10"
-                       style={{
-                         background: isPast ? "#E5A800" : isCurr ? "#030617" : "#1A1F2E",
-                         color: isPast ? "#030617" : isCurr ? "#E5A800" : "rgba(255,255,255,0.3)",
-                         border: isCurr ? "2px solid #E5A800" : `1px solid ${isPast ? "#E5A800" : "rgba(255,255,255,0.2)"}`
-                       }}
-                     >
-                       {isPast ? "✓" : sNum}
-                     </div>
-                   );
-                 })}
-               </div>
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-sm font-medium text-white">Step {currentStep}: {MILESTONES[currentStep - 1]}</p>
+                <p className="text-sm font-bold" style={{ color: "#E5A800" }}>{progressPercent}%</p>
+              </div>
+              <div className="w-full h-2 rounded-full overflow-hidden mb-8" style={{ background: "rgba(255,255,255,0.05)" }}>
+                <div className="h-full rounded-full transition-all duration-500" style={{ width: `${progressPercent}%`, background: "#E5A800", boxShadow: "0 0 10px #E5A800" }} />
+              </div>
+
+              {/* Quick Stepper */}
+              <div className="flex justify-between relative">
+                <div className="absolute top-1/2 left-0 w-full h-px -translate-y-1/2" style={{ background: "rgba(255,255,255,0.1)", zIndex: 0 }} />
+                {MILESTONES.map((m, idx) => {
+                  const sNum = idx + 1;
+                  const isPast = sNum < currentStep;
+                  const isCurr = sNum === currentStep;
+                  return (
+                    <div
+                      key={sNum}
+                      className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold z-10"
+                      style={{
+                        background: isPast ? "#E5A800" : isCurr ? "#030617" : "#1A1F2E",
+                        color: isPast ? "#030617" : isCurr ? "#E5A800" : "rgba(255,255,255,0.3)",
+                        border: isCurr ? "2px solid #E5A800" : `1px solid ${isPast ? "#E5A800" : "rgba(255,255,255,0.2)"}`
+                      }}
+                    >
+                      {isPast ? "✓" : sNum}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Fee Control Section */}
             <div className="euro-card rounded-xl p-6">
-               <div className="flex items-center justify-between mb-6">
-                 <h3 className="font-bold text-lg text-white" style={{ borderLeft: "3px solid #86efac", paddingLeft: "10px" }}>Fee Status</h3>
-                 <button 
-                   onClick={() => setIsFeeModalOpen(true)}
-                   className="text-xs px-3 py-1.5 rounded-md font-semibold transition-all"
-                   style={{ background: "rgba(34,197,94,0.1)", color: "#86efac", border: "1px solid rgba(34,197,94,0.2)" }}
-                   onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(34,197,94,0.2)")}
-                   onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(34,197,94,0.1)")}
-                 >
-                   Update Fees
-                 </button>
-               </div>
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="font-bold text-lg text-white" style={{ borderLeft: "3px solid #86efac", paddingLeft: "10px" }}>Fee Status</h3>
+                <button
+                  onClick={() => setIsFeeModalOpen(true)}
+                  className="text-xs px-3 py-1.5 rounded-md font-semibold transition-all"
+                  style={{ background: "rgba(34,197,94,0.1)", color: "#86efac", border: "1px solid rgba(34,197,94,0.2)" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(34,197,94,0.2)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(34,197,94,0.1)")}
+                >
+                  Update Fees
+                </button>
+              </div>
 
-               {actualTotalFees > 0 ? (
-                 <div>
-                    <div className="flex justify-between items-end mb-2">
-                       <span className="text-2xl font-bold text-white">₹{actualPaidFees.toLocaleString('en-IN')}</span>
-                       <span className="text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>of ₹{actualTotalFees.toLocaleString('en-IN')} ({feePercent}%)</span>
-                    </div>
-                    <div className="h-1.5 rounded-full overflow-hidden bg-white/10">
-                      <div className="h-full rounded-full transition-all duration-500 ease-in-out" style={{ width: `${feePercent}%`, background: feePercent === 100 ? "#86efac" : "#E5A800" }} />
-                    </div>
-                 </div>
-               ) : (
-                 <div className="py-6 text-center rounded-lg mb-6" style={{ background: "rgba(255,255,255,0.02)", border: "1px dashed rgba(255,255,255,0.1)" }}>
-                    <p className="text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>Fee structure has not been set for this student.</p>
-                 </div>
-               )}
+              {actualTotalFees > 0 ? (
+                <div>
+                  <div className="flex justify-between items-end mb-2">
+                    <span className="text-2xl font-bold text-white">₹{actualPaidFees.toLocaleString('en-IN')}</span>
+                    <span className="text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>of ₹{actualTotalFees.toLocaleString('en-IN')} ({feePercent}%)</span>
+                  </div>
+                  <div className="h-1.5 rounded-full overflow-hidden bg-white/10">
+                    <div className="h-full rounded-full transition-all duration-500 ease-in-out" style={{ width: `${feePercent}%`, background: feePercent === 100 ? "#86efac" : "#E5A800" }} />
+                  </div>
+                </div>
+              ) : (
+                <div className="py-6 text-center rounded-lg mb-6" style={{ background: "rgba(255,255,255,0.02)", border: "1px dashed rgba(255,255,255,0.1)" }}>
+                  <p className="text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>Fee structure has not been set for this student.</p>
+                </div>
+              )}
             </div>
 
             {/* Individual Notes */}
             <div className="euro-card rounded-xl p-6">
-               <div className="flex items-center justify-between mb-4">
-                 <h3 className="font-bold text-lg text-white" style={{ borderLeft: "3px solid #1B73BA", paddingLeft: "10px" }}>Direct Notes</h3>
-               </div>
-               
-               {/* Post Note Form */}
-               <form onSubmit={handlePostNote} className="mb-6 space-y-3">
-                  <input
-                    type="text"
-                    required
-                    placeholder="Subject (e.g. Needs updated passport)"
-                    value={noteTitle}
-                    onChange={(e) => setNoteTitle(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg text-sm text-white outline-none"
-                    style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                    onFocus={(e) => (e.target.style.borderColor = "#E5A800")}
-                    onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
-                  />
-                  <textarea
-                    required
-                    rows={2}
-                    placeholder="Write a message directly to this student..."
-                    value={noteMessage}
-                    onChange={(e) => setNoteMessage(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg text-sm text-white outline-none resize-none"
-                    style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                    onFocus={(e) => (e.target.style.borderColor = "#E5A800")}
-                    onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
-                  />
-                  <input
-                    type="file"
-                    onChange={(e) => setSelectedNoteFile(e.target.files ? e.target.files[0] : null)}
-                    className="w-full px-3 py-2 rounded-lg text-xs text-white outline-none file:mr-3 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-white/10 file:text-white hover:file:bg-white/20"
-                    style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                  />
-                  <button
-                    type="submit"
-                    disabled={isPostingNote || !noteTitle.trim() || !noteMessage.trim()}
-                    className="w-full py-2 rounded-lg text-sm font-bold transition-all disabled:opacity-50"
-                    style={{ background: "rgba(59,130,246,0.15)", color: "#93c5fd" }}
-                  >
-                    {isPostingNote ? "Posting..." : "Send Direct Note"}
-                  </button>
-               </form>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-bold text-lg text-white" style={{ borderLeft: "3px solid #1B73BA", paddingLeft: "10px" }}>Direct Notes</h3>
+              </div>
 
-               {/* Notes History */}
-               <div className="space-y-3 max-h-60 overflow-y-auto pr-2">
-                 {announcements.length === 0 ? (
-                   <p className="text-sm text-center py-4" style={{ color: "rgba(255,255,255,0.4)" }}>No direct notes sent yet.</p>
-                 ) : (
-                   announcements.map(ann => (
-                     <div key={ann.id} className="p-3 rounded-lg" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)" }}>
-                       <div className="flex justify-between items-start mb-1">
-                         <h4 className="font-bold text-sm text-white">{ann.title}</h4>
-                         {ann.readBy?.includes(id) && (
-                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1B73BA" strokeWidth="2">
-                             <polyline points="20 6 9 17 4 12"></polyline>
-                           </svg>
-                         )}
-                       </div>
-                       <p className="text-xs mb-2 leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>{ann.message}</p>
-                       
-                       {ann.attachmentUrl && (
-                         <div className="mb-3">
-                           <a 
-                             href={ann.attachmentUrl} 
-                             target="_blank" 
-                             rel="noopener noreferrer"
-                             className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-semibold transition-colors hover:bg-white/10"
-                             style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "white" }}
-                           >
-                             <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                               <path d="M21.44 11.05l-9.19 9.19a6 6 0 1 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
-                             </svg>
-                             {ann.attachmentName || "Attached Document"}
-                           </a>
-                         </div>
-                       )}
+              {/* Post Note Form */}
+              <form onSubmit={handlePostNote} className="mb-6 space-y-3">
+                <input
+                  type="text"
+                  required
+                  placeholder="Subject (e.g. Needs updated passport)"
+                  value={noteTitle}
+                  onChange={(e) => setNoteTitle(e.target.value)}
+                  className="w-full px-3 py-2 rounded-lg text-sm text-white outline-none"
+                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
+                  onFocus={(e) => (e.target.style.borderColor = "#E5A800")}
+                  onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
+                />
+                <textarea
+                  required
+                  rows={2}
+                  placeholder="Write a message directly to this student..."
+                  value={noteMessage}
+                  onChange={(e) => setNoteMessage(e.target.value)}
+                  className="w-full px-3 py-2 rounded-lg text-sm text-white outline-none resize-none"
+                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
+                  onFocus={(e) => (e.target.style.borderColor = "#E5A800")}
+                  onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
+                />
+                <input
+                  type="file"
+                  onChange={(e) => setSelectedNoteFile(e.target.files ? e.target.files[0] : null)}
+                  className="w-full px-3 py-2 rounded-lg text-xs text-white outline-none file:mr-3 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-white/10 file:text-white hover:file:bg-white/20"
+                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
+                />
+                <button
+                  type="submit"
+                  disabled={isPostingNote || !noteTitle.trim() || !noteMessage.trim()}
+                  className="w-full py-2 rounded-lg text-sm font-bold transition-all disabled:opacity-50"
+                  style={{ background: "rgba(59,130,246,0.15)", color: "#93c5fd" }}
+                >
+                  {isPostingNote ? "Posting..." : "Send Direct Note"}
+                </button>
+              </form>
 
-                       <div className="flex justify-between items-center text-[10px]" style={{ color: "rgba(255,255,255,0.3)" }}>
-                         <span>By {ann.createdBy}</span>
-                         <span>{new Date(ann.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>
-                       </div>
-                     </div>
-                   ))
-                 )}
-               </div>
+              {/* Notes History */}
+              <div className="space-y-3 max-h-60 overflow-y-auto pr-2">
+                {announcements.length === 0 ? (
+                  <p className="text-sm text-center py-4" style={{ color: "rgba(255,255,255,0.4)" }}>No direct notes sent yet.</p>
+                ) : (
+                  announcements.map(ann => (
+                    <div key={ann.id} className="p-3 rounded-lg" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)" }}>
+                      <div className="flex justify-between items-start mb-1">
+                        <h4 className="font-bold text-sm text-white">{ann.title}</h4>
+                        {ann.readBy?.includes(id) && (
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1B73BA" strokeWidth="2">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        )}
+                      </div>
+                      <p className="text-xs mb-2 leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>{ann.message}</p>
+
+                      {ann.attachmentUrl && (
+                        <div className="mb-3">
+                          <a
+                            href={ann.attachmentUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-semibold transition-colors hover:bg-white/10"
+                            style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "white" }}
+                          >
+                            <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                              <path d="M21.44 11.05l-9.19 9.19a6 6 0 1 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+                            </svg>
+                            {ann.attachmentName || "Attached Document"}
+                          </a>
+                        </div>
+                      )}
+
+                      <div className="flex justify-between items-center text-[10px]" style={{ color: "rgba(255,255,255,0.3)" }}>
+                        <span>By {ann.createdBy}</span>
+                        <span>{new Date(ann.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
             </div>
 
             {/* Uploaded Documents Section */}
             <div className="euro-card rounded-xl p-6">
-               <div className="flex items-center justify-between mb-4">
-                 <h3 className="font-bold text-lg text-white" style={{ borderLeft: "3px solid #E5A800", paddingLeft: "10px" }}>Document Center</h3>
-               </div>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-bold text-lg text-white" style={{ borderLeft: "3px solid #E5A800", paddingLeft: "10px" }}>Document Center</h3>
+              </div>
 
-               {/* Mandatory Checklist */}
-               {mandatoryRequirements.length > 0 && (
-                 <div className="mb-6 p-4 rounded-lg" style={{ background: "rgba(0,0,0,0.2)", border: "1px solid rgba(255,255,255,0.05)" }}>
-                   <div className="flex items-center justify-between mb-3">
-                     <h4 className="text-xs uppercase tracking-widest font-bold" style={{ color: "rgba(255,255,255,0.5)" }}>
-                       Mandatory Requirements for Step {student?.currentMilestone}
-                     </h4>
-                     <button
-                       onClick={handleSendReminder}
-                       className="px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider transition-all"
-                       style={{ background: "rgba(59,130,246,0.1)", color: "#93c5fd", border: "1px solid rgba(59,130,246,0.2)" }}
-                       onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(59,130,246,0.2)")}
-                       onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(59,130,246,0.1)")}
-                     >
-                       Send Reminder
-                     </button>
-                   </div>
-                   
-                   <div className="space-y-2">
-                     {mandatoryRequirements.map(req => {
-                        const isUploaded = documents.some(d => d.milestoneIndex === req.milestoneIndex && d.status !== "rejected");
-                        const mName = MILESTONES[req.milestoneIndex - 1];
-                        return (
-                          <div key={req.milestoneIndex} className="flex items-center gap-3 text-sm">
-                            <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0" style={{ 
-                              background: isUploaded ? "rgba(34,197,94,0.15)" : "rgba(239,68,68,0.15)",
-                              color: isUploaded ? "#86efac" : "#fca5a5"
-                            }}>
-                              {isUploaded ? "✓" : "!"}
-                            </div>
-                            <span style={{ color: isUploaded ? "rgba(255,255,255,0.8)" : "white", textDecoration: isUploaded ? "line-through" : "none" }}>
-                              Step {req.milestoneIndex}: {mName}
-                            </span>
+              {/* Mandatory Checklist */}
+              {mandatoryRequirements.length > 0 && (
+                <div className="mb-6 p-4 rounded-lg" style={{ background: "rgba(0,0,0,0.2)", border: "1px solid rgba(255,255,255,0.05)" }}>
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="text-xs uppercase tracking-widest font-bold" style={{ color: "rgba(255,255,255,0.5)" }}>
+                      Mandatory Requirements for Step {student?.currentMilestone}
+                    </h4>
+                    <button
+                      onClick={handleSendReminder}
+                      className="px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider transition-all"
+                      style={{ background: "rgba(59,130,246,0.1)", color: "#93c5fd", border: "1px solid rgba(59,130,246,0.2)" }}
+                      onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(59,130,246,0.2)")}
+                      onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(59,130,246,0.1)")}
+                    >
+                      Send Reminder
+                    </button>
+                  </div>
+
+                  <div className="space-y-2">
+                    {mandatoryRequirements.map(req => {
+                      const isUploaded = documents.some(d => d.milestoneIndex === req.milestoneIndex && d.status !== "rejected");
+                      const mName = MILESTONES[req.milestoneIndex - 1];
+                      return (
+                        <div key={req.milestoneIndex} className="flex items-center gap-3 text-sm">
+                          <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0" style={{
+                            background: isUploaded ? "rgba(34,197,94,0.15)" : "rgba(239,68,68,0.15)",
+                            color: isUploaded ? "#86efac" : "#fca5a5"
+                          }}>
+                            {isUploaded ? "✓" : "!"}
                           </div>
-                        );
-                     })}
-                   </div>
-                 </div>
-               )}
-               
-               <h4 className="text-xs uppercase tracking-widest font-bold mb-3" style={{ color: "rgba(255,255,255,0.5)" }}>All Uploads</h4>
-               <div className="space-y-3 max-h-80 overflow-y-auto pr-2">
-                 {documents.length === 0 ? (
-                   <p className="text-sm text-center py-4" style={{ color: "rgba(255,255,255,0.4)" }}>No documents uploaded by this student.</p>
-                 ) : (
-                   documents.map(doc => (
-                     <div key={doc.id} className="p-4 rounded-lg flex flex-col md:flex-row md:items-center justify-between gap-4" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)" }}>
-                       <div>
-                         <h4 className="font-bold text-sm text-white mb-1">{doc.milestoneName || doc.fileName}</h4>
-                         <p className="text-xs mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>
-                           <a 
-                             href={doc.fileUrl} 
-                             target="_blank" 
-                             rel="noopener noreferrer" 
-                             className="hover:underline text-blue-400"
-                           >
-                             {doc.fileName}
-                           </a> 
-                           {" "}• {new Date(doc.uploadedAt).toLocaleDateString()}
-                         </p>
-                         
-                         <span className="text-[10px] px-2 py-0.5 rounded uppercase tracking-wider font-bold" style={{ 
-                           background: doc.status === "approved" ? "rgba(34,197,94,0.15)" : doc.status === "rejected" ? "rgba(239,68,68,0.15)" : "rgba(229, 168, 0,0.15)", 
-                           color: doc.status === "approved" ? "#86efac" : doc.status === "rejected" ? "#fca5a5" : "#E5A800" 
-                         }}>
-                           {doc.status}
-                         </span>
-                       </div>
-                       
-                       <div className="flex gap-2 shrink-0">
-                         {doc.status === "pending" && (
-                           <>
-                             <button 
-                               onClick={() => handleDocumentStatus(doc.id, "approved")}
-                               className="px-3 py-1.5 rounded-md text-xs font-bold transition-all"
-                               style={{ background: "rgba(34,197,94,0.1)", color: "#86efac", border: "1px solid rgba(34,197,94,0.2)" }}
-                               onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(34,197,94,0.2)")}
-                               onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(34,197,94,0.1)")}
-                             >
-                               Approve
-                             </button>
-                             <button 
-                               onClick={() => handleDocumentStatus(doc.id, "rejected")}
-                               className="px-3 py-1.5 rounded-md text-xs font-bold transition-all"
-                               style={{ background: "rgba(239,68,68,0.1)", color: "#fca5a5", border: "1px solid rgba(239,68,68,0.2)" }}
-                               onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(239,68,68,0.2)")}
-                               onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(239,68,68,0.1)")}
-                             >
-                               Reject
-                             </button>
-                           </>
-                         )}
-                         {doc.status !== "pending" && (
-                            <button 
-                              onClick={() => handleDocumentStatus(doc.id, "pending")}
-                              className="px-3 py-1.5 rounded-md text-[10px] uppercase font-bold transition-all"
-                              style={{ background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.5)" }}
-                              onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.1)")}
-                              onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}
+                          <span style={{ color: isUploaded ? "rgba(255,255,255,0.8)" : "white", textDecoration: isUploaded ? "line-through" : "none" }}>
+                            Step {req.milestoneIndex}: {mName}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              <h4 className="text-xs uppercase tracking-widest font-bold mb-3" style={{ color: "rgba(255,255,255,0.5)" }}>All Uploads</h4>
+              <div className="space-y-3 max-h-80 overflow-y-auto pr-2">
+                {documents.length === 0 ? (
+                  <p className="text-sm text-center py-4" style={{ color: "rgba(255,255,255,0.4)" }}>No documents uploaded by this student.</p>
+                ) : (
+                  documents.map(doc => (
+                    <div key={doc.id} className="p-4 rounded-lg flex flex-col md:flex-row md:items-center justify-between gap-4" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)" }}>
+                      <div>
+                        <h4 className="font-bold text-sm text-white mb-1">{doc.milestoneName || doc.fileName}</h4>
+                        <p className="text-xs mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>
+                          <a
+                            href={doc.fileUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:underline text-blue-400"
+                          >
+                            {doc.fileName}
+                          </a>
+                          {" "}• {new Date(doc.uploadedAt).toLocaleDateString()}
+                        </p>
+
+                        <span className="text-[10px] px-2 py-0.5 rounded uppercase tracking-wider font-bold" style={{
+                          background: doc.status === "approved" ? "rgba(34,197,94,0.15)" : doc.status === "rejected" ? "rgba(239,68,68,0.15)" : "rgba(229, 168, 0,0.15)",
+                          color: doc.status === "approved" ? "#86efac" : doc.status === "rejected" ? "#fca5a5" : "#E5A800"
+                        }}>
+                          {doc.status}
+                        </span>
+                      </div>
+
+                      <div className="flex gap-2 shrink-0">
+                        {doc.status === "pending" && (
+                          <>
+                            <button
+                              onClick={() => handleDocumentStatus(doc.id, "approved")}
+                              className="px-3 py-1.5 rounded-md text-xs font-bold transition-all"
+                              style={{ background: "rgba(34,197,94,0.1)", color: "#86efac", border: "1px solid rgba(34,197,94,0.2)" }}
+                              onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(34,197,94,0.2)")}
+                              onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(34,197,94,0.1)")}
                             >
-                              Reset
+                              Approve
                             </button>
-                         )}
-                       </div>
-                     </div>
-                   ))
-                 )}
-               </div>
+                            <button
+                              onClick={() => handleDocumentStatus(doc.id, "rejected")}
+                              className="px-3 py-1.5 rounded-md text-xs font-bold transition-all"
+                              style={{ background: "rgba(239,68,68,0.1)", color: "#fca5a5", border: "1px solid rgba(239,68,68,0.2)" }}
+                              onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(239,68,68,0.2)")}
+                              onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(239,68,68,0.1)")}
+                            >
+                              Reject
+                            </button>
+                          </>
+                        )}
+                        {doc.status !== "pending" && (
+                          <button
+                            onClick={() => handleDocumentStatus(doc.id, "pending")}
+                            className="px-3 py-1.5 rounded-md text-[10px] uppercase font-bold transition-all"
+                            style={{ background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.5)" }}
+                            onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.1)")}
+                            onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}
+                          >
+                            Reset
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
             </div>
 
           </div>
@@ -649,206 +651,206 @@ export default function StudentProfilePage() {
       {/* Fee Update Modal */}
       {isFeeModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4" style={{ background: "rgba(10,14,26,0.8)", backdropFilter: "blur(4px)" }}>
-           <div className="euro-card w-full max-w-md rounded-xl p-6 shadow-2xl">
-              <h3 className="text-lg font-bold text-white mb-4">Update Fee Structure</h3>
-              
-              <form onSubmit={handleUpdateFees} className="space-y-4">
-                <div>
-                  <label className="block text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>Total Fees (₹)</label>
-                  <input 
-                    type="number" 
-                    required 
-                    min="0"
-                    value={feeForm.totalFees} 
-                    onChange={(e) => setFeeForm(p => ({ ...p, totalFees: Number(e.target.value) }))}
-                    className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none"
-                    style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                    onFocus={(e) => e.target.style.borderColor = "#E5A800"}
-                    onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>Paid Amount (₹)</label>
-                  <input 
-                    type="number" 
-                    required 
-                    min="0"
-                    max={feeForm.totalFees || undefined}
-                    value={feeForm.paidAmount} 
-                    onChange={(e) => setFeeForm(p => ({ ...p, paidAmount: Number(e.target.value) }))}
-                    className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none"
-                    style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                    onFocus={(e) => e.target.style.borderColor = "#E5A800"}
-                    onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
-                  />
-                </div>
+          <div className="euro-card w-full max-w-md rounded-xl p-6 shadow-2xl">
+            <h3 className="text-lg font-bold text-white mb-4">Update Fee Structure</h3>
 
-                <div className="flex gap-3 pt-4 mt-6 border-t" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
-                   <button 
-                     type="button" 
-                     onClick={() => setIsFeeModalOpen(false)}
-                     className="flex-1 py-2.5 rounded-lg text-sm font-semibold"
-                     style={{ background: "rgba(255,255,255,0.05)", color: "white" }}
-                   >
-                     Cancel
-                   </button>
-                   <button 
-                     type="submit" 
-                     disabled={isSavingFee}
-                     className="flex-1 py-2.5 rounded-lg text-sm font-bold disabled:opacity-50"
-                     style={{ background: "#1B73BA", color: "white" }}
-                   >
-                     {isSavingFee ? "Saving..." : "Save Fees"}
-                   </button>
-                </div>
-              </form>
-           </div>
+            <form onSubmit={handleUpdateFees} className="space-y-4">
+              <div>
+                <label className="block text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>Total Fees (₹)</label>
+                <input
+                  type="number"
+                  required
+                  min="0"
+                  value={feeForm.totalFees}
+                  onChange={(e) => setFeeForm(p => ({ ...p, totalFees: Number(e.target.value) }))}
+                  className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none"
+                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
+                  onFocus={(e) => e.target.style.borderColor = "#E5A800"}
+                  onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
+                />
+              </div>
+              <div>
+                <label className="block text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>Paid Amount (₹)</label>
+                <input
+                  type="number"
+                  required
+                  min="0"
+                  max={feeForm.totalFees || undefined}
+                  value={feeForm.paidAmount}
+                  onChange={(e) => setFeeForm(p => ({ ...p, paidAmount: Number(e.target.value) }))}
+                  className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none"
+                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
+                  onFocus={(e) => e.target.style.borderColor = "#E5A800"}
+                  onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
+                />
+              </div>
+
+              <div className="flex gap-3 pt-4 mt-6 border-t" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+                <button
+                  type="button"
+                  onClick={() => setIsFeeModalOpen(false)}
+                  className="flex-1 py-2.5 rounded-lg text-sm font-semibold"
+                  style={{ background: "rgba(255,255,255,0.05)", color: "white" }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSavingFee}
+                  className="flex-1 py-2.5 rounded-lg text-sm font-bold disabled:opacity-50"
+                  style={{ background: "#1B73BA", color: "white" }}
+                >
+                  {isSavingFee ? "Saving..." : "Save Fees"}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
 
       {/* Confirm Fee Update Modal */}
       {isConfirmFeeModalOpen && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center px-4" style={{ background: "rgba(10,14,26,0.9)", backdropFilter: "blur(8px)" }}>
-           <div className="euro-card w-full max-w-md rounded-xl p-6 shadow-2xl border border-red-500/30">
-              <div className="flex items-center gap-3 mb-4 text-red-400">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-                  <line x1="12" y1="9" x2="12" y2="13"></line>
-                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                </svg>
-                <h3 className="text-lg font-bold">Confirm Fee Update</h3>
-              </div>
-              
-              <p className="text-sm mb-6 leading-relaxed" style={{ color: "rgba(255,255,255,0.7)" }}>
-                Are you sure you want to set this fee structure? This will permanently update the student's financial records.
-              </p>
+          <div className="euro-card w-full max-w-md rounded-xl p-6 shadow-2xl border border-red-500/30">
+            <div className="flex items-center gap-3 mb-4 text-red-400">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+              <h3 className="text-lg font-bold">Confirm Fee Update</h3>
+            </div>
 
-              <div className="p-4 rounded-lg mb-6" style={{ background: "rgba(0,0,0,0.3)" }}>
-                <div className="flex justify-between mb-2">
-                  <span className="text-xs uppercase tracking-widest font-bold text-white/50">Total Fees:</span>
-                  <span className="text-sm font-bold text-white">₹{Number(feeForm.totalFees).toLocaleString('en-IN')}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-xs uppercase tracking-widest font-bold text-white/50">Paid Amount:</span>
-                  <span className="text-sm font-bold text-green-400">₹{Number(feeForm.paidAmount).toLocaleString('en-IN')}</span>
-                </div>
-              </div>
+            <p className="text-sm mb-6 leading-relaxed" style={{ color: "rgba(255,255,255,0.7)" }}>
+              Are you sure you want to set this fee structure? This will permanently update the student's financial records.
+            </p>
 
-              <div className="flex gap-3">
-                 <button 
-                   type="button" 
-                   onClick={() => setIsConfirmFeeModalOpen(false)}
-                   className="flex-1 py-2.5 rounded-lg text-sm font-semibold"
-                   style={{ background: "rgba(255,255,255,0.05)", color: "white" }}
-                 >
-                   Cancel
-                 </button>
-                 <button 
-                   type="button" 
-                   onClick={executeFeeUpdate}
-                   disabled={isSavingFee}
-                   className="flex-1 py-2.5 rounded-lg text-sm font-bold disabled:opacity-50 flex items-center justify-center gap-2"
-                   style={{ background: "rgba(239,68,68,0.15)", color: "#fca5a5", border: "1px solid rgba(239,68,68,0.3)" }}
-                 >
-                   {isSavingFee ? "Saving..." : "Confirm & Save"}
-                 </button>
+            <div className="p-4 rounded-lg mb-6" style={{ background: "rgba(0,0,0,0.3)" }}>
+              <div className="flex justify-between mb-2">
+                <span className="text-xs uppercase tracking-widest font-bold text-white/50">Total Fees:</span>
+                <span className="text-sm font-bold text-white">₹{Number(feeForm.totalFees).toLocaleString('en-IN')}</span>
               </div>
-           </div>
+              <div className="flex justify-between">
+                <span className="text-xs uppercase tracking-widest font-bold text-white/50">Paid Amount:</span>
+                <span className="text-sm font-bold text-green-400">₹{Number(feeForm.paidAmount).toLocaleString('en-IN')}</span>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => setIsConfirmFeeModalOpen(false)}
+                className="flex-1 py-2.5 rounded-lg text-sm font-semibold"
+                style={{ background: "rgba(255,255,255,0.05)", color: "white" }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={executeFeeUpdate}
+                disabled={isSavingFee}
+                className="flex-1 py-2.5 rounded-lg text-sm font-bold disabled:opacity-50 flex items-center justify-center gap-2"
+                style={{ background: "rgba(239,68,68,0.15)", color: "#fca5a5", border: "1px solid rgba(239,68,68,0.3)" }}
+              >
+                {isSavingFee ? "Saving..." : "Confirm & Save"}
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
       {/* Edit Profile Modal */}
       {isEditProfileModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4" style={{ background: "rgba(10,14,26,0.8)", backdropFilter: "blur(4px)" }}>
-           <div className="euro-card w-full max-w-md rounded-xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
-              <h3 className="text-lg font-bold text-white mb-6">Edit Student Profile</h3>
-              
-              <form onSubmit={handleUpdateProfile} className="space-y-4">
-                <div>
-                  <label className="block text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>Full Name</label>
-                  <input 
-                    type="text" 
-                    value={profileForm.name} 
-                    onChange={(e) => setProfileForm(p => ({ ...p, name: e.target.value }))}
-                    className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none"
-                    style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                    onFocus={(e) => e.target.style.borderColor = "#E5A800"}
-                    onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>Phone Number</label>
-                  <input 
-                    type="tel" 
-                    value={profileForm.phone} 
-                    onChange={(e) => setProfileForm(p => ({ ...p, phone: e.target.value }))}
-                    className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none"
-                    style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                    onFocus={(e) => e.target.style.borderColor = "#E5A800"}
-                    onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
-                  />
-                </div>
+          <div className="euro-card w-full max-w-md rounded-xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <h3 className="text-lg font-bold text-white mb-6">Edit Student Profile</h3>
 
-                <div>
-                  <label className="block text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>Date of Birth</label>
-                  <input 
-                    type="date" 
-                    value={profileForm.dateOfBirth} 
-                    onChange={(e) => setProfileForm(p => ({ ...p, dateOfBirth: e.target.value }))}
-                    className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none"
-                    style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                    onFocus={(e) => e.target.style.borderColor = "#E5A800"}
-                    onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
-                  />
-                </div>
+            <form onSubmit={handleUpdateProfile} className="space-y-4">
+              <div>
+                <label className="block text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>Full Name</label>
+                <input
+                  type="text"
+                  value={profileForm.name}
+                  onChange={(e) => setProfileForm(p => ({ ...p, name: e.target.value }))}
+                  className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none"
+                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
+                  onFocus={(e) => e.target.style.borderColor = "#E5A800"}
+                  onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
+                />
+              </div>
 
-                <div>
-                  <label className="block text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>Address</label>
-                  <textarea 
-                    rows={2}
-                    value={profileForm.address} 
-                    onChange={(e) => setProfileForm(p => ({ ...p, address: e.target.value }))}
-                    className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none resize-none"
-                    style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                    onFocus={(e) => e.target.style.borderColor = "#E5A800"}
-                    onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>Educational Background</label>
-                  <textarea 
-                    rows={2}
-                    value={profileForm.educationalBackground} 
-                    onChange={(e) => setProfileForm(p => ({ ...p, educationalBackground: e.target.value }))}
-                    className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none resize-none"
-                    style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                    onFocus={(e) => e.target.style.borderColor = "#E5A800"}
-                    onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
-                  />
-                </div>
+              <div>
+                <label className="block text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>Phone Number</label>
+                <input
+                  type="tel"
+                  value={profileForm.phone}
+                  onChange={(e) => setProfileForm(p => ({ ...p, phone: e.target.value }))}
+                  className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none"
+                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
+                  onFocus={(e) => e.target.style.borderColor = "#E5A800"}
+                  onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
+                />
+              </div>
 
-                <div className="flex gap-3 pt-4 mt-6 border-t" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
-                   <button 
-                     type="button" 
-                     onClick={() => setIsEditProfileModalOpen(false)}
-                     className="flex-1 py-2.5 rounded-lg text-sm font-semibold"
-                     style={{ background: "rgba(255,255,255,0.05)", color: "white" }}
-                   >
-                     Cancel
-                   </button>
-                   <button 
-                     type="submit" 
-                     disabled={isSavingProfile}
-                     className="flex-1 py-2.5 rounded-lg text-sm font-bold disabled:opacity-50"
-                     style={{ background: "#1B73BA", color: "white" }}
-                   >
-                     {isSavingProfile ? "Saving..." : "Save Profile"}
-                   </button>
-                </div>
-              </form>
-           </div>
+              <div>
+                <label className="block text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>Date of Birth</label>
+                <input
+                  type="date"
+                  value={profileForm.dateOfBirth}
+                  onChange={(e) => setProfileForm(p => ({ ...p, dateOfBirth: e.target.value }))}
+                  className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none"
+                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
+                  onFocus={(e) => e.target.style.borderColor = "#E5A800"}
+                  onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>Address</label>
+                <textarea
+                  rows={2}
+                  value={profileForm.address}
+                  onChange={(e) => setProfileForm(p => ({ ...p, address: e.target.value }))}
+                  className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none resize-none"
+                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
+                  onFocus={(e) => e.target.style.borderColor = "#E5A800"}
+                  onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>Educational Background</label>
+                <textarea
+                  rows={2}
+                  value={profileForm.educationalBackground}
+                  onChange={(e) => setProfileForm(p => ({ ...p, educationalBackground: e.target.value }))}
+                  className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none resize-none"
+                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
+                  onFocus={(e) => e.target.style.borderColor = "#E5A800"}
+                  onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
+                />
+              </div>
+
+              <div className="flex gap-3 pt-4 mt-6 border-t" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+                <button
+                  type="button"
+                  onClick={() => setIsEditProfileModalOpen(false)}
+                  className="flex-1 py-2.5 rounded-lg text-sm font-semibold"
+                  style={{ background: "rgba(255,255,255,0.05)", color: "white" }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSavingProfile}
+                  className="flex-1 py-2.5 rounded-lg text-sm font-bold disabled:opacity-50"
+                  style={{ background: "#1B73BA", color: "white" }}
+                >
+                  {isSavingProfile ? "Saving..." : "Save Profile"}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>
