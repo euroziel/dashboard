@@ -3,7 +3,7 @@ import { adminDb } from "@/lib/firebase/admin";
 import Razorpay from "razorpay";
 
 const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID as string,
+  key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID as string,
   key_secret: process.env.RAZORPAY_KEY_SECRET as string,
 });
 
@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
       orderId: order.id,
       amount: order.amount,
       currency: order.currency,
-      key: process.env.RAZORPAY_KEY_ID,
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
     });
   } catch (error: any) {
     console.error("Razorpay Order Error:", error);
