@@ -27,7 +27,10 @@ export default function AdminSettingsPage() {
           // Merge existing settings with potentially new milestones
           const mergedConfigs = MILESTONES.map((_, i) => {
             const existing = settings.milestoneConfigs?.find(c => c.milestoneIndex === i + 1);
-            return existing || { milestoneIndex: i + 1, requirement: "optional" };
+            return (
+              existing ||
+              ({ milestoneIndex: i + 1, requirement: "optional" } as MilestoneConfig)
+            );
           });
           setConfigs(mergedConfigs);
         }
@@ -109,7 +112,7 @@ export default function AdminSettingsPage() {
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y" style={{ divideColor: "rgba(255,255,255,0.04)" }}>
+              <tbody className="divide-y border-separate">
                 {configs.map((config) => {
                   const milestoneName = MILESTONES[config.milestoneIndex - 1];
                   

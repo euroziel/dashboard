@@ -14,7 +14,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MILESTONES, APPLICATION_STATUSES } from "@/types";
-import { updateStudentMilestone, updateStudentStatus } from "@/lib/collections";
+import { updateMilestone, updateStatus } from "@/lib/collections";
 import { SkeletonTable } from "@/components/Skeletons";
 import type { Student, ApplicationStatus } from "@/types";
 
